@@ -1,4 +1,4 @@
-package com.teamxx.groupmad;
+package com.teamxx.hackernews;
 
 import android.app.Activity;
 import android.os.Bundle;
