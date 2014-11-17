@@ -3,13 +3,14 @@ package com.teamxx.hackernews.api;
 import android.text.Html;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * An "Item". This can be a story, comment, job, Ask HN and even a poll.
  * Analogous to the "Item" in the HN API: https://github.com/HackerNews/API#items
  */
 public class Item {
-    private int mId;
+    private String mId;
     private boolean mDeleted;
     private Type mType;
     private String mBy;
@@ -39,7 +40,7 @@ public class Item {
         mParts = builder.mParts;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
@@ -100,7 +101,7 @@ public class Item {
     }
 
     public static final class Builder {
-        private int mId;
+        private String mId;
         private boolean mDeleted;
         private Type mType;
         private String mBy;
@@ -117,68 +118,68 @@ public class Item {
         public Builder() {
         }
 
-        public Builder mId(int mId) {
-            this.mId = mId;
+        public Builder id(String id) {
+            this.mId = id;
             return this;
         }
 
-        public Builder mDeleted(boolean mDeleted) {
-            this.mDeleted = mDeleted;
+        public Builder deleted(boolean deleted) {
+            this.mDeleted = deleted;
             return this;
         }
 
-        public Builder mType(Type mType) {
-            this.mType = mType;
+        public Builder type(Type type) {
+            this.mType = type;
             return this;
         }
 
-        public Builder mBy(String mBy) {
-            this.mBy = mBy;
+        public Builder by(String by) {
+            this.mBy = by;
             return this;
         }
 
-        public Builder mTime(long mTime) {
-            this.mTime = mTime;
+        public Builder time(long time) {
+            this.mTime = time;
             return this;
         }
 
-        public Builder mText(Html mText) {
-            this.mText = mText;
+        public Builder text(Html text) {
+            this.mText = text;
             return this;
         }
 
-        public Builder mDead(boolean mDead) {
-            this.mDead = mDead;
+        public Builder dead(boolean dead) {
+            this.mDead = dead;
             return this;
         }
 
-        public Builder mParent(int mParent) {
-            this.mParent = mParent;
+        public Builder parent(int parent) {
+            this.mParent = parent;
             return this;
         }
 
-        public Builder mKids(int[] mKids) {
-            this.mKids = mKids;
+        public Builder kids(int[] kids) {
+            this.mKids = kids;
             return this;
         }
 
-        public Builder mURL(URL mURL) {
-            this.mURL = mURL;
+        public Builder URL(URL URL) {
+            this.mURL = URL;
             return this;
         }
 
-        public Builder mScore(int mScore) {
-            this.mScore = mScore;
+        public Builder score(int score) {
+            this.mScore = score;
             return this;
         }
 
-        public Builder mTitle(String mTitle) {
-            this.mTitle = mTitle;
+        public Builder title(String title) {
+            this.mTitle = title;
             return this;
         }
 
-        public Builder mParts(int[] mParts) {
-            this.mParts = mParts;
+        public Builder parts(int[] parts) {
+            this.mParts = parts;
             return this;
         }
 
