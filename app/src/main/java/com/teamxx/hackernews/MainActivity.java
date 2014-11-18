@@ -9,17 +9,29 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
+import com.teamxx.hackernews.api.HackerNewsAPI;
+import com.teamxx.hackernews.api.Item;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -32,6 +44,11 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     private RecyclerView mRecyclerView;
+    private List<String> mTopStoriesList;
+    private ItemAdapter mItemAdapter;
+    private ValueEventListener mTopStoriesEventListener;
+    private ValueEventListener mItemFromIdEventListener;
+    private Firebase mFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +64,91 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        Firebase.setAndroidContext(this);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mItemAdapter = new ItemAdapter();
+
+        mRecyclerView.setAdapter(mItemAdapter);
+
+        mTopStoriesList = new ArrayList<String>();
+        Firebase.setAndroidContext(this.getApplicationContext());
+        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
+
+        mTopStoriesEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
+                };
+                List<String> messages = snapshot.getValue(t);
+                if (messages == null) {
+                    // TODO Use the previous values, but notify user
+                } else {
+                    Log.d("messages: ", messages.get(0));
+                    getItemsById(messages);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+
+            }
+        };
+
+        mItemFromIdEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+
+                Boolean dead = (Boolean) map.get("dead");
+                if (dead == null)
+                    dead = false;
+
+                Integer parent = (Integer) map.get("parent");
+                if (parent == null)
+                    parent = -1;
+
+                URL url = null;
+                try {
+                    url = new URL((String) map.get("url"));
+                } catch (MalformedURLException ignored) {
+                }
+
+                Item item = new Item.Builder()
+                        .by((String) map.get("by"))
+                        .id((Long) map.get("id"))
+                        .kids((ArrayList<Long>) map.get("kids"))
+                        .score((Long) map.get("score"))
+                        .type(Item.getTypeFromString((String) map.get("type")))
+                        .time((Long) map.get("time"))
+                        .text((String) map.get("text"))
+                        .dead(dead)
+                        .parent(parent)
+                        .URL(url)
+                        .title((String) map.get("title"))
+                        .parts((int[]) map.get("parts"))
+                        .build();
+                mItemAdapter.add(item);
+                mItemAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+
+            }
+        };
+        refresh();
+    }
+
+    private void getItemsById(List<String> idList) {
+        mTopStoriesList.clear();
+        for (String id : idList) {
+            mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(mItemFromIdEventListener);
+        }
+    }
+
+    private void refresh() {
+        mItemAdapter.clear();
+        mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(mTopStoriesEventListener);
     }
 
     @Override

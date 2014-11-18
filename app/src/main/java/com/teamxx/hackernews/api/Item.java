@@ -1,7 +1,5 @@
 package com.teamxx.hackernews.api;
 
-import android.text.Html;
-
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -10,17 +8,17 @@ import java.util.ArrayList;
  * Analogous to the "Item" in the HN API: https://github.com/HackerNews/API#items
  */
 public class Item {
-    private String mId;
+    private Long mId;
     private boolean mDeleted;
     private Type mType;
     private String mBy;
     private long mTime;
-    private Html mText;
+    private String mText;
     private boolean mDead;
     private int mParent;
-    private int[] mKids;
+    private ArrayList<Long> mKids;
     private URL mURL;
-    private int mScore;
+    private Long mScore;
     private String mTitle;
     private int[] mParts;
 
@@ -40,7 +38,23 @@ public class Item {
         mParts = builder.mParts;
     }
 
-    public String getId() {
+    public static Type getTypeFromString(String type) {
+        if (type.equalsIgnoreCase("story")) {
+            return Type.Story;
+        } else if (type.equalsIgnoreCase("job")) {
+            return Type.Job;
+        } else if (type.equalsIgnoreCase("poll")) {
+            return Type.Poll;
+        } else if (type.equalsIgnoreCase("pollopt")) {
+            return Type.Pollopt;
+        } else if (type.equalsIgnoreCase("comment")) {
+            return Type.Comment;
+        } else {
+            throw new IllegalStateException("Invalid Item type: " + type);
+        }
+    }
+
+    public Long getId() {
         return mId;
     }
 
@@ -60,7 +74,7 @@ public class Item {
         return mTime;
     }
 
-    public Html getText() {
+    public String getText() {
         return mText;
     }
 
@@ -72,7 +86,7 @@ public class Item {
         return mParent;
     }
 
-    public int[] getKids() {
+    public ArrayList<Long> getKids() {
         return mKids;
     }
 
@@ -80,7 +94,7 @@ public class Item {
         return mURL;
     }
 
-    public int getScore() {
+    public Long getScore() {
         return mScore;
     }
 
@@ -101,24 +115,24 @@ public class Item {
     }
 
     public static final class Builder {
-        private String mId;
+        private Long mId;
         private boolean mDeleted;
         private Type mType;
         private String mBy;
         private long mTime;
-        private Html mText;
+        private String mText;
         private boolean mDead;
         private int mParent;
-        private int[] mKids;
+        private ArrayList<Long> mKids;
         private URL mURL;
-        private int mScore;
+        private Long mScore;
         private String mTitle;
         private int[] mParts;
 
         public Builder() {
         }
 
-        public Builder id(String id) {
+        public Builder id(Long id) {
             this.mId = id;
             return this;
         }
@@ -143,7 +157,7 @@ public class Item {
             return this;
         }
 
-        public Builder text(Html text) {
+        public Builder text(String text) {
             this.mText = text;
             return this;
         }
@@ -158,7 +172,7 @@ public class Item {
             return this;
         }
 
-        public Builder kids(int[] kids) {
+        public Builder kids(ArrayList<Long> kids) {
             this.mKids = kids;
             return this;
         }
@@ -168,7 +182,7 @@ public class Item {
             return this;
         }
 
-        public Builder score(int score) {
+        public Builder score(Long score) {
             this.mScore = score;
             return this;
         }
