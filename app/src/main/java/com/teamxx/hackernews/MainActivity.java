@@ -188,7 +188,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main_activity2, menu);
+            getMenuInflater().inflate(R.menu.menu_main, menu);
             restoreActionBar();
             return true;
         }
@@ -205,6 +205,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.action_refresh) {
+            refresh();
         }
 
         return super.onOptionsItemSelected(item);
