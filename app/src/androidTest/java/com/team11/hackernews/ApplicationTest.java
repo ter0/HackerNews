@@ -1,4 +1,4 @@
-package com.teamxx.hackernews;
+package com.team11.hackernews;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

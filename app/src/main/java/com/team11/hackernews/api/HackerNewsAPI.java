@@ -1,4 +1,4 @@
-package com.teamxx.hackernews.api;
+package com.team11.hackernews.api;
 
 import android.content.Context;
 

@@ -1,4 +1,4 @@
-package com.teamxx.hackernews;
+package com.team11.hackernews;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,8 +21,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
-import com.teamxx.hackernews.api.HackerNewsAPI;
-import com.teamxx.hackernews.api.Item;
+import com.team11.hackernews.api.HackerNewsAPI;
+import com.team11.hackernews.api.Item;
 
 import java.net.MalformedURLException;
 import java.net.URL;

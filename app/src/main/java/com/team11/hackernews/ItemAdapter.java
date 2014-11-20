@@ -1,11 +1,11 @@
-package com.teamxx.hackernews;
+package com.team11.hackernews;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.teamxx.hackernews.api.Item;
+import com.team11.hackernews.api.Item;
 
 import java.util.ArrayList;
 
