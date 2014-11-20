@@ -20,7 +20,7 @@ public class Item {
     private URL mURL;
     private Long mScore;
     private String mTitle;
-    private int[] mParts;
+    private ArrayList<Long> mParts;
 
     private Item(Builder builder) {
         mId = builder.mId;
@@ -102,7 +102,7 @@ public class Item {
         return mTitle;
     }
 
-    public int[] getParts() {
+    public ArrayList<Long> getParts() {
         return mParts;
     }
 
@@ -127,7 +127,7 @@ public class Item {
         private URL mURL;
         private Long mScore;
         private String mTitle;
-        private int[] mParts;
+        private ArrayList<Long> mParts;
 
         public Builder() {
         }
@@ -192,7 +192,7 @@ public class Item {
             return this;
         }
 
-        public Builder parts(int[] parts) {
+        public Builder parts(ArrayList<Long> parts) {
             this.mParts = parts;
             return this;
         }

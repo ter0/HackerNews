@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                         .parent(parent)
                         .URL(url)
                         .title((String) map.get("title"))
-                        .parts((int[]) map.get("parts"))
+                        .parts((ArrayList<Long>) map.get("parts"))
                         .build();
                 mItemAdapter.add(item);
                 mItemAdapter.notifyDataSetChanged();
