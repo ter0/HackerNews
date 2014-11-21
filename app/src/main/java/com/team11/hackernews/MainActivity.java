@@ -50,6 +50,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private ValueEventListener mItemFromIdEventListener;
     private Firebase mFirebase;
 
+    static final int ITEMS_PER_PAGE = 100;
+
+    private boolean finishedLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         mRecyclerView.setAdapter(mItemAdapter);
 
         mTopStoriesList = new ArrayList<String>();
+
         Firebase.setAndroidContext(this.getApplicationContext());
         mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
 
@@ -129,6 +134,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                         .build();
                 mItemAdapter.add(item);
                 mItemAdapter.notifyDataSetChanged();
+                if (mItemAdapter.getItemCount() == ITEMS_PER_PAGE) {
+                    finishedLoading = true;
+                    supportInvalidateOptionsMenu();
+                }
             }
 
             @Override
@@ -136,6 +145,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
             }
         };
+        finishedLoading = true;
         refresh();
     }
 
@@ -147,6 +157,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     }
 
     private void refresh() {
+        finishedLoading = false;
+        supportInvalidateOptionsMenu();
         mItemAdapter.clear();
         mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(mTopStoriesEventListener);
     }
@@ -193,6 +205,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             return true;
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.d("on_prepare", "finished loading: " + finishedLoading);
+        menu.findItem(R.id.action_refresh).setVisible(finishedLoading);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
