@@ -158,7 +158,10 @@ public class MainActivity extends ActionBarActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d("on_prepare", "finished loading: " + finishedLoading);
-        menu.findItem(R.id.action_refresh).setVisible(finishedLoading);
+        MenuItem refresh = menu.findItem(R.id.action_refresh);
+        if (refresh != null) {
+            refresh.setVisible(finishedLoading);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
