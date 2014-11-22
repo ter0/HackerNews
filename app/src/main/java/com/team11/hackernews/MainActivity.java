@@ -16,22 +16,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
-import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.value_event_listeners.ItemFromId;
+import com.team11.hackernews.api.value_event_listeners.TopStories;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends ActionBarActivity
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TopStories.Callbacks, ItemFromId.Callbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -46,12 +42,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private RecyclerView mRecyclerView;
     private List<String> mTopStoriesList;
     private ItemAdapter mItemAdapter;
-    private ValueEventListener mTopStoriesEventListener;
-    private ValueEventListener mItemFromIdEventListener;
+    private TopStories mTopStoriesEventListener;
+    private ItemFromId mItemFromIdEventListener;
     private Firebase mFirebase;
-
-    static final int ITEMS_PER_PAGE = 100;
-
+    private int itemCount;
     private boolean finishedLoading;
 
     @Override
@@ -78,88 +72,42 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         Firebase.setAndroidContext(this.getApplicationContext());
         mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
+        mTopStoriesEventListener = new TopStories(this);
+        mItemFromIdEventListener = new ItemFromId(this);
 
-        mTopStoriesEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
-                };
-                List<String> messages = snapshot.getValue(t);
-                if (messages == null) {
-                    // TODO Use the previous values, but notify user
-                } else {
-                    Log.d("messages: ", messages.get(0));
-                    getItemsById(messages);
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError error) {
-
-            }
-        };
-
-        mItemFromIdEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-
-                Boolean dead = (Boolean) map.get("dead");
-                if (dead == null)
-                    dead = false;
-
-                Integer parent = (Integer) map.get("parent");
-                if (parent == null)
-                    parent = -1;
-
-                URL url = null;
-                try {
-                    url = new URL((String) map.get("url"));
-                } catch (MalformedURLException ignored) {
-                }
-
-                Item item = new Item.Builder()
-                        .by((String) map.get("by"))
-                        .id((Long) map.get("id"))
-                        .kids((ArrayList<Long>) map.get("kids"))
-                        .score((Long) map.get("score"))
-                        .type(Item.getTypeFromString((String) map.get("type")))
-                        .time((Long) map.get("time"))
-                        .text((String) map.get("text"))
-                        .dead(dead)
-                        .parent(parent)
-                        .URL(url)
-                        .title((String) map.get("title"))
-                        .parts((ArrayList<Long>) map.get("parts"))
-                        .build();
-                mItemAdapter.add(item);
-                mItemAdapter.notifyDataSetChanged();
-                if (mItemAdapter.getItemCount() == ITEMS_PER_PAGE) {
-                    finishedLoading = true;
-                    supportInvalidateOptionsMenu();
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError error) {
-
-            }
-        };
         finishedLoading = true;
         refresh();
     }
 
-    private void getItemsById(List<String> idList) {
+    @Override
+    public void useMessages(final List<String> idList) {
+        itemCount = idList.size();
         mTopStoriesList.clear();
+        mItemAdapter.clear();
+        mItemAdapter.notifyDataSetChanged();
         for (String id : idList) {
             mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(mItemFromIdEventListener);
         }
     }
 
+    @Override
+    public void addItem(Item item) {
+        mItemAdapter.add(item);
+        mItemAdapter.notifyDataSetChanged();
+        if (mItemAdapter.getItemCount() == itemCount) {
+                    finishedLoading = true;
+                    supportInvalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void itemFailed() {
+        itemCount--;
+    }
+
     private void refresh() {
         finishedLoading = false;
         supportInvalidateOptionsMenu();
-        mItemAdapter.clear();
         mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(mTopStoriesEventListener);
     }
 
