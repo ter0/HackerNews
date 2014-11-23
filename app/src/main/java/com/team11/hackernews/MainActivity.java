@@ -27,7 +27,7 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TopStories.Callbacks, ItemFromId.Callbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TopStories.Callbacks, ItemFromId.Callbacks, ItemAdapter.Callbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -42,11 +42,12 @@ public class MainActivity extends ActionBarActivity
     private RecyclerView mRecyclerView;
     private List<String> mTopStoriesList;
     private ItemAdapter mItemAdapter;
-    private TopStories mTopStoriesEventListener;
-    private ItemFromId mItemFromIdEventListener;
+    private TopStories mTopStories;
+    private ItemFromId mItemFromId;
     private Firebase mFirebase;
-    private int itemCount;
-    private boolean finishedLoading;
+    private int mItemCount;
+    private boolean mFinishedLoadingRefresh;
+    private boolean mFinishedLoadingBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class MainActivity extends ActionBarActivity
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mItemAdapter = new ItemAdapter();
+        mItemAdapter = new ItemAdapter(this);
 
         mRecyclerView.setAdapter(mItemAdapter);
 
@@ -72,21 +73,34 @@ public class MainActivity extends ActionBarActivity
 
         Firebase.setAndroidContext(this.getApplicationContext());
         mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
-        mTopStoriesEventListener = new TopStories(this);
-        mItemFromIdEventListener = new ItemFromId(this);
 
-        finishedLoading = true;
+        mFinishedLoadingRefresh = true;
+        mFinishedLoadingBottom = true;
         refresh();
     }
 
     @Override
-    public void useMessages(final List<String> idList) {
-        itemCount = idList.size();
-        mTopStoriesList.clear();
-        mItemAdapter.clear();
+    public void reachedBottom() {
+        if(mFinishedLoadingBottom) {
+            mFinishedLoadingBottom = false;
+            mTopStories.getStories(mFirebase);
+        }
+    }
+
+    @Override
+    public void useMessages(final List<String> idList, boolean firstQuery) {
+        if (firstQuery) {
+            mTopStoriesList.clear();
+            mItemAdapter.clear();
+            mItemCount = idList.size();
+        } else {
+            mItemCount += idList.size();
+        }
         mItemAdapter.notifyDataSetChanged();
+        //set here so the page can be refreshed as soon as ANY items have loaded
+        mFinishedLoadingRefresh = true;
         for (String id : idList) {
-            mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(mItemFromIdEventListener);
+            mItemFromId.getItem(mFirebase, id);
         }
     }
 
@@ -94,21 +108,31 @@ public class MainActivity extends ActionBarActivity
     public void addItem(Item item) {
         mItemAdapter.add(item);
         mItemAdapter.notifyDataSetChanged();
-        if (mItemAdapter.getItemCount() == itemCount) {
-                    finishedLoading = true;
-                    supportInvalidateOptionsMenu();
+        if (mItemAdapter.getItemCount() == mItemCount) {
+            mFinishedLoadingBottom = true;
+            supportInvalidateOptionsMenu();
         }
     }
 
     @Override
     public void itemFailed() {
-        itemCount--;
+        mItemCount--;
     }
 
     private void refresh() {
-        finishedLoading = false;
         supportInvalidateOptionsMenu();
-        mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(mTopStoriesEventListener);
+        if(mTopStories != null){
+            mTopStories.cancelPendingCallbacks();
+        }
+        if(mItemFromId != null){
+            mItemFromId.cancelPendingCallbacks();
+        }
+        //avoids fetching items twice before refresh is complete
+        //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
+        mFinishedLoadingBottom = false;
+        mTopStories = new TopStories(10, this);
+        mItemFromId = new ItemFromId(this);
+        mTopStories.getStories(mFirebase);
     }
 
     @Override
@@ -157,10 +181,10 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        Log.d("on_prepare", "finished loading: " + finishedLoading);
+        Log.d("on_prepare", "finished loading: " + mFinishedLoadingRefresh);
         MenuItem refresh = menu.findItem(R.id.action_refresh);
         if (refresh != null) {
-            refresh.setVisible(finishedLoading);
+            refresh.setVisible(mFinishedLoadingRefresh);
         }
         return super.onPrepareOptionsMenu(menu);
     }
