@@ -1,8 +1,11 @@
 package com.team11.hackernews.api.value_event_listeners;
 
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Item;
 
 import java.net.MalformedURLException;
@@ -12,21 +15,30 @@ import java.util.Map;
 
 public class ItemFromId implements ValueEventListener {
 
+    private boolean mCancelPendingCallbacks;
+
     public interface Callbacks {
         public void addItem(Item item);
-
         public void itemFailed();
     }
 
     Callbacks mCallbacks;
 
     public ItemFromId(Callbacks callbacks) {
+        mCancelPendingCallbacks = false;
         mCallbacks = callbacks;
+    }
+
+    public void getItem(Firebase firebase, String id){
+        firebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(this);
     }
 
     @Override
     //double check this being final is cool
     public void onDataChange(final DataSnapshot snapshot) {
+        if(mCancelPendingCallbacks){
+            return;
+        }
         Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
         Boolean dead = (Boolean) map.get("dead");
         if (dead == null)
@@ -61,6 +73,13 @@ public class ItemFromId implements ValueEventListener {
 
     @Override
     public void onCancelled(FirebaseError error) {
+        if(mCancelPendingCallbacks){
+            return;
+        }
         mCallbacks.itemFailed();
+    }
+
+    public void cancelPendingCallbacks(){
+        mCancelPendingCallbacks = true;
     }
 }
