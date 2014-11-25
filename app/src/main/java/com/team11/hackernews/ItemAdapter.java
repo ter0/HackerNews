@@ -1,7 +1,6 @@
 package com.team11.hackernews;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,14 +11,9 @@ import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
+    Callbacks mCallbacks;
     private ArrayList<Item> mItemArrayList;
     private int mMaxBinded;
-
-    public interface Callbacks{
-        public void reachedBottom();
-    }
-
-    Callbacks mCallbacks;
 
     public ItemAdapter(Callbacks callbacks) {
         mItemArrayList = new ArrayList<Item>();
@@ -48,9 +42,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        if(mMaxBinded < i){
+        if (mMaxBinded < i) {
             mMaxBinded = i;
-            if(mMaxBinded == this.getItemCount()-1){
+            if (mMaxBinded == this.getItemCount() - 1) {
                 mCallbacks.reachedBottom();
             }
         }
@@ -60,6 +54,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mItemArrayList.size();
+    }
+
+    public interface Callbacks {
+        public void reachedBottom();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

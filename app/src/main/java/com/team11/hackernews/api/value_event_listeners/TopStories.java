@@ -14,30 +14,25 @@ import java.util.List;
 
 public class TopStories implements ValueEventListener {
 
+    Callbacks mCallbacks;
     private int mStartItem;
     private int mAmount;
     private boolean mCancelPendingCallbacks;
     private boolean mFirstQuery;
 
-    public interface Callbacks{
-        public void useMessages(List<String> messages, boolean firstQuery);
-    }
-
-    Callbacks mCallbacks;
-
-    public TopStories(int amount, Callbacks callbacks){
+    public TopStories(int amount, Callbacks callbacks) {
         mAmount = amount;
         mCallbacks = callbacks;
         mCancelPendingCallbacks = false;
         mFirstQuery = true;
     }
 
-    public void getStories(Firebase firebase){
+    public void getStories(Firebase firebase) {
         Query query = firebase.child(HackerNewsAPI.TOP_STORIES);
         //query with order by and startAt wasn't working as I expected
         //proof of concept, keep reloading first n stories RS
         //query.orderByKey();
-        if(!mFirstQuery){
+        if (!mFirstQuery) {
             //query = query.startAt(null, String.valueOf(mStartItem));
         }
         query.limitToFirst(mAmount).addListenerForSingleValueEvent(this);
@@ -45,7 +40,7 @@ public class TopStories implements ValueEventListener {
 
     @Override
     public void onDataChange(DataSnapshot snapshot) {
-        if(mCancelPendingCallbacks){
+        if (mCancelPendingCallbacks) {
             return;
         }
         GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
@@ -56,7 +51,7 @@ public class TopStories implements ValueEventListener {
             // TODO Use the previous values, but notify user
         } else {
             //remember what the last item was so only new items are queried next time
-            mStartItem = messages.size()-1;//Integer.valueOf(messages.get(messages.size()-1));
+            mStartItem = messages.size() - 1;//Integer.valueOf(messages.get(messages.size()-1));
             Log.d("messages: ", messages.get(0));
             mCallbacks.useMessages(messages, mFirstQuery);
             mFirstQuery = false;
@@ -65,12 +60,16 @@ public class TopStories implements ValueEventListener {
 
     @Override
     public void onCancelled(FirebaseError error) {
-        if(mCancelPendingCallbacks){
+        if (mCancelPendingCallbacks) {
             return;
         }
     }
 
-    public void cancelPendingCallbacks(){
+    public void cancelPendingCallbacks() {
         mCancelPendingCallbacks = true;
+    }
+
+    public interface Callbacks {
+        public void useMessages(List<String> messages, boolean firstQuery);
     }
 }

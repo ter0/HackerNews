@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void reachedBottom() {
-        if(mFinishedLoadingBottom) {
+        if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
             mTopStories.getStories(mFirebase);
         }
@@ -121,10 +121,10 @@ public class MainActivity extends ActionBarActivity
 
     private void refresh() {
         supportInvalidateOptionsMenu();
-        if(mTopStories != null){
+        if (mTopStories != null) {
             mTopStories.cancelPendingCallbacks();
         }
-        if(mItemFromId != null){
+        if (mItemFromId != null) {
             mItemFromId.cancelPendingCallbacks();
         }
         //avoids fetching items twice before refresh is complete
