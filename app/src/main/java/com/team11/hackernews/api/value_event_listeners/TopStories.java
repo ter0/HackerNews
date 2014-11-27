@@ -51,7 +51,9 @@ public class TopStories {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                if (mCancelPendingCallbacks) {
+                    return;
+                }
             }
         });
     }
@@ -65,6 +67,6 @@ public class TopStories {
     }
 
     public interface Callbacks {
-        public void addMessages(List<String> messages, boolean firstQuery);
+        public void addMessages(List<String> messages, boolean firstPage);
     }
 }

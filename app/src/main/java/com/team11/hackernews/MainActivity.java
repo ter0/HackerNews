@@ -81,8 +81,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void addMessages(final List<String> idList, boolean firstQuery) {
-        if (firstQuery) {
+    public void addMessages(final List<String> idList, boolean firstPage) {
+        if (firstPage) {
             mItemAdapter.clear();
             mItemCount = idList.size();
             mItemAdapter.notifyDataSetChanged();
@@ -100,6 +100,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void addItem(Item item) {
         mItemAdapter.add(item);
+
+        // Check when all items have been added
         if (mItemAdapter.getItemCount() == mItemCount) {
             mItemAdapter.notifyDataSetChanged();
             mFinishedLoadingBottom = true;
