@@ -21,12 +21,13 @@ import com.firebase.client.Firebase;
 import com.team11.hackernews.api.Item;
 import com.team11.hackernews.api.value_event_listeners.ItemFromId;
 import com.team11.hackernews.api.value_event_listeners.TopStories;
+import com.team11.hackernews.api.value_event_listeners.TopStories.TopStoriesCallbacks;
 
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TopStories.Callbacks, ItemFromId.Callbacks, ItemAdapter.Callbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFromId.Callbacks, ItemAdapter.Callbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -77,11 +78,15 @@ public class MainActivity extends ActionBarActivity
     public void reachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStories.getNextStories();
+            mTopStories.getNextStories(new TopStoriesCallbacks() {
+                @Override
+                public void getStoriesCallback(List<Long> stories) {
+                    addMessages(stories, false);
+                }
+            });
         }
     }
 
-    @Override
     public void addMessages(final List<Long> idList, boolean firstPage) {
         if (firstPage) {
             mItemAdapter.clear();
@@ -128,9 +133,14 @@ public class MainActivity extends ActionBarActivity
         //avoids fetching items twice before refresh is complete
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
         mFinishedLoadingBottom = false;
-        mTopStories = new TopStories(20, this);
+        mTopStories = new TopStories(20);
         mItemFromId = new ItemFromId(this);
-        mTopStories.getInitialStories();
+        mTopStories.getInitialStories(new TopStoriesCallbacks() {
+            @Override
+            public void getStoriesCallback(List<Long> stories) {
+                addMessages(stories, true);
+            }
+        });
     }
 
     @Override

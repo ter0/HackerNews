@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TopStories {
 
-    Callbacks mCallbacks;
+
     private boolean mCancelPendingCallbacks;
     private Firebase mFirebase;
 
@@ -19,8 +19,7 @@ public class TopStories {
     private int mNextStoryIdx;
     private int mPageLength;
 
-    public TopStories(int pageLength, Callbacks callbacks) {
-        mCallbacks = callbacks;
+    public TopStories(int pageLength) {
         mCancelPendingCallbacks = false;
 
         mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
@@ -39,7 +38,7 @@ public class TopStories {
 
     }
 
-    public void getInitialStories() {
+    public void getInitialStories(final TopStoriesCallbacks callbacks) {
         mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -51,7 +50,7 @@ public class TopStories {
                 mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<Long>>() {
                 });
 
-                mCallbacks.addMessages(getNextPage(), true);
+                callbacks.getStoriesCallback(getNextPage());
             }
 
             @Override
@@ -63,15 +62,15 @@ public class TopStories {
         });
     }
 
-    public void getNextStories() {
-        mCallbacks.addMessages(getNextPage(), false);
+    public void getNextStories(TopStoriesCallbacks callbacks) {
+        callbacks.getStoriesCallback(getNextPage());
     }
 
     public void cancelPendingCallbacks() {
         mCancelPendingCallbacks = true;
     }
 
-    public interface Callbacks {
-        public void addMessages(List<Long> messages, boolean firstPage);
+    public interface TopStoriesCallbacks {
+        public void getStoriesCallback(List<Long> stories);
     }
 }
