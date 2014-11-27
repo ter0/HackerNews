@@ -3,6 +3,7 @@ package com.team11.hackernews;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.team11.hackernews.api.Item;
@@ -33,7 +34,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_main_row_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
@@ -48,7 +49,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 mCallbacks.onReachedBottom();
             }
         }
-        viewHolder.mTextView.setText(mItemArrayList.get(i).getTitle());
+        //TextView itemTitle = (TextView)viewHolder.findViewById(R.id.mTitle);
+
+        TextView mTitle = (TextView)viewHolder.mTextView.findViewById(R.id.mTitle);
+        TextView mScore = (TextView)viewHolder.mTextView.findViewById(R.id.mScore);
+        TextView mBy = (TextView)viewHolder.mTextView.findViewById(R.id.mBy);
+        mTitle.setText(mItemArrayList.get(i).getTitle());
+        mScore.setText(mItemArrayList.get(i).getScore().toString());
+        mBy.setText(mItemArrayList.get(i).getBy());
     }
 
     @Override
@@ -61,9 +69,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public LinearLayout mTextView;
 
-        public ViewHolder(TextView v) {
+        public ViewHolder(LinearLayout v) {
             // each data item is just a string in this case
             super(v);
             mTextView = v;
