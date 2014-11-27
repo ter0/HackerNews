@@ -42,19 +42,19 @@
 
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/mComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="# comments" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/mTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X hours ago" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/mDomain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Domain" />
