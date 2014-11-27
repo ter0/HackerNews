@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.team11.hackernews.api.Item;
@@ -81,7 +82,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void addMessages(final List<String> idList, boolean firstPage) {
+    public void addMessages(final List<Long> idList, boolean firstPage) {
         if (firstPage) {
             mItemAdapter.clear();
             mItemCount = idList.size();
@@ -92,7 +93,7 @@ public class MainActivity extends ActionBarActivity
 
         //set here so the page can be refreshed as soon as ANY items have loaded
         mFinishedLoadingRefresh = true;
-        for (String id : idList) {
+        for (long id : idList) {
             mItemFromId.getItem(id);
         }
     }
@@ -106,6 +107,8 @@ public class MainActivity extends ActionBarActivity
             mItemAdapter.notifyDataSetChanged();
             mFinishedLoadingBottom = true;
             supportInvalidateOptionsMenu();
+
+            Toast.makeText(getApplicationContext(), "Loaded", Toast.LENGTH_SHORT).show();
         }
     }
 

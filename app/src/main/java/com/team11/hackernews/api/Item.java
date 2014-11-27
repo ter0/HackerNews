@@ -2,6 +2,7 @@ package com.team11.hackernews.api;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An "Item". This can be a story, comment, job, Ask HN and even a poll.
@@ -16,7 +17,7 @@ public class Item {
     private String mText;
     private boolean mDead;
     private int mParent;
-    private ArrayList<Long> mKids;
+    private List<Long> mKids;
     private URL mURL;
     private Long mScore;
     private String mTitle;
@@ -86,7 +87,7 @@ public class Item {
         return mParent;
     }
 
-    public ArrayList<Long> getKids() {
+    public List<Long> getKids() {
         return mKids;
     }
 
@@ -123,7 +124,7 @@ public class Item {
         private String mText;
         private boolean mDead;
         private int mParent;
-        private ArrayList<Long> mKids;
+        private List<Long> mKids;
         private URL mURL;
         private Long mScore;
         private String mTitle;
@@ -172,7 +173,7 @@ public class Item {
             return this;
         }
 
-        public Builder kids(ArrayList<Long> kids) {
+        public Builder kids(List<Long> kids) {
             this.mKids = kids;
             return this;
         }

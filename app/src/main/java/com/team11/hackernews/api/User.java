@@ -2,6 +2,9 @@ package com.team11.hackernews.api;
 
 import android.text.Html;
 
+import java.net.URL;
+import java.util.List;
+
 /**
  * A "User".
  * Analogous to the "User" in the HN API: https://github.com/HackerNews/API#users
@@ -11,8 +14,8 @@ public class User {
     private int mDelay;
     private long mCreated;
     private int mKarma;
-    private Html mAbout;
-    private int[] mSubmitted;
+    private String mAbout;
+    private List<Long> mSubmitted;
 
     private User(Builder builder) {
         mId = builder.mId;
@@ -39,11 +42,11 @@ public class User {
         return mKarma;
     }
 
-    public Html getAbout() {
+    public String getAbout() {
         return mAbout;
     }
 
-    public int[] getSubmitted() {
+    public List<Long> getSubmitted() {
         return mSubmitted;
     }
 
@@ -52,8 +55,8 @@ public class User {
         private int mDelay;
         private long mCreated;
         private int mKarma;
-        private Html mAbout;
-        private int[] mSubmitted;
+        private String mAbout;
+        private List<Long> mSubmitted;
 
         public Builder() {
         }
@@ -78,12 +81,12 @@ public class User {
             return this;
         }
 
-        public Builder about(Html about) {
+        public Builder about(String about) {
             this.mAbout = about;
             return this;
         }
 
-        public Builder submitted(int[] submitted) {
+        public Builder submitted(List<Long> submitted) {
             this.mSubmitted = submitted;
             return this;
         }

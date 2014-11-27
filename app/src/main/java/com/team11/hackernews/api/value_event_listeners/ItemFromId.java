@@ -25,7 +25,7 @@ public class ItemFromId {
         mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
     }
 
-    public void getItem(String id) {
+    public void getItem(long id) {
         mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

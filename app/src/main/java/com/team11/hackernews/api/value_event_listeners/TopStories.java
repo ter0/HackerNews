@@ -15,7 +15,7 @@ public class TopStories {
     private boolean mCancelPendingCallbacks;
     private Firebase mFirebase;
 
-    private List<String> mStoryIds;
+    private List<Long> mStoryIds;
     private int mNextStoryIdx;
     private int mPageLength;
 
@@ -28,9 +28,14 @@ public class TopStories {
         mPageLength = pageLength;
     }
 
-    private List<String> getNextPage(){
-        int endIdx = mNextStoryIdx = mNextStoryIdx + mPageLength;
-        return mStoryIds.subList(mNextStoryIdx, endIdx);
+    private List<Long> getNextPage(){
+        int endIdx = mNextStoryIdx + mPageLength;
+        if (endIdx > mStoryIds.size()){
+            endIdx = mStoryIds.size();
+        }
+        List<Long> storyIds = mStoryIds.subList(mNextStoryIdx, endIdx);
+        mNextStoryIdx = endIdx;
+        return storyIds;
 
     }
 
@@ -43,7 +48,7 @@ public class TopStories {
                 }
 
                 // Get all top stories in case they change order while trying to load the next page
-                mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() {
+                mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<Long>>() {
                 });
 
                 mCallbacks.addMessages(getNextPage(), true);
@@ -67,6 +72,6 @@ public class TopStories {
     }
 
     public interface Callbacks {
-        public void addMessages(List<String> messages, boolean firstPage);
+        public void addMessages(List<Long> messages, boolean firstPage);
     }
 }
