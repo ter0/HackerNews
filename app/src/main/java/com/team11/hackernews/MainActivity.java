@@ -17,12 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.client.Firebase;
-import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Item;
 import com.team11.hackernews.api.value_event_listeners.ItemFromId;
 import com.team11.hackernews.api.value_event_listeners.TopStories;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,7 +38,6 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     private RecyclerView mRecyclerView;
-    private List<String> mTopStoriesList;
     private ItemAdapter mItemAdapter;
     private TopStories mTopStories;
     private ItemFromId mItemFromId;
@@ -68,8 +65,6 @@ public class MainActivity extends ActionBarActivity
 
         mRecyclerView.setAdapter(mItemAdapter);
 
-        mTopStoriesList = new ArrayList<String>();
-
         Firebase.setAndroidContext(this.getApplicationContext());
 
         mFinishedLoadingRefresh = true;
@@ -81,20 +76,20 @@ public class MainActivity extends ActionBarActivity
     public void reachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStories.getStories();
+            mTopStories.getNextStories();
         }
     }
 
     @Override
-    public void useMessages(final List<String> idList, boolean firstQuery) {
+    public void addMessages(final List<String> idList, boolean firstQuery) {
         if (firstQuery) {
-            mTopStoriesList.clear();
             mItemAdapter.clear();
             mItemCount = idList.size();
+            mItemAdapter.notifyDataSetChanged();
         } else {
             mItemCount += idList.size();
         }
-        mItemAdapter.notifyDataSetChanged();
+
         //set here so the page can be refreshed as soon as ANY items have loaded
         mFinishedLoadingRefresh = true;
         for (String id : idList) {
@@ -105,8 +100,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void addItem(Item item) {
         mItemAdapter.add(item);
-        mItemAdapter.notifyDataSetChanged();
         if (mItemAdapter.getItemCount() == mItemCount) {
+            mItemAdapter.notifyDataSetChanged();
             mFinishedLoadingBottom = true;
             supportInvalidateOptionsMenu();
         }
@@ -128,9 +123,9 @@ public class MainActivity extends ActionBarActivity
         //avoids fetching items twice before refresh is complete
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
         mFinishedLoadingBottom = false;
-        mTopStories = new TopStories(10, this);
+        mTopStories = new TopStories(20, this);
         mItemFromId = new ItemFromId(this);
-        mTopStories.getStories();
+        mTopStories.getInitialStories();
     }
 
     @Override

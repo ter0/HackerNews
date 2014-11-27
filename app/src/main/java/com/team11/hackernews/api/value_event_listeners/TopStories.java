@@ -1,71 +1,63 @@
 package com.team11.hackernews.api.value_event_listeners;
 
-import android.util.Log;
-
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.GenericTypeIndicator;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 
 import java.util.List;
 
-public class TopStories implements ValueEventListener {
+public class TopStories {
 
     Callbacks mCallbacks;
-    private int mStartItem;
-    private int mAmount;
     private boolean mCancelPendingCallbacks;
-    private boolean mFirstQuery;
     private Firebase mFirebase;
 
-    public TopStories(int amount, Callbacks callbacks) {
-        mAmount = amount;
+    private List<String> mStoryIds;
+    private int mNextStoryIdx;
+    private int mPageLength;
+
+    public TopStories(int pageLength, Callbacks callbacks) {
         mCallbacks = callbacks;
         mCancelPendingCallbacks = false;
-        mFirstQuery = true;
 
         mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
+        mNextStoryIdx = 0;
+        mPageLength = pageLength;
     }
 
-    public void getStories() {
-        Query query = mFirebase.child(HackerNewsAPI.TOP_STORIES);
-        //query with order by and startAt wasn't working as I expected
-        //proof of concept, keep reloading first n stories RS
-        //query.orderByKey();
-        if (!mFirstQuery) {
-            //query = query.startAt(null, String.valueOf(mStartItem));
-        }
-        query.limitToFirst(mAmount).addListenerForSingleValueEvent(this);
+    private List<String> getNextPage(){
+        int endIdx = mNextStoryIdx = mNextStoryIdx + mPageLength;
+        return mStoryIds.subList(mNextStoryIdx, endIdx);
+
     }
 
-    @Override
-    public void onDataChange(DataSnapshot snapshot) {
-        if (mCancelPendingCallbacks) {
-            return;
-        }
-        GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
-        };
-        List<String> messages = snapshot.getValue(t);
-        if (messages == null) {
-            Log.d("messages: ", "null");
-            // TODO Use the previous values, but notify user
-        } else {
-            //remember what the last item was so only new items are queried next time
-            mStartItem = messages.size() - 1;//Integer.valueOf(messages.get(messages.size()-1));
-            Log.d("messages: ", messages.get(0));
-            mCallbacks.useMessages(messages, mFirstQuery);
-            mFirstQuery = false;
-        }
+    public void getInitialStories() {
+        mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (mCancelPendingCallbacks){
+                    return;
+                }
+
+                // Get all top stories in case they change order while trying to load the next page
+                mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() {
+                });
+
+                mCallbacks.addMessages(getNextPage(), true);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
-    @Override
-    public void onCancelled(FirebaseError error) {
-        if (mCancelPendingCallbacks) {
-            return;
-        }
+    public void getNextStories() {
+        mCallbacks.addMessages(getNextPage(), false);
     }
 
     public void cancelPendingCallbacks() {
@@ -73,6 +65,6 @@ public class TopStories implements ValueEventListener {
     }
 
     public interface Callbacks {
-        public void useMessages(List<String> messages, boolean firstQuery);
+        public void addMessages(List<String> messages, boolean firstQuery);
     }
 }
