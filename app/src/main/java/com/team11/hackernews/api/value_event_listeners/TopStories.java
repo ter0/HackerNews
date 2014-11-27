@@ -19,16 +19,19 @@ public class TopStories implements ValueEventListener {
     private int mAmount;
     private boolean mCancelPendingCallbacks;
     private boolean mFirstQuery;
+    private Firebase mFirebase;
 
     public TopStories(int amount, Callbacks callbacks) {
         mAmount = amount;
         mCallbacks = callbacks;
         mCancelPendingCallbacks = false;
         mFirstQuery = true;
+
+        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
     }
 
-    public void getStories(Firebase firebase) {
-        Query query = firebase.child(HackerNewsAPI.TOP_STORIES);
+    public void getStories() {
+        Query query = mFirebase.child(HackerNewsAPI.TOP_STORIES);
         //query with order by and startAt wasn't working as I expected
         //proof of concept, keep reloading first n stories RS
         //query.orderByKey();

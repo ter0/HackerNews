@@ -16,14 +16,17 @@ public class ItemFromId implements ValueEventListener {
 
     Callbacks mCallbacks;
     private boolean mCancelPendingCallbacks;
+    private Firebase mFirebase;
 
     public ItemFromId(Callbacks callbacks) {
         mCancelPendingCallbacks = false;
         mCallbacks = callbacks;
+
+        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
     }
 
-    public void getItem(Firebase firebase, String id) {
-        firebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(this);
+    public void getItem(String id) {
+        mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(this);
     }
 
     @Override

@@ -44,7 +44,6 @@ public class MainActivity extends ActionBarActivity
     private ItemAdapter mItemAdapter;
     private TopStories mTopStories;
     private ItemFromId mItemFromId;
-    private Firebase mFirebase;
     private int mItemCount;
     private boolean mFinishedLoadingRefresh;
     private boolean mFinishedLoadingBottom;
@@ -72,7 +71,6 @@ public class MainActivity extends ActionBarActivity
         mTopStoriesList = new ArrayList<String>();
 
         Firebase.setAndroidContext(this.getApplicationContext());
-        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
 
         mFinishedLoadingRefresh = true;
         mFinishedLoadingBottom = true;
@@ -83,7 +81,7 @@ public class MainActivity extends ActionBarActivity
     public void reachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStories.getStories(mFirebase);
+            mTopStories.getStories();
         }
     }
 
@@ -100,7 +98,7 @@ public class MainActivity extends ActionBarActivity
         //set here so the page can be refreshed as soon as ANY items have loaded
         mFinishedLoadingRefresh = true;
         for (String id : idList) {
-            mItemFromId.getItem(mFirebase, id);
+            mItemFromId.getItem(id);
         }
     }
 
@@ -132,7 +130,7 @@ public class MainActivity extends ActionBarActivity
         mFinishedLoadingBottom = false;
         mTopStories = new TopStories(10, this);
         mItemFromId = new ItemFromId(this);
-        mTopStories.getStories(mFirebase);
+        mTopStories.getStories();
     }
 
     @Override
