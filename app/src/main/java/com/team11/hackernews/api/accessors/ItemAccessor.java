@@ -1,7 +1,6 @@
-package com.team11.hackernews.api.value_event_listeners;
+package com.team11.hackernews.api.accessors;
 
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
@@ -12,20 +11,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ItemFromId {
+public class ItemAccessor extends Accessor {
 
-    Callbacks mCallbacks;
-    private boolean mCancelPendingCallbacks;
-    private Firebase mFirebase;
-
-    public ItemFromId(Callbacks callbacks) {
-        mCancelPendingCallbacks = false;
-        mCallbacks = callbacks;
-
-        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
-    }
-
-    public void getItem(long id) {
+    public void getItem(long id, final GetItemCallbacks callbacks) {
         mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -61,7 +49,7 @@ public class ItemFromId {
                         .title((String) map.get("title"))
                         .parts((ArrayList<Long>) map.get("parts"))
                         .build();
-                mCallbacks.addItem(item);
+                callbacks.onSuccess(item);
             }
 
             @Override
@@ -69,7 +57,7 @@ public class ItemFromId {
                 if (mCancelPendingCallbacks) {
                     return;
                 }
-                mCallbacks.itemFailed();
+                callbacks.onError();
             }
         });
     }
@@ -78,9 +66,8 @@ public class ItemFromId {
         mCancelPendingCallbacks = true;
     }
 
-    public interface Callbacks {
-        public void addItem(Item item);
-
-        public void itemFailed();
+    public interface GetItemCallbacks {
+        public void onSuccess(Item item);
+        public void onError();
     }
 }

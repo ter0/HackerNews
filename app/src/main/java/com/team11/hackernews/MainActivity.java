@@ -19,15 +19,14 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.team11.hackernews.api.Item;
-import com.team11.hackernews.api.value_event_listeners.ItemFromId;
-import com.team11.hackernews.api.value_event_listeners.TopStories;
-import com.team11.hackernews.api.value_event_listeners.TopStories.TopStoriesCallbacks;
+import com.team11.hackernews.api.accessors.ItemAccessor;
+import com.team11.hackernews.api.accessors.TopStoriesAccessor;
 
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFromId.Callbacks, ItemAdapter.Callbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemAdapter.Callbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -41,8 +40,8 @@ public class MainActivity extends ActionBarActivity
 
     private RecyclerView mRecyclerView;
     private ItemAdapter mItemAdapter;
-    private TopStories mTopStories;
-    private ItemFromId mItemFromId;
+    private TopStoriesAccessor mTopStoriesAccessor;
+    private ItemAccessor mItemAccessor;
     private int mItemCount;
     private boolean mFinishedLoadingRefresh;
     private boolean mFinishedLoadingBottom;
@@ -74,14 +73,45 @@ public class MainActivity extends ActionBarActivity
         refresh();
     }
 
+    private void refresh() {
+        supportInvalidateOptionsMenu();
+        if (mTopStoriesAccessor != null) {
+            mTopStoriesAccessor.cancelPendingCallbacks();
+        }
+        if (mItemAccessor != null) {
+            mItemAccessor.cancelPendingCallbacks();
+        }
+        //avoids fetching items twice before refresh is complete
+        //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
+        mFinishedLoadingBottom = false;
+        mTopStoriesAccessor = new TopStoriesAccessor(20);
+        mItemAccessor = new ItemAccessor();
+        mTopStoriesAccessor.getInitialStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
+            @Override
+            public void onSuccess(List<Long> stories) {
+                addMessages(stories, true);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
     @Override
-    public void reachedBottom() {
+    public void onReachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStories.getNextStories(new TopStoriesCallbacks() {
+            mTopStoriesAccessor.getNextStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
                 @Override
-                public void getStoriesCallback(List<Long> stories) {
+                public void onSuccess(List<Long> stories) {
                     addMessages(stories, false);
+                }
+
+                @Override
+                public void onError() {
+
                 }
             });
         }
@@ -99,48 +129,27 @@ public class MainActivity extends ActionBarActivity
         //set here so the page can be refreshed as soon as ANY items have loaded
         mFinishedLoadingRefresh = true;
         for (long id : idList) {
-            mItemFromId.getItem(id);
+            mItemAccessor.getItem(id, new ItemAccessor.GetItemCallbacks() {
+                @Override
+                public void onSuccess(Item item) {
+                    mItemAdapter.add(item);
+
+                    // Check when all items have been added
+                    if (mItemAdapter.getItemCount() == mItemCount) {
+                        mItemAdapter.notifyDataSetChanged();
+                        mFinishedLoadingBottom = true;
+                        supportInvalidateOptionsMenu();
+
+                        Toast.makeText(getApplicationContext(), "Loaded", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError() {
+                    mItemCount--;
+                }
+            });
         }
-    }
-
-    @Override
-    public void addItem(Item item) {
-        mItemAdapter.add(item);
-
-        // Check when all items have been added
-        if (mItemAdapter.getItemCount() == mItemCount) {
-            mItemAdapter.notifyDataSetChanged();
-            mFinishedLoadingBottom = true;
-            supportInvalidateOptionsMenu();
-
-            Toast.makeText(getApplicationContext(), "Loaded", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void itemFailed() {
-        mItemCount--;
-    }
-
-    private void refresh() {
-        supportInvalidateOptionsMenu();
-        if (mTopStories != null) {
-            mTopStories.cancelPendingCallbacks();
-        }
-        if (mItemFromId != null) {
-            mItemFromId.cancelPendingCallbacks();
-        }
-        //avoids fetching items twice before refresh is complete
-        //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
-        mFinishedLoadingBottom = false;
-        mTopStories = new TopStories(20);
-        mItemFromId = new ItemFromId(this);
-        mTopStories.getInitialStories(new TopStoriesCallbacks() {
-            @Override
-            public void getStoriesCallback(List<Long> stories) {
-                addMessages(stories, true);
-            }
-        });
     }
 
     @Override

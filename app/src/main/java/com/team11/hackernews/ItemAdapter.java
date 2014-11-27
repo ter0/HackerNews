@@ -45,7 +45,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         if (mMaxBinded < i) {
             mMaxBinded = i;
             if (mMaxBinded == this.getItemCount() - 1) {
-                mCallbacks.reachedBottom();
+                mCallbacks.onReachedBottom();
             }
         }
         viewHolder.mTextView.setText(mItemArrayList.get(i).getTitle());
@@ -57,7 +57,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     public interface Callbacks {
-        public void reachedBottom();
+        public void onReachedBottom();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

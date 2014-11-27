@@ -1,7 +1,6 @@
-package com.team11.hackernews.api.value_event_listeners;
+package com.team11.hackernews.api.accessors;
 
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
@@ -9,20 +8,13 @@ import com.team11.hackernews.api.HackerNewsAPI;
 
 import java.util.List;
 
-public class TopStories {
-
-
-    private boolean mCancelPendingCallbacks;
-    private Firebase mFirebase;
+public class TopStoriesAccessor extends Accessor {
 
     private List<Long> mStoryIds;
     private int mNextStoryIdx;
     private int mPageLength;
 
-    public TopStories(int pageLength) {
-        mCancelPendingCallbacks = false;
-
-        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
+    public TopStoriesAccessor(int pageLength) {
         mNextStoryIdx = 0;
         mPageLength = pageLength;
     }
@@ -38,11 +30,11 @@ public class TopStories {
 
     }
 
-    public void getInitialStories(final TopStoriesCallbacks callbacks) {
+    public void getInitialStories(final GetTopStoriesCallbacks callbacks) {
         mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (mCancelPendingCallbacks){
+                if (mCancelPendingCallbacks) {
                     return;
                 }
 
@@ -50,7 +42,7 @@ public class TopStories {
                 mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<Long>>() {
                 });
 
-                callbacks.getStoriesCallback(getNextPage());
+                callbacks.onSuccess(getNextPage());
             }
 
             @Override
@@ -58,19 +50,17 @@ public class TopStories {
                 if (mCancelPendingCallbacks) {
                     return;
                 }
+                callbacks.onError();
             }
         });
     }
 
-    public void getNextStories(TopStoriesCallbacks callbacks) {
-        callbacks.getStoriesCallback(getNextPage());
+    public void getNextStories(GetTopStoriesCallbacks callbacks) {
+        callbacks.onSuccess(getNextPage());
     }
 
-    public void cancelPendingCallbacks() {
-        mCancelPendingCallbacks = true;
-    }
-
-    public interface TopStoriesCallbacks {
-        public void getStoriesCallback(List<Long> stories);
+    public interface GetTopStoriesCallbacks {
+        public void onSuccess(List<Long> stories);
+        public void onError();
     }
 }
