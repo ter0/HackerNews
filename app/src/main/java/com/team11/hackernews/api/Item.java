@@ -16,7 +16,7 @@ public class Item {
     private long mTime;
     private String mText;
     private boolean mDead;
-    private int mParent;
+    private long mParent;
     private List<Long> mKids;
     private URL mURL;
     private Long mScore;
@@ -83,7 +83,7 @@ public class Item {
         return mDead;
     }
 
-    public int getParent() {
+    public long getParent() {
         return mParent;
     }
 
@@ -123,7 +123,7 @@ public class Item {
         private long mTime;
         private String mText;
         private boolean mDead;
-        private int mParent;
+        private long mParent;
         private List<Long> mKids;
         private URL mURL;
         private Long mScore;
@@ -168,7 +168,7 @@ public class Item {
             return this;
         }
 
-        public Builder parent(int parent) {
+        public Builder parent(long parent) {
             this.mParent = parent;
             return this;
         }
