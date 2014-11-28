@@ -1,6 +1,7 @@
 package com.team11.hackernews;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.team11.hackernews.api.Item;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
@@ -54,9 +56,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         TextView mTitle = (TextView)viewHolder.mTextView.findViewById(R.id.mTitle);
         TextView mScore = (TextView)viewHolder.mTextView.findViewById(R.id.mScore);
         TextView mBy = (TextView)viewHolder.mTextView.findViewById(R.id.mBy);
+        TextView mTime = (TextView)viewHolder.mTextView.findViewById(R.id.mTime);
         mTitle.setText(mItemArrayList.get(i).getTitle());
         mScore.setText(mItemArrayList.get(i).getScore().toString());
         mBy.setText(mItemArrayList.get(i).getBy());
+        String hoursAgo = getTime(mItemArrayList.get(i).getTime());
+        mTime.setText(hoursAgo);
+    }
+    private String getTime(long timeStamp){
+        String hoursAgo = DateUtils.getRelativeTimeSpanString(1417176774).toString();
+        return hoursAgo;
     }
 
     @Override
