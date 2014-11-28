@@ -10,7 +10,11 @@ public abstract class Accessor {
     protected boolean mCancelPendingCallbacks;
 
     protected Accessor() {
-        mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
+        this(new Firebase(HackerNewsAPI.ROOT_PATH));
+    }
+
+    protected Accessor(Firebase firebase) {
+        mFirebase = firebase;
         mCancelPendingCallbacks = false;
     }
 

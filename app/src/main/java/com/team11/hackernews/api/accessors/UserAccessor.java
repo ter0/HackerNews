@@ -1,6 +1,7 @@
 package com.team11.hackernews.api.accessors;
 
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
@@ -10,6 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 public class UserAccessor extends Accessor {
+
+    public UserAccessor() {
+        super();
+    }
+
+    public UserAccessor(Firebase firebase) {
+        super(firebase);
+    }
 
     public void getUser(final String username, final GetUserCallbacks callbacks){
         mFirebase.child(HackerNewsAPI.USER + "/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
