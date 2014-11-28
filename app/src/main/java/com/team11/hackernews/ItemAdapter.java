@@ -52,16 +52,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             }
         }
         //TextView itemTitle = (TextView)viewHolder.findViewById(R.id.mTitle);
-
-        TextView mTitle = (TextView)viewHolder.mTextView.findViewById(R.id.mTitle);
-        TextView mScore = (TextView)viewHolder.mTextView.findViewById(R.id.mScore);
-        TextView mBy = (TextView)viewHolder.mTextView.findViewById(R.id.mBy);
-        TextView mTime = (TextView)viewHolder.mTextView.findViewById(R.id.mTime);
-        mTitle.setText(mItemArrayList.get(i).getTitle());
-        mScore.setText(mItemArrayList.get(i).getScore().toString());
-        mBy.setText(mItemArrayList.get(i).getBy());
+        viewHolder.mTitle.setText(mItemArrayList.get(i).getTitle());
+        viewHolder.mScore.setText(mItemArrayList.get(i).getScore().toString());
+        viewHolder.mBy.setText(mItemArrayList.get(i).getBy());
         String hoursAgo = getTime(mItemArrayList.get(i).getTime());
-        mTime.setText(hoursAgo);
+        viewHolder.mTime.setText(hoursAgo);
     }
     private String getTime(long timeStamp){
         String hoursAgo = DateUtils.getRelativeTimeSpanString(1417176774).toString();
@@ -79,11 +74,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mTextView;
+        public TextView mTitle;
+        public TextView mScore;
+        public TextView mBy;
+        public TextView mTime;
 
         public ViewHolder(LinearLayout v) {
             // each data item is just a string in this case
             super(v);
             mTextView = v;
+            mTitle = (TextView)v.findViewById(R.id.mTitle);
+            mScore = (TextView)v.findViewById(R.id.mScore);
+            mBy = (TextView)v.findViewById(R.id.mBy);
+            mTime = (TextView)v.findViewById(R.id.mTime);
         }
     }
 }
