@@ -75,6 +75,11 @@ public class ItemAccessor extends Accessor {
     public void getMultipleItems(final List<Long> ids, final GetMultipleItemsCallbacks callbacks) {
         final List<Item> items = new ArrayList<Item>();
 
+        if (ids.size() == 0) {
+            callbacks.onSuccess(items);
+            return;
+        }
+
         for (final long id: ids){
             getItem(id, new GetItemCallbacks() {
                 @Override
