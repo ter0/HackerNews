@@ -55,12 +55,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mTitle.setText(mItemArrayList.get(i).getTitle());
         viewHolder.mScore.setText(mItemArrayList.get(i).getScore().toString());
         viewHolder.mBy.setText(mItemArrayList.get(i).getBy());
-        String hoursAgo = getTime(mItemArrayList.get(i).getTime());
-        viewHolder.mTime.setText(hoursAgo);
+        CharSequence timeAgo = getTime(mItemArrayList.get(i).getTime());
+        viewHolder.mTime.setText(timeAgo);
     }
-    private String getTime(long timeStamp){
-        String hoursAgo = DateUtils.getRelativeTimeSpanString(1417176774).toString();
-        return hoursAgo;
+    private CharSequence getTime(long timeStamp){
+        timeStamp = timeStamp*1000;
+        CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(timeStamp, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS);
+        return timeAgo;
     }
 
     @Override
