@@ -7,6 +7,7 @@ import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Utils;
 
 import java.util.List;
@@ -43,13 +44,12 @@ public class TopStoriesAccessor extends Accessor {
                 }
 
                 // Get all top stories in case they change order while trying to load the next page
-                mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<Long>>() {
-                });
+                mStoryIds = (List<Long>) dataSnapshot.getValue();
 
-                new ItemAccessor().getMultipleItems(getNextPage(), new ItemAccessor.GetMultipleItemsCallbacks() {
+                new StoryAccessor().getMultipleStories(getNextPage(), new StoryAccessor.GetMultipleStoriesCallbacks() {
                     @Override
-                    public void onSuccess(List<Item> items) {
-                        callbacks.onSuccess(items);
+                    public void onSuccess(List<Story> stories) {
+                        callbacks.onSuccess(stories);
                     }
 
                     @Override
@@ -70,10 +70,10 @@ public class TopStoriesAccessor extends Accessor {
     }
 
     public void getNextStories(final GetTopStoriesCallbacks callbacks) {
-        new ItemAccessor().getMultipleItems(getNextPage(), new ItemAccessor.GetMultipleItemsCallbacks() {
+        new StoryAccessor().getMultipleStories(getNextPage(), new StoryAccessor.GetMultipleStoriesCallbacks() {
             @Override
-            public void onSuccess(List<Item> items) {
-                callbacks.onSuccess(items);
+            public void onSuccess(List<Story> stories) {
+                callbacks.onSuccess(stories);
             }
 
             @Override
@@ -84,7 +84,7 @@ public class TopStoriesAccessor extends Accessor {
     }
 
     public interface GetTopStoriesCallbacks {
-        public void onSuccess(List<Item> stories);
+        public void onSuccess(List<Story> stories);
         public void onError();
     }
 }

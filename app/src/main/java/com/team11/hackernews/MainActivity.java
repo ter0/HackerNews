@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
 
 import java.util.List;
@@ -81,9 +82,9 @@ public class MainActivity extends ActionBarActivity
         mTopStoriesAccessor = new TopStoriesAccessor(20);
         mTopStoriesAccessor.getInitialStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
             @Override
-            public void onSuccess(List<Item> stories) {
+            public void onSuccess(List<Story> stories) {
                 mItemAdapter.clear();
-                for (Item story : stories) {
+                for (Story story : stories) {
                     mItemAdapter.add(story);
                 }
                 mItemAdapter.notifyDataSetChanged();
@@ -107,11 +108,11 @@ public class MainActivity extends ActionBarActivity
             mFinishedLoadingBottom = false;
             mTopStoriesAccessor.getNextStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
                 @Override
-                public void onSuccess(List<Item> stories) {
+                public void onSuccess(List<Story> stories) {
                     if (stories.size() == 0) {
                         Toast.makeText(getApplicationContext(), "No More Articles", Toast.LENGTH_SHORT).show();
                     } else {
-                        for (Item story : stories) {
+                        for (Story story : stories) {
                             mItemAdapter.add(story);
                         }
                         mItemAdapter.notifyDataSetChanged();

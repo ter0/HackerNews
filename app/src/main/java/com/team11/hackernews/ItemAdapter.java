@@ -7,24 +7,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Story;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     Callbacks mCallbacks;
-    private ArrayList<Item> mItemArrayList;
+    private ArrayList<Story> mItemArrayList;
     private int mMaxBinded;
 
     public ItemAdapter(Callbacks callbacks) {
-        mItemArrayList = new ArrayList<Item>();
+        mItemArrayList = new ArrayList<Story>();
         mMaxBinded = 0;
         mCallbacks = callbacks;
     }
 
-    public void add(Item item) {
+    public void add(Story item) {
         mItemArrayList.add(item);
     }
 
