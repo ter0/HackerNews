@@ -1,12 +1,23 @@
 package com.team11.hackernews.api;
 
 
+import com.firebase.client.Firebase;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Utils {
+
+    private static Firebase mFirebase;
+
+    public static Firebase getFirebaseInstance() {
+        if (mFirebase == null) {
+            mFirebase = new Firebase(HackerNewsAPI.ROOT_PATH);
+        }
+        return mFirebase;
+    }
 
     public static Item generateItemFromMap(Map<String, Object> map) {
         Boolean dead = (Boolean) map.get("dead");

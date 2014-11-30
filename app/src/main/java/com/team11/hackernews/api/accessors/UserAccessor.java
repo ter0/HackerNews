@@ -6,22 +6,15 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.User;
+import com.team11.hackernews.api.Utils;
 
 import java.util.List;
 import java.util.Map;
 
 public class UserAccessor extends Accessor {
 
-    public UserAccessor() {
-        super();
-    }
-
-    public UserAccessor(Firebase firebase) {
-        super(firebase);
-    }
-
     public void getUser(final String username, final GetUserCallbacks callbacks){
-        mFirebase.child(HackerNewsAPI.USER + "/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
+        Utils.getFirebaseInstance().child(HackerNewsAPI.USER + "/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mCancelPendingCallbacks){

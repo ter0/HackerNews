@@ -7,6 +7,7 @@ import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Utils;
 
 import java.util.List;
 
@@ -18,12 +19,6 @@ public class TopStoriesAccessor extends Accessor {
 
     public TopStoriesAccessor(int pageLength) {
         super();
-        mNextStoryIdx = 0;
-        mPageLength = pageLength;
-    }
-
-    public TopStoriesAccessor(int pageLength, Firebase firebase) {
-        super(firebase);
         mNextStoryIdx = 0;
         mPageLength = pageLength;
     }
@@ -40,7 +35,7 @@ public class TopStoriesAccessor extends Accessor {
     }
 
     public void getInitialStories(final GetTopStoriesCallbacks callbacks) {
-        mFirebase.child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(new ValueEventListener() {
+        Utils.getFirebaseInstance().child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mCancelPendingCallbacks) {
@@ -51,7 +46,7 @@ public class TopStoriesAccessor extends Accessor {
                 mStoryIds = dataSnapshot.getValue(new GenericTypeIndicator<List<Long>>() {
                 });
 
-                new ItemAccessor(mFirebase).getMultipleItems(getNextPage(), new ItemAccessor.GetMultipleItemsCallbacks() {
+                new ItemAccessor().getMultipleItems(getNextPage(), new ItemAccessor.GetMultipleItemsCallbacks() {
                     @Override
                     public void onSuccess(List<Item> items) {
                         callbacks.onSuccess(items);
@@ -62,8 +57,6 @@ public class TopStoriesAccessor extends Accessor {
 
                     }
                 });
-
-                //callbacks.onSuccess(getNextPage());
             }
 
             @Override
@@ -77,7 +70,7 @@ public class TopStoriesAccessor extends Accessor {
     }
 
     public void getNextStories(final GetTopStoriesCallbacks callbacks) {
-        new ItemAccessor(mFirebase).getMultipleItems(getNextPage(), new ItemAccessor.GetMultipleItemsCallbacks() {
+        new ItemAccessor().getMultipleItems(getNextPage(), new ItemAccessor.GetMultipleItemsCallbacks() {
             @Override
             public void onSuccess(List<Item> items) {
                 callbacks.onSuccess(items);
@@ -88,7 +81,6 @@ public class TopStoriesAccessor extends Accessor {
 
             }
         });
-        //callbacks.onSuccess(getNextPage());
     }
 
     public interface GetTopStoriesCallbacks {

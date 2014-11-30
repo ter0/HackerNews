@@ -14,16 +14,8 @@ import java.util.Map;
 
 public class ItemAccessor extends Accessor {
 
-    public ItemAccessor() {
-        super();
-    }
-
-    public ItemAccessor(Firebase firebase) {
-        super(firebase);
-    }
-
     public void getItem(long id, final GetItemCallbacks callbacks) {
-        mFirebase.child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
+        Utils.getFirebaseInstance().child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mCancelPendingCallbacks) {
@@ -75,6 +67,8 @@ public class ItemAccessor extends Accessor {
             });
         }
     }
+
+
 
     public void cancelPendingCallbacks() {
         mCancelPendingCallbacks = true;

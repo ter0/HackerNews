@@ -2,7 +2,6 @@ package com.team11.hackernews.api.accessors;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Item;
@@ -13,16 +12,8 @@ import java.util.Map;
 
 public class ContentMonitor extends Accessor {
 
-    public ContentMonitor() {
-        super();
-    }
-
-    public ContentMonitor(Firebase firebase) {
-        super(firebase);
-    }
-
     public void addStoryMonitor(final List<Long> storiesToWatch, final StoryMonitorCallbacks callbacks) {
-        mFirebase.child(HackerNewsAPI.UPDATES).addChildEventListener(new ChildEventListener() {
+        Utils.getFirebaseInstance().child(HackerNewsAPI.UPDATES).addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -64,7 +55,7 @@ public class ContentMonitor extends Accessor {
     }
 
     public void addUserMonitor(final List<String> usersToWatch, final UserMonitorCallbacks callbacks){
-        mFirebase.child(HackerNewsAPI.UPDATES).addChildEventListener(new ChildEventListener() {
+        Utils.getFirebaseInstance().child(HackerNewsAPI.UPDATES).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
@@ -99,7 +90,7 @@ public class ContentMonitor extends Accessor {
     }
 
     private void getRootStory(Item item, final GetRootStoryCallbacks callbacks) {
-        ItemAccessor itemAccessor = new ItemAccessor(mFirebase);
+        ItemAccessor itemAccessor = new ItemAccessor();
 
         if (item.getType() == Item.Type.Story) {
             callbacks.onFound(item);
