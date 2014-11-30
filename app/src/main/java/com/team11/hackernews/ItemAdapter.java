@@ -56,6 +56,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mBy.setText(mItemArrayList.get(i).getBy());
         CharSequence timeAgo = getTime(mItemArrayList.get(i).getTime());
         viewHolder.mTime.setText(timeAgo);
+        String domainName = mItemArrayList.get(i).getURL().getHost();
+        viewHolder.mDomain.setText(domainName);
     }
     private CharSequence getTime(long timeStamp){
         timeStamp = timeStamp*1000;
@@ -78,6 +80,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public TextView mScore;
         public TextView mBy;
         public TextView mTime;
+        public TextView mDomain;
 
         public ViewHolder(LinearLayout v) {
             // each data item is just a string in this case
@@ -87,6 +90,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             mScore = (TextView)v.findViewById(R.id.mScore);
             mBy = (TextView)v.findViewById(R.id.mBy);
             mTime = (TextView)v.findViewById(R.id.mTime);
+            mDomain = (TextView)v.findViewById(R.id.mDomain);
         }
     }
 }
