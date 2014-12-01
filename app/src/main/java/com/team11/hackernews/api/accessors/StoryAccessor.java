@@ -37,16 +37,16 @@ public class StoryAccessor extends Accessor {
                     kids = new ArrayList<Long>();
                 }
 
-                Story story =  new Story.Builder()
-                        .by((String) map.get("by"))
-                        .id((Long) map.get("id"))
-                        .kids(kids)
-                        .score((Long) map.get("score"))
-                        .time((Long) map.get("time"))
-                        .text((String) map.get("text"))
-                        .URL(url)
-                        .title((String) map.get("title"))
-                        .build();
+                Story story = new Story();
+                story.setBy((String) map.get("by"));
+                story.setId((Long) map.get("id"));
+                story.setKids(kids);
+                story.setScore((Long) map.get("score"));
+                story.setTime((Long) map.get("time"));
+                story.setText((String) map.get("text"));
+                story.setURL(url);
+                story.setTitle((String) map.get("title"));
+
                 callbacks.onSuccess(story);
             }
 

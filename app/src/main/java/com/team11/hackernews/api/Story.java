@@ -29,16 +29,7 @@ public class Story implements Parcelable {
     private Long mScore;
     private String mTitle;
 
-    private Story(Builder builder) {
-        mId = builder.mId;
-        mBy = builder.mBy;
-        mTime = builder.mTime;
-        mText = builder.mText;
-        mKids = builder.mKids;
-        mURL = builder.mURL;
-        mScore = builder.mScore;
-        mTitle = builder.mTitle;
-    }
+    public Story(){}
 
     private Story(Parcel in) {
         mId = in.readLong();
@@ -58,33 +49,57 @@ public class Story implements Parcelable {
     public Long getId() {
         return mId;
     }
+    public void setId(long id) {
+        mId = id;
+    }
 
     public String getBy() {
         return mBy;
+    }
+    public void setBy(String by) {
+        mBy = by;
     }
 
     public long getTime() {
         return mTime;
     }
+    public void setTime(long time) {
+        mTime = time;
+    }
 
     public String getText() {
         return mText;
+    }
+    public void setText(String text) {
+        mText = text;
     }
 
     public List<Long> getKids() {
         return mKids;
     }
+    public void setKids(List<Long> kids) {
+        mKids = kids;
+    }
 
     public URL getURL() {
         return mURL;
+    }
+    public void setURL(URL url) {
+        mURL = url;
     }
 
     public Long getScore() {
         return mScore;
     }
+    public void setScore(long score) {
+        mScore = score;
+    }
 
     public String getTitle() {
         return mTitle;
+    }
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     @Override
@@ -102,63 +117,5 @@ public class Story implements Parcelable {
         dest.writeString(mURL.toString());
         dest.writeLong(mScore);
         dest.writeString(mTitle);
-    }
-
-    public static final class Builder {
-        private Long mId;
-        private String mBy;
-        private long mTime;
-        private String mText;
-        private List<Long> mKids;
-        private URL mURL;
-        private Long mScore;
-        private String mTitle;
-
-        public Builder() {
-        }
-
-        public Builder id(Long id) {
-            this.mId = id;
-            return this;
-        }
-
-        public Builder by(String by) {
-            this.mBy = by;
-            return this;
-        }
-
-        public Builder time(long time) {
-            this.mTime = time;
-            return this;
-        }
-
-        public Builder text(String text) {
-            this.mText = text;
-            return this;
-        }
-
-        public Builder kids(List<Long> kids) {
-            this.mKids = kids;
-            return this;
-        }
-
-        public Builder URL(URL URL) {
-            this.mURL = URL;
-            return this;
-        }
-
-        public Builder score(Long score) {
-            this.mScore = score;
-            return this;
-        }
-
-        public Builder title(String title) {
-            this.mTitle = title;
-            return this;
-        }
-
-        public Story build() {
-            return new Story(this);
-        }
     }
 }
