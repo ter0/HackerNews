@@ -64,6 +64,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         //TODO: Waiting for askHN class to be created
         if (URLObject != null) {
             domainName = URLObject.getHost();
+            if(domainName.startsWith("www.")){
+                domainName = domainName.substring(4);
+            }
+            domainName = "(" + domainName + ")";
         }
         viewHolder.mDomain.setText(domainName);
         Integer commentCount = mItemArrayList.get(i).getKids().size();

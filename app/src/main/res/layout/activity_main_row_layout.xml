@@ -3,39 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rel"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:weightSum="1">
+    android:divider="@drawable/divider"
+    android:weightSum="1"
+    android:showDividers="beginning|end">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:weightSum="1"
-        android:layout_weight="0.04">
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/mScore"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:text="Score"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:gravity="center_vertical|center_horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
             <TextView
                 android:id="@+id/mTitle"
                 android:text="Title"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                android:layout_marginTop="10dp"/>
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            <TextView
+                android:id="@+id/mDomain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Domain"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -44,7 +61,8 @@
                     android:layout_height="wrap_content"
                     android:text="Submit"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
 
                 <TextView
                     android:id="@+id/mComments"
@@ -52,7 +70,9 @@
                     android:layout_height="wrap_content"
                     android:text="# comments"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:paddingLeft="5dp"/>
 
                 <TextView
                     android:id="@+id/mTime"
@@ -60,15 +80,10 @@
                     android:layout_height="wrap_content"
                     android:text="X hours ago"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:paddingLeft="5dp"/>
 
-                <TextView
-                    android:id="@+id/mDomain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Domain"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"/>
                 </LinearLayout>
         </LinearLayout>
     </LinearLayout>
