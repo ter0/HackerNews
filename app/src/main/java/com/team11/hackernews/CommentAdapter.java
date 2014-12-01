@@ -3,6 +3,7 @@ package com.team11.hackernews;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Comment comment = mCommentArrayList.get(position);
         holder.itemView.setTag(R.id.comment_tag, comment.getDepth());
         holder.mAuthorTextView.setText(comment.getBy());
-        holder.mTimeTextView.setText("" + comment.getTime());
+        holder.mTimeTextView.setText(getTime(comment.getTime()));
         holder.mCommentTextView.setText(Html.fromHtml(comment.getText()));
+    }
+
+    private CharSequence getTime(long timeStamp) {
+        timeStamp = timeStamp * 1000;
+        CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(timeStamp, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS);
+        return timeAgo;
     }
 
     @Override
