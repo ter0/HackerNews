@@ -32,10 +32,15 @@ public class StoryAccessor extends Accessor {
                 } catch (MalformedURLException ignored) {
                 }
 
+                List<Long> kids = (List<Long>) map.get("kids");
+                if (kids == null) {
+                    kids = new ArrayList<Long>();
+                }
+
                 Story story =  new Story.Builder()
                         .by((String) map.get("by"))
                         .id((Long) map.get("id"))
-                        .kids((ArrayList<Long>) map.get("kids"))
+                        .kids(kids)
                         .score((Long) map.get("score"))
                         .time((Long) map.get("time"))
                         .text((String) map.get("text"))
