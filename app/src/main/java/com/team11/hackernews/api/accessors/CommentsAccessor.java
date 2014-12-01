@@ -11,6 +11,7 @@ import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,16 +35,22 @@ public class CommentsAccessor extends Accessor {
             callbacks.onSuccess(comments);
         }
 
+        final HashMap<Long, Boolean> isDeleted = new HashMap<Long, Boolean>();
+
         for (long id : ids) {
             getComment(id, parentDepth + 1, new GetCommentCallbacks() {
                 @Override
-                public void onSuccess(Comment comment) {
+                public void onSuccess(Comment comment, boolean deleted) {
                     if (mCancelPendingCallbacks) {
                         return;
                     }
-                    comments.add(comment);
 
-                    if (comments.size() != noOfKids) {
+                    if (!deleted) {
+                        comments.add(comment);
+                    }
+                    isDeleted.put(comment.getId(), deleted);
+
+                    if (isDeleted.size() != noOfKids) {
                         return;
                     }
 
@@ -85,7 +92,11 @@ public class CommentsAccessor extends Accessor {
                         .depth(depth)
                         .build();
 
-                callbacks.onSuccess(comment);
+                boolean deleted = map.get("deleted") != null
+                        ? (Boolean) map.get("deleted")
+                        : false;
+
+                callbacks.onSuccess(comment, deleted);
             }
 
             @Override
@@ -106,7 +117,7 @@ public class CommentsAccessor extends Accessor {
     }
 
     private interface GetCommentCallbacks {
-        public void onSuccess(Comment comment);
+        public void onSuccess(Comment comment, boolean deleted);
 
         public void onError();
     }
