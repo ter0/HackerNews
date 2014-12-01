@@ -33,7 +33,6 @@ public class CommentLayoutManager extends LinearLayoutManager {
             throw new IllegalStateException("View MUST set it's depth using R.id.comment_tag or whatever");
         }
         int depth = (Integer) tag;
-        int padding = mContext.getResources().getDimensionPixelSize(R.dimen.comment_padding);
-        child.setPadding(padding + 100 * (depth - 1), 0, 0, 0);
+        child.setPadding(100 * (depth - 1), 0, 0, 0);
     }
 }
