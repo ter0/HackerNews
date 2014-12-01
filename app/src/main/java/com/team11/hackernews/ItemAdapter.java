@@ -65,7 +65,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         }
         viewHolder.mDomain.setText(domainName);
         Integer commentCount = mItemArrayList.get(i).getKids().size();
-        String commentString = " comments";
+        String commentString = commentCount.toString() + " comments";
         viewHolder.mComments.setText(commentString);
     }
     private CharSequence getTime(long timeStamp){
