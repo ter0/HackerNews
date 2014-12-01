@@ -1,26 +1,27 @@
 package com.team11.hackernews;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Comment;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
-    private ArrayList<Item> mCommentArrayList;
+    private ArrayList<Comment> mCommentArrayList;
 
-    public CommentAdapter() {
-        mCommentArrayList = new ArrayList<Item>();
+    public CommentAdapter(Context context) {
+        mCommentArrayList = new ArrayList<Comment>();
     }
 
-    public void add(Item item) {
+    public void add(Comment item) {
         mCommentArrayList.add(item);
     }
 
@@ -39,14 +40,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Item item = mCommentArrayList.get(position);
-        // item.getDepth();
-        holder.itemView.setTag(R.id.comment_tag, new Random().nextInt(2));
-        holder.mAuthorTextView.setText(item.getBy());
-        holder.mScoreTextView.setText(item.getScore() + " points");
-        holder.mTimeTextView.setText("" + item.getTime());
-        holder.mCommentTextView.setText(item.getText());
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        Comment comment = mCommentArrayList.get(position);
+        holder.itemView.setTag(R.id.comment_tag, comment.getDepth());
+        holder.mAuthorTextView.setText(comment.getBy());
+        holder.mTimeTextView.setText("" + comment.getTime());
+        holder.mCommentTextView.setText(Html.fromHtml(comment.getText()));
     }
 
     @Override
@@ -56,14 +55,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mAuthorTextView;
-        public TextView mScoreTextView;
         public TextView mTimeTextView;
         public TextView mCommentTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mAuthorTextView = (TextView) itemView.findViewById(R.id.comment_author);
-            mScoreTextView = (TextView) itemView.findViewById(R.id.comment_score);
             mTimeTextView = (TextView) itemView.findViewById(R.id.comment_time);
             mCommentTextView = (TextView) itemView.findViewById(R.id.comment_text);
         }

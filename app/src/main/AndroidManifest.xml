@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WebViewActivity"
+            android:name="com.team11.hackernews.WebViewActivity"
             android:label="@string/title_activity_web_view" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"></action>
@@ -27,6 +27,14 @@
                 <data android:scheme="https" android:host="news.ycombinator.com" ></data>
                 <data android:scheme="http" android:host="news.ycombinator.com" ></data>
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.team11.hackernews.DummyStoryView"
+            android:label="@string/title_activity_dummy_story_view"
+            android:parentActivityName="com.team11.hackernews.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.team11.hackernews.MainActivity" />
         </activity>
     </application>
 

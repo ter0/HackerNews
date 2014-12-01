@@ -1,25 +1,22 @@
 package com.team11.hackernews.api.accessors;
 
+import android.util.Log;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.Comment;
 import com.team11.hackernews.api.HackerNewsAPI;
-import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CommentsAccessor extends Accessor{
+public class CommentsAccessor extends Accessor {
 
-    public interface GetChildCommentsCallbacks {
-        public void onSuccess(List<Comment> comments);
-        public void onError();
-    }
-
-    public void getChildComments(Item story, final GetChildCommentsCallbacks callbacks) {
+    public void getChildComments(Story story, final GetChildCommentsCallbacks callbacks) {
         getComments(story.getKids(), 0, callbacks);
     }
 
@@ -65,11 +62,6 @@ public class CommentsAccessor extends Accessor{
         }
     }
 
-    private interface GetCommentCallbacks {
-        public void onSuccess(Comment comment);
-        public void onError();
-    }
-
     private void getComment(long id, final int depth, final GetCommentCallbacks callbacks) {
         Utils.getFirebaseInstance().child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,7 +71,7 @@ public class CommentsAccessor extends Accessor{
                 }
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
-                if(map.get("type") != "comment") {
+                if (!map.get("type").toString().equalsIgnoreCase("comment")) {
                     callbacks.onError();
                 }
 
@@ -101,8 +93,21 @@ public class CommentsAccessor extends Accessor{
                 if (mCancelPendingCallbacks) {
                     return;
                 }
+                Log.d("Error", firebaseError.getMessage());
                 callbacks.onError();
             }
         });
+    }
+
+    public interface GetChildCommentsCallbacks {
+        public void onSuccess(List<Comment> comments);
+
+        public void onError();
+    }
+
+    private interface GetCommentCallbacks {
+        public void onSuccess(Comment comment);
+
+        public void onError();
     }
 }

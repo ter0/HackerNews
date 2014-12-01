@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Story implements Parcelable {
 
+    public static final String STORY_PARCEL_KEY = "story";
     public static final Parcelable.Creator<Story> CREATOR = new Parcelable.Creator<Story>() {
         public Story createFromParcel(Parcel in) {
             return new Story(in);

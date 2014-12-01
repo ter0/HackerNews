@@ -34,6 +34,6 @@ public class CommentLayoutManager extends LinearLayoutManager {
         }
         int depth = (Integer) tag;
         int padding = mContext.getResources().getDimensionPixelSize(R.dimen.comment_padding);
-        child.setPadding(padding + 100 * depth, 0, 0, 0);
+        child.setPadding(padding + 100 * (depth - 1), 0, 0, 0);
     }
 }
