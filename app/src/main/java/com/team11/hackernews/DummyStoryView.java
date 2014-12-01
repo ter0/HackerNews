@@ -15,19 +15,25 @@ import java.util.List;
 
 public class DummyStoryView extends ActionBarActivity {
 
+    private CommentsView mCommentView;
+    private CommentsAccessor mCommentsAccessor;
+    private Story mStory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dummy_story_view);
-        Story story = getIntent().getParcelableExtra(Story.STORY_PARCEL_KEY);
-        ((TextView) findViewById(R.id.story_title)).setText(story.getTitle());
-        final CommentsView commentView = (CommentsView) findViewById(R.id.dummy_comment_view);
-        CommentsAccessor commentsAccessor = new CommentsAccessor();
-        commentsAccessor.getChildComments(story, new CommentsAccessor.GetChildCommentsCallbacks() {
+        mStory = getIntent().getParcelableExtra(Story.STORY_PARCEL_KEY);
+        ((TextView) findViewById(R.id.story_title)).setText(mStory.getTitle());
+
+        mCommentView = (CommentsView) findViewById(R.id.dummy_comment_view);
+        mCommentsAccessor = new CommentsAccessor();
+
+        mCommentsAccessor.getChildComments(mStory, new CommentsAccessor.GetChildCommentsCallbacks() {
             @Override
             public void onSuccess(List<Comment> comments) {
                 for (Comment comment : comments) {
-                    commentView.add(comment);
+                    mCommentView.add(comment);
                 }
             }
 
