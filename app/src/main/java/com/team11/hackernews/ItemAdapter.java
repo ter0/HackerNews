@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.team11.hackernews.api.Story;
+import com.team11.hackernews.api.Thread;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,16 +18,16 @@ import java.util.ArrayList;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     Callbacks mCallbacks;
-    private ArrayList<Story> mItemArrayList;
+    private ArrayList<Thread> mItemArrayList;
     private int mMaxBinded;
 
     public ItemAdapter(Callbacks callbacks) {
-        mItemArrayList = new ArrayList<Story>();
+        mItemArrayList = new ArrayList<Thread>();
         mMaxBinded = 0;
         mCallbacks = callbacks;
     }
 
-    public void add(Story item) {
+    public void add(Thread item) {
         mItemArrayList.add(item);
     }
 
@@ -54,30 +55,38 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             }
         }
         //TextView itemTitle = (TextView)viewHolder.findViewById(R.id.mTitle);
-        viewHolder.mTitle.setText(mItemArrayList.get(i).getTitle());
-        viewHolder.mScore.setText(mItemArrayList.get(i).getScore().toString());
-        viewHolder.mBy.setText(mItemArrayList.get(i).getBy());
-        CharSequence timeAgo = getTime(mItemArrayList.get(i).getTime());
+
+        Thread currentItem = mItemArrayList.get(i);
+
+        viewHolder.mTitle.setText(currentItem.getTitle());
+        viewHolder.mScore.setText(currentItem.getScore().toString());
+        viewHolder.mBy.setText(currentItem.getBy());
+        CharSequence timeAgo = getTime(currentItem.getTime());
         viewHolder.mTime.setText(timeAgo);
-        URL URLObject = mItemArrayList.get(i).getURL();
-        String domainName = "";
-        //TODO: Waiting for askHN class to be created
-        if (URLObject != null) {
-            domainName = URLObject.getHost();
+        if (currentItem instanceof Story){
+            Story currentStory = (Story) currentItem;
+            URL URLObject = currentStory.getURL();
+            String domainName = "";
+            if (URLObject != null) {
+                domainName = URLObject.getHost();
+            }
             if(domainName.startsWith("www.")){
                 domainName = domainName.substring(4);
             }
             domainName = "(" + domainName + ")";
+            viewHolder.mDomain.setText(domainName);
         }
-        viewHolder.mDomain.setText(domainName);
-        Integer commentCount = mItemArrayList.get(i).getKids().size();
+
+        //TODO: set use cases for other thread types a la AskHN and Polls
+
+        Integer commentCount = currentItem.getKids().size();
         String commentString = commentCount.toString() + " comments";
         viewHolder.mComments.setText(commentString);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DummyStoryView.class);
-                intent.putExtra(Story.STORY_PARCEL_KEY, mItemArrayList.get(i));
+                intent.putExtra(Story.STORY_PARCEL_KEY, (Story)mItemArrayList.get(i));
                 v.getContext().startActivity(intent);
             }
         });

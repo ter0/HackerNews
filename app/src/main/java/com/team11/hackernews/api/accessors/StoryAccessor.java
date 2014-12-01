@@ -4,7 +4,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
-import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Utils;
 
@@ -61,24 +61,24 @@ public class StoryAccessor extends Accessor {
     }
 
     public void getMultipleStories(final List<Long> ids, final GetMultipleStoriesCallbacks callbacks) {
-        final List<Story> stories = new ArrayList<Story>();
+        final List<Thread> threads = new ArrayList<Thread>();
 
         if (ids.size() == 0) {
-            callbacks.onSuccess(stories);
+            callbacks.onSuccess(threads);
             return;
         }
 
         for (final long id: ids){
             getStory(id, new GetStoryCallbacks() {
                 @Override
-                public void onSuccess(Story story) {
+                public void onSuccess(Thread thread) {
                     if (mCancelPendingCallbacks) {
                         return;
                     }
-                    stories.add(story);
+                    threads.add(thread);
 
-                    if (stories.size() == ids.size()) {
-                        callbacks.onSuccess(stories);
+                    if (threads.size() == ids.size()) {
+                        callbacks.onSuccess(threads);
                     }
                 }
 
@@ -100,12 +100,12 @@ public class StoryAccessor extends Accessor {
     }
 
     public interface GetStoryCallbacks {
-        public void onSuccess(Story story);
+        public void onSuccess(Thread thread);
         public void onError();
     }
 
     public interface GetMultipleStoriesCallbacks {
-        public void onSuccess(List<Story> stories);
+        public void onSuccess(List<Thread> threads);
         public void onError();
     }
 }

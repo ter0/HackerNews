@@ -1,13 +1,10 @@
 package com.team11.hackernews.api.accessors;
 
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
-import com.team11.hackernews.api.Item;
-import com.team11.hackernews.api.Story;
+import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.Utils;
 
 import java.util.List;
@@ -48,8 +45,8 @@ public class TopStoriesAccessor extends Accessor {
 
                 new StoryAccessor().getMultipleStories(getNextPage(), new StoryAccessor.GetMultipleStoriesCallbacks() {
                     @Override
-                    public void onSuccess(List<Story> stories) {
-                        callbacks.onSuccess(stories);
+                    public void onSuccess(List<Thread> threads) {
+                        callbacks.onSuccess(threads);
                     }
 
                     @Override
@@ -72,7 +69,7 @@ public class TopStoriesAccessor extends Accessor {
     public void getNextStories(final GetTopStoriesCallbacks callbacks) {
         new StoryAccessor().getMultipleStories(getNextPage(), new StoryAccessor.GetMultipleStoriesCallbacks() {
             @Override
-            public void onSuccess(List<Story> stories) {
+            public void onSuccess(List<Thread> stories) {
                 callbacks.onSuccess(stories);
             }
 
@@ -84,7 +81,7 @@ public class TopStoriesAccessor extends Accessor {
     }
 
     public interface GetTopStoriesCallbacks {
-        public void onSuccess(List<Story> stories);
+        public void onSuccess(List<Thread> threads);
         public void onError();
     }
 }

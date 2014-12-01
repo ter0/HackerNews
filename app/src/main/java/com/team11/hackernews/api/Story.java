@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Story implements Parcelable {
+public class Story extends Thread implements Parcelable {
 
     public static final String STORY_PARCEL_KEY = "story";
     public static final Parcelable.Creator<Story> CREATOR = new Parcelable.Creator<Story>() {
@@ -20,14 +20,8 @@ public class Story implements Parcelable {
             return new Story[size];
         }
     };
-    private Long mId;
-    private String mBy;
-    private long mTime;
-    private String mText;
-    private List<Long> mKids;
+
     private URL mURL;
-    private Long mScore;
-    private String mTitle;
 
     public Story(){}
 
@@ -46,60 +40,11 @@ public class Story implements Parcelable {
         mTitle = in.readString();
     }
 
-    public Long getId() {
-        return mId;
-    }
-    public void setId(long id) {
-        mId = id;
-    }
-
-    public String getBy() {
-        return mBy;
-    }
-    public void setBy(String by) {
-        mBy = by;
-    }
-
-    public long getTime() {
-        return mTime;
-    }
-    public void setTime(long time) {
-        mTime = time;
-    }
-
-    public String getText() {
-        return mText;
-    }
-    public void setText(String text) {
-        mText = text;
-    }
-
-    public List<Long> getKids() {
-        return mKids;
-    }
-    public void setKids(List<Long> kids) {
-        mKids = kids;
-    }
-
     public URL getURL() {
         return mURL;
     }
     public void setURL(URL url) {
         mURL = url;
-    }
-
-    public Long getScore() {
-        return mScore;
-    }
-    public void setScore(long score) {
-        mScore = score;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-    public void setTitle(String title) {
-        mTitle = title;
     }
 
     @Override

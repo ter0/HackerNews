@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.team11.hackernews.api.Item;
+import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
 
@@ -82,10 +82,10 @@ public class MainActivity extends ActionBarActivity
         mTopStoriesAccessor = new TopStoriesAccessor(20);
         mTopStoriesAccessor.getInitialStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
             @Override
-            public void onSuccess(List<Story> stories) {
+            public void onSuccess(List<Thread> threads) {
                 mItemAdapter.clear();
-                for (Story story : stories) {
-                    mItemAdapter.add(story);
+                for (Thread thread : threads) {
+                    mItemAdapter.add(thread);
                 }
                 mItemAdapter.notifyDataSetChanged();
                 mFinishedLoadingRefresh = true;
@@ -108,12 +108,12 @@ public class MainActivity extends ActionBarActivity
             mFinishedLoadingBottom = false;
             mTopStoriesAccessor.getNextStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
                 @Override
-                public void onSuccess(List<Story> stories) {
-                    if (stories.size() == 0) {
+                public void onSuccess(List<Thread> threads) {
+                    if (threads.size() == 0) {
                         Toast.makeText(getApplicationContext(), "No More Articles", Toast.LENGTH_SHORT).show();
                     } else {
-                        for (Story story : stories) {
-                            mItemAdapter.add(story);
+                        for (Thread thread : threads) {
+                            mItemAdapter.add(thread);
                         }
                         mItemAdapter.notifyDataSetChanged();
                         Toast.makeText(getApplicationContext(), "Loaded", Toast.LENGTH_SHORT).show();
