@@ -32,9 +32,7 @@ public class DummyStoryView extends ActionBarActivity {
         mCommentsAccessor.getChildComments(mStory, new CommentsAccessor.GetChildCommentsCallbacks() {
             @Override
             public void onSuccess(List<Comment> comments) {
-                for (Comment comment : comments) {
-                    mCommentView.add(comment);
-                }
+                mCommentView.add(comments);
             }
 
             @Override

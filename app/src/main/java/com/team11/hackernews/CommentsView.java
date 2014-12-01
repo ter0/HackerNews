@@ -39,7 +39,10 @@ public class CommentsView extends FrameLayout {
     }
 
     public void add(List<Comment> commentList) {
-        
+        for (Comment comment : commentList) {
+            mCommentAdapter.add(comment);
+        }
+        mCommentAdapter.notifyDataSetChanged();
     }
 
     private void init(AttributeSet attrs, int defStyle) {

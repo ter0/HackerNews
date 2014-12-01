@@ -30,6 +30,13 @@
         android:paddingTop="4dp"
         android:text="It's not like anyone is actually going to read this awful comment anyway" />
 
+    <Button
+        android:id="@+id/show_more_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show more..." />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
