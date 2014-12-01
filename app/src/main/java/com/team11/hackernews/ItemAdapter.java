@@ -69,10 +69,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             String domainName = "";
             if (URLObject != null) {
                 domainName = URLObject.getHost();
-                domainName = "(" + domainName + ")";
             }
             if(domainName.startsWith("www.")){
                 domainName = domainName.substring(4);
+            }
+            if(domainName != ""){
+                domainName = "(" + domainName + ")";
             }
             viewHolder.mDomain.setText(domainName);
         }
