@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.team11.hackernews.api.Comment;
+import com.team11.hackernews.api.Thread;
 
 import java.util.List;
 
@@ -31,6 +32,12 @@ public class CommentsView extends FrameLayout {
     public CommentsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
+    }
+
+    public void setThread(com.team11.hackernews.api.Thread thread) {
+        mCommentAdapter.clear();
+        mCommentAdapter.setThread(thread);
+        mCommentAdapter.refresh();
     }
 
     public void add(Comment comment) {

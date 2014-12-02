@@ -6,17 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.Comment;
 import com.team11.hackernews.api.Story;
-import com.team11.hackernews.api.accessors.CommentsAccessor;
-
-import java.util.List;
-
 
 public class DummyStoryView extends ActionBarActivity {
 
     private CommentsView mCommentView;
-    private CommentsAccessor mCommentsAccessor;
     private Story mStory;
 
     @Override
@@ -27,18 +21,7 @@ public class DummyStoryView extends ActionBarActivity {
         ((TextView) findViewById(R.id.story_title)).setText(mStory.getTitle());
 
         mCommentView = (CommentsView) findViewById(R.id.dummy_comment_view);
-        mCommentsAccessor = new CommentsAccessor();
-
-        mCommentsAccessor.getChildComments(mStory, new CommentsAccessor.GetChildCommentsCallbacks() {
-            @Override
-            public void onSuccess(List<Comment> comments) {
-                mCommentView.add(comments);
-            }
-
-            @Override
-            public void onError() {
-            }
-        });
+        mCommentView.setThread(mStory);
     }
 
     @Override

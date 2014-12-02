@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.team11.hackernews.api.Comment;
+import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.accessors.CommentsAccessor;
 
 import java.util.ArrayList;
@@ -21,10 +22,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     private ArrayList<Comment> mCommentArrayList;
     private CommentsAccessor mCommentsAccessor;
+    private Thread mThread;
 
     public CommentAdapter(Context context) {
         mCommentArrayList = new ArrayList<Comment>();
         mCommentsAccessor = new CommentsAccessor();
+    }
+
+    public void setThread(com.team11.hackernews.api.Thread thread) {
+        mThread = thread;
     }
 
     public void add(Comment item) {
@@ -103,6 +109,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
      */
     public void addAfter(Comment comment, int position) {
         mCommentArrayList.add(position, comment);
+    }
+
+    public void refresh() {
+        mCommentsAccessor.getChildComments(mThread, new CommentsAccessor.GetChildCommentsCallbacks() {
+            @Override
+            public void onSuccess(List<Comment> comments) {
+                for (Comment comment : comments) {
+                    CommentAdapter.this.add(comment);
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

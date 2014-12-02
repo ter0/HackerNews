@@ -7,7 +7,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.Comment;
 import com.team11.hackernews.api.HackerNewsAPI;
-import com.team11.hackernews.api.Story;
+import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.Utils;
 
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class CommentsAccessor extends Accessor {
 
-    public void getChildComments(Story story, final GetChildCommentsCallbacks callbacks) {
-        getComments(story.getKids(), 0, callbacks);
+    public void getChildComments(Thread thread, final GetChildCommentsCallbacks callbacks) {
+        getComments(thread.getKids(), 0, callbacks);
     }
 
     public void getChildComments(Comment parent, final GetChildCommentsCallbacks callbacks) {
