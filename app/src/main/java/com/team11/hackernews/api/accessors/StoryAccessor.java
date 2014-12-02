@@ -3,7 +3,9 @@ package com.team11.hackernews.api.accessors;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.team11.hackernews.api.AskHN;
 import com.team11.hackernews.api.HackerNewsAPI;
+import com.team11.hackernews.api.Poll;
 import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Utils;
@@ -26,28 +28,64 @@ public class StoryAccessor extends Accessor {
 
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
-                URL url = null;
-                try {
-                    url = new URL((String) map.get("url"));
-                } catch (MalformedURLException ignored) {
+                Thread thread;
+
+                Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
+
+                if (itemType == Utils.ItemType.Story) {
+
+                    if (map.get("title").toString().startsWith("Ask HN:")){
+                        // Ask HN thread
+                        thread = new AskHN();
+
+                    } else {
+
+                        // Story thread
+                        thread = new Story();
+
+                        URL url = null;
+                        try {
+                            url = new URL((String) map.get("url"));
+                        } catch (MalformedURLException ignored) {
+                        }
+
+                        ((Story) thread).setURL(url);
+                    }
+
+                } else if (itemType == Utils.ItemType.Poll) {
+
+                    // Poll thread
+                    thread = new Poll();
+
+                    List<Long> pollOpts = (List<Long>) map.get("pollopts");
+                    if (pollOpts == null) {
+                        // TODO: this is when the poll has no options, possibly set the onError() to take an Error object
+                        callbacks.onError();
+                    }
+
+                } else {
+
+                    //TODO: the id provided does not point to a relevant item type, return proper error
+                    callbacks.onError();
+                    return;
+
                 }
 
+                // These fields are common to all thread types so we can parse them for whatever thread type is being requested
                 List<Long> kids = (List<Long>) map.get("kids");
                 if (kids == null) {
                     kids = new ArrayList<Long>();
                 }
 
-                Story story = new Story();
-                story.setBy((String) map.get("by"));
-                story.setId((Long) map.get("id"));
-                story.setKids(kids);
-                story.setScore((Long) map.get("score"));
-                story.setTime((Long) map.get("time"));
-                story.setText((String) map.get("text"));
-                story.setURL(url);
-                story.setTitle((String) map.get("title"));
+                thread.setBy((String) map.get("by"));
+                thread.setId((Long) map.get("id"));
+                thread.setKids(kids);
+                thread.setScore((Long) map.get("score"));
+                thread.setTime((Long) map.get("time"));
+                thread.setText((String) map.get("text"));
+                thread.setTitle((String) map.get("title"));
 
-                callbacks.onSuccess(story);
+                callbacks.onSuccess(thread);
             }
 
             @Override
@@ -68,7 +106,7 @@ public class StoryAccessor extends Accessor {
             return;
         }
 
-        for (final long id: ids){
+        for (final long id : ids) {
             getStory(id, new GetStoryCallbacks() {
                 @Override
                 public void onSuccess(Thread thread) {
@@ -94,18 +132,19 @@ public class StoryAccessor extends Accessor {
     }
 
 
-
     public void cancelPendingCallbacks() {
         mCancelPendingCallbacks = true;
     }
 
     public interface GetStoryCallbacks {
         public void onSuccess(Thread thread);
+
         public void onError();
     }
 
     public interface GetMultipleStoriesCallbacks {
         public void onSuccess(List<Thread> threads);
+
         public void onError();
     }
 }

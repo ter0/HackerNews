@@ -18,6 +18,9 @@ public class Poll extends Thread {
     };
     private List<Long> mPollOpts;
 
+    public Poll() {
+    }
+
     public Poll(Parcel in) {
         mPollOpts = new ArrayList<Long>();
         in.readList(mPollOpts, List.class.getClassLoader());
