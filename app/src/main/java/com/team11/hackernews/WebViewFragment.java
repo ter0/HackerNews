@@ -8,16 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link WebViewFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link WebViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WebViewFragment extends Fragment {
 
     public static final String URL_EXTRA = "URL_EXTRA";
@@ -54,11 +46,16 @@ public class WebViewFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_web_view, container, false);
         WebView webView = (WebView) rootView.findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient() {
+        final Activity activity = this.getActivity();
+        webView.setWebViewClient(new WebViewClient(){
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                //todo handle errors, at the moment webview goes blank with invalid urls
+                //I expected this to be were loading errors are handled but
+                //this didnt get called with a 404 (http://google.com/gregerg)
+                //or with a missing or invalid protocal (htztp://www.google.com)
+                Toast.makeText(activity, "eee", Toast.LENGTH_LONG);
+                super.onReceivedError(view, errorCode, description, failingUrl);
             }
         });
         webView.loadUrl(mUrl);
@@ -82,16 +79,6 @@ public class WebViewFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
     }
 

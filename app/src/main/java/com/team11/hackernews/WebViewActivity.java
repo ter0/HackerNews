@@ -9,8 +9,6 @@ import android.view.MenuItem;
 
 public class WebViewActivity extends ActionBarActivity implements WebViewFragment.OnFragmentInteractionListener{
 
-    public static final String WEB_VIEW_TAG = "WEB_VIEW";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,11 +16,10 @@ public class WebViewActivity extends ActionBarActivity implements WebViewFragmen
         Fragment webFrag = WebViewFragment.newInstance(getIntent().getStringExtra(WebViewFragment.URL_EXTRA));
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, webFrag, WEB_VIEW_TAG)
+                    .replace(R.id.container, webFrag)
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

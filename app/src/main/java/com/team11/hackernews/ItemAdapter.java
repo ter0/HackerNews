@@ -1,6 +1,5 @@
 package com.team11.hackernews;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -14,19 +13,20 @@ import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.accessors.Job;
 
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     Callbacks mCallbacks;
+    ItemInteractionCallbacks mItemInteractionCallbacks;
     private ArrayList<Thread> mItemArrayList;
     private int mMaxBinded;
 
-    public ItemAdapter(Callbacks callbacks) {
+    public ItemAdapter(Callbacks callbacks, ItemInteractionCallbacks itemInteractionCallbacks) {
         mItemArrayList = new ArrayList<Thread>();
         mMaxBinded = 0;
         mCallbacks = callbacks;
+        mItemInteractionCallbacks = itemInteractionCallbacks;
     }
 
     public void add(Thread item) {
@@ -65,10 +65,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mBy.setText(currentItem.getBy());
         CharSequence timeAgo = getTime(currentItem.getTime());
         viewHolder.mTime.setText(timeAgo);
-        if (currentItem instanceof Story || currentItem instanceof Job){
+        if (currentItem instanceof Story || currentItem instanceof Job) {
             URL URLObject;
 
-            if (currentItem instanceof Story){
+            if (currentItem instanceof Story) {
                 URLObject = ((Story) currentItem).getURL();
             } else {
                 URLObject = ((Job) currentItem).getURL();
@@ -78,10 +78,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             if (URLObject != null) {
                 domainName = URLObject.getHost();
             }
-            if(domainName.startsWith("www.")){
+            if (domainName.startsWith("www.")) {
                 domainName = domainName.substring(4);
             }
-            if(domainName != ""){
+            if (domainName != "") {
                 domainName = "(" + domainName + ")";
             }
             viewHolder.mDomain.setText(domainName);
@@ -92,14 +92,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         Integer commentCount = currentItem.getKids().size();
         String commentString = commentCount.toString() + " comments";
         viewHolder.mComments.setText(commentString);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DummyStoryView.class);
-                intent.putExtra(Thread.THREAD_PARCEL_KEY, mItemArrayList.get(i));
-                v.getContext().startActivity(intent);
+                mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
             }
         });
+        if (currentItem instanceof Story) {
+            viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = ((Story) mItemArrayList.get(i)).getURL().toString();
+                    mItemInteractionCallbacks.loadWebView(url);
+                }
+            });
+        }
     }
 
     private CharSequence getTime(long timeStamp) {
@@ -115,6 +122,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public interface Callbacks {
         public void onReachedBottom();
+    }
+
+    public interface ItemInteractionCallbacks {
+        public void loadWebView(String url);
+
+        public void loadCommentsView(Thread thread);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

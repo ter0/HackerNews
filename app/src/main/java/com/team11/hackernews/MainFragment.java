@@ -17,6 +17,7 @@ import com.team11.hackernews.api.accessors.TopStoriesAccessor;
 import java.util.List;
 
 public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
+    ItemAdapter.ItemInteractionCallbacks mItemInteractionCallbacks;
     Callbacks mCallbacks;
     private RecyclerView mRecyclerView;
     private ItemAdapter mItemAdapter;
@@ -42,9 +43,8 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         super.onCreate(savedInstanceState);
         mFinishedLoadingRefresh = true;
         mFinishedLoadingBottom = true;
-        mItemAdapter = new ItemAdapter(this);
+        mItemAdapter = new ItemAdapter(this, mItemInteractionCallbacks);
         setHasOptionsMenu(true);
-        refresh();
     }
 
     @Override
@@ -59,12 +59,23 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        refresh();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             mCallbacks = (Callbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement MainFragment Callbacks.");
+            throw new ClassCastException("Activity must implement MainFragment.Callbacks.");
+        }
+        try{
+            mItemInteractionCallbacks = (ItemAdapter.ItemInteractionCallbacks) activity;
+        }catch (ClassCastException e){
+            throw new ClassCastException("Activity must implement ItemAdapter.ItemInteractionCallbacks.");
         }
     }
 
@@ -156,7 +167,6 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     interface Callbacks {
         public void showToast(String text);
-
         public void supportInvalidateOptionsMenu();
     }
 }
