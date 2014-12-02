@@ -52,6 +52,11 @@ public class StoryAccessor extends Accessor {
                         ((Story) thread).setURL(url);
                     }
 
+                } else if (itemType == Utils.ItemType.Job) {
+
+                    // Job thread
+                    thread = new Job();
+
                 } else if (itemType == Utils.ItemType.Poll) {
 
                     // Poll thread
