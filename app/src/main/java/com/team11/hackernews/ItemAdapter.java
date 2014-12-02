@@ -88,7 +88,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DummyStoryView.class);
-                intent.putExtra(Story.STORY_PARCEL_KEY, (Story)mItemArrayList.get(i));
+                intent.putExtra(Thread.THREAD_PARCEL_KEY, mItemArrayList.get(i));
                 v.getContext().startActivity(intent);
             }
         });

@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Story extends Thread implements Parcelable {
+public class Story extends Thread {
 
     public static final String STORY_PARCEL_KEY = "story";
     public static final Parcelable.Creator<Story> CREATOR = new Parcelable.Creator<Story>() {
@@ -23,7 +23,8 @@ public class Story extends Thread implements Parcelable {
 
     private URL mURL;
 
-    public Story(){}
+    public Story() {
+    }
 
     private Story(Parcel in) {
         mId = in.readLong();
@@ -43,6 +44,7 @@ public class Story extends Thread implements Parcelable {
     public URL getURL() {
         return mURL;
     }
+
     public void setURL(URL url) {
         mURL = url;
     }

@@ -1,8 +1,11 @@
 package com.team11.hackernews.api;
 
+import android.os.Parcelable;
+
 import java.util.List;
 
-public abstract class Thread {
+public abstract class Thread implements Parcelable {
+    public static final String THREAD_PARCEL_KEY = "thread";
     protected Long mId;
     protected String mBy;
     protected long mTime;
@@ -14,6 +17,7 @@ public abstract class Thread {
     public Long getId() {
         return mId;
     }
+
     public void setId(long id) {
         mId = id;
     }
@@ -21,6 +25,7 @@ public abstract class Thread {
     public String getBy() {
         return mBy;
     }
+
     public void setBy(String by) {
         mBy = by;
     }
@@ -28,6 +33,7 @@ public abstract class Thread {
     public long getTime() {
         return mTime;
     }
+
     public void setTime(long time) {
         mTime = time;
     }
@@ -35,6 +41,7 @@ public abstract class Thread {
     public String getText() {
         return mText;
     }
+
     public void setText(String text) {
         mText = text;
     }
@@ -42,6 +49,7 @@ public abstract class Thread {
     public List<Long> getKids() {
         return mKids;
     }
+
     public void setKids(List<Long> kids) {
         mKids = kids;
     }
@@ -49,6 +57,7 @@ public abstract class Thread {
     public Long getScore() {
         return mScore;
     }
+
     public void setScore(long score) {
         mScore = score;
     }
@@ -56,6 +65,7 @@ public abstract class Thread {
     public String getTitle() {
         return mTitle;
     }
+
     public void setTitle(String title) {
         mTitle = title;
     }

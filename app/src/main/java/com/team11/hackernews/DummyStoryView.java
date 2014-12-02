@@ -6,18 +6,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.Story;
+import com.team11.hackernews.api.Thread;
 
 public class DummyStoryView extends ActionBarActivity {
 
     private CommentsView mCommentView;
-    private Story mStory;
+    private Thread mStory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dummy_story_view);
-        mStory = getIntent().getParcelableExtra(Story.STORY_PARCEL_KEY);
+        mStory = getIntent().getParcelableExtra(Thread.THREAD_PARCEL_KEY);
         ((TextView) findViewById(R.id.story_title)).setText(mStory.getTitle());
 
         mCommentView = (CommentsView) findViewById(R.id.dummy_comment_view);
