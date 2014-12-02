@@ -65,8 +65,7 @@ public class StoryAccessor extends Accessor {
 
                 } else {
 
-                    //TODO: the id provided does not point to a relevant item type, return proper error
-                    callbacks.onError();
+                    callbacks.onWrongItemType(itemType, (Long) map.get("id"));
                     return;
 
                 }
@@ -121,6 +120,14 @@ public class StoryAccessor extends Accessor {
                 }
 
                 @Override
+                public void onWrongItemType(Utils.ItemType itemType, long id) {
+                    if (mCancelPendingCallbacks) {
+                        return;
+                    }
+                    callbacks.onError();
+                }
+
+                @Override
                 public void onError() {
                     if (mCancelPendingCallbacks) {
                         return;
@@ -138,6 +145,8 @@ public class StoryAccessor extends Accessor {
 
     public interface GetStoryCallbacks {
         public void onSuccess(Thread thread);
+
+        public void onWrongItemType(Utils.ItemType itemType, long id);
 
         public void onError();
     }

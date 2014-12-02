@@ -58,6 +58,11 @@ public class CommentsAccessor extends Accessor {
                 }
 
                 @Override
+                public void onWrongItemType(Utils.ItemType itemType) {
+                    callbacks.onError();
+                }
+
+                @Override
                 public void onError() {
                     if (mCancelPendingCallbacks) {
                         return;
@@ -78,8 +83,11 @@ public class CommentsAccessor extends Accessor {
                 }
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
-                if (!map.get("type").toString().equalsIgnoreCase("comment")) {
-                    callbacks.onError();
+                Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
+
+                if (itemType != Utils.ItemType.Comment) {
+                    callbacks.onWrongItemType(itemType);
+                    return;
                 }
 
                 Comment comment = new Comment.Builder()
@@ -118,6 +126,8 @@ public class CommentsAccessor extends Accessor {
 
     private interface GetCommentCallbacks {
         public void onSuccess(Comment comment, boolean deleted);
+
+        public void onWrongItemType(Utils.ItemType itemType);
 
         public void onError();
     }
