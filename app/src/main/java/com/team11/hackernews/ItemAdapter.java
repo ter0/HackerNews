@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Thread;
+import com.team11.hackernews.api.accessors.Job;
 
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -63,9 +65,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mBy.setText(currentItem.getBy());
         CharSequence timeAgo = getTime(currentItem.getTime());
         viewHolder.mTime.setText(timeAgo);
-        if (currentItem instanceof Story){
-            Story currentStory = (Story) currentItem;
-            URL URLObject = currentStory.getURL();
+        if (currentItem instanceof Story || currentItem instanceof Job){
+            URL URLObject;
+
+            if (currentItem instanceof Story){
+                URLObject = ((Story) currentItem).getURL();
+            } else {
+                URLObject = ((Job) currentItem).getURL();
+            }
+
             String domainName = "";
             if (URLObject != null) {
                 domainName = URLObject.getHost();

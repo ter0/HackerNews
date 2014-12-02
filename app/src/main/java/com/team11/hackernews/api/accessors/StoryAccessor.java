@@ -57,6 +57,14 @@ public class StoryAccessor extends Accessor {
                     // Job thread
                     thread = new Job();
 
+                    URL url = null;
+                    try {
+                        url = new URL((String) map.get("url"));
+                    } catch (MalformedURLException ignored) {
+                    }
+
+                    ((Job) thread).setURL(url);
+
                 } else if (itemType == Utils.ItemType.Poll) {
 
                     // Poll thread
