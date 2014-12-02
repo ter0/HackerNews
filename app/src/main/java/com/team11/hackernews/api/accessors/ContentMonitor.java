@@ -20,7 +20,9 @@ public class ContentMonitor extends Accessor {
 
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
-                final Item newItem = Utils.generateItemFromMap(map);
+                // TODO: Currently returns null as Item generation function was deprecated and this class is currently being rewritten
+                //final Item newItem = Utils.generateItemFromMap(map);
+                final Item newItem = null;
 
                 getRootStory(newItem, new GetRootStoryCallbacks() {
                     @Override
@@ -60,7 +62,9 @@ public class ContentMonitor extends Accessor {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
-                Item item = Utils.generateItemFromMap(map);
+                // TODO: Currently returns null as Item generation function was deprecated and this class is currently being rewritten
+                // Item item = Utils.generateItemFromMap(map);
+                Item item = null;
 
                 if (usersToWatch.contains(item.getBy())) {
                     callbacks.onWatchedContentAdded(item);

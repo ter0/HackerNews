@@ -22,7 +22,8 @@ public class ItemAccessor extends Accessor {
                     return;
                 }
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                callbacks.onSuccess(Utils.generateItemFromMap(map));
+                // TODO: Currently returns null as Item generation function was deprecated and this class is being deprecated soon
+                callbacks.onSuccess(null);
             }
 
             @Override
