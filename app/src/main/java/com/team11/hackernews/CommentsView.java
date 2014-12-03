@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.team11.hackernews.api.Comment;
-import com.team11.hackernews.api.Thread;
+import com.team11.hackernews.api.data.Comment;
+import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class CommentsView extends FrameLayout {
         init(attrs, defStyle);
     }
 
-    public void setThread(com.team11.hackernews.api.Thread thread) {
+    public void setThread(Thread thread) {
         mCommentAdapter.clear();
         mCommentAdapter.setThread(thread);
         mCommentAdapter.refresh();

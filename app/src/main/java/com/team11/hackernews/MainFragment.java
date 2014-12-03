@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.team11.hackernews.api.Thread;
+import com.team11.hackernews.api.data.Thread;
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
 
 import java.util.List;

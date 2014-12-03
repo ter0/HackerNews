@@ -1,9 +1,5 @@
-package com.team11.hackernews.api;
+package com.team11.hackernews.api.data;
 
-import android.os.Build;
-
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Comment {

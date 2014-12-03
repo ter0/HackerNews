@@ -1,4 +1,4 @@
-package com.team11.hackernews.api;
+package com.team11.hackernews.api.data;
 
 public class PollOption {
     private Long mId;

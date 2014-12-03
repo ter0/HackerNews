@@ -1,8 +1,5 @@
-package com.team11.hackernews.api;
+package com.team11.hackernews.api.data;
 
-import android.text.Html;
-
-import java.net.URL;
 import java.util.List;
 
 /**

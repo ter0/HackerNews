@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.AskHN;
-import com.team11.hackernews.api.Poll;
-import com.team11.hackernews.api.Story;
-import com.team11.hackernews.api.Thread;
-import com.team11.hackernews.api.Job;
+import com.team11.hackernews.api.data.AskHN;
+import com.team11.hackernews.api.data.Poll;
+import com.team11.hackernews.api.data.Story;
+import com.team11.hackernews.api.data.Thread;
+import com.team11.hackernews.api.data.Job;
 
 import java.net.URL;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.Thread;
+import com.team11.hackernews.api.data.Thread;
 
 public class DummyStoryView extends ActionBarActivity {
 

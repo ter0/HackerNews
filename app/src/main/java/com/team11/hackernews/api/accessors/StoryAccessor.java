@@ -3,12 +3,12 @@ package com.team11.hackernews.api.accessors;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.team11.hackernews.api.AskHN;
+import com.team11.hackernews.api.data.AskHN;
 import com.team11.hackernews.api.HackerNewsAPI;
-import com.team11.hackernews.api.Job;
-import com.team11.hackernews.api.Poll;
-import com.team11.hackernews.api.Thread;
-import com.team11.hackernews.api.Story;
+import com.team11.hackernews.api.data.Job;
+import com.team11.hackernews.api.data.Poll;
+import com.team11.hackernews.api.data.Thread;
+import com.team11.hackernews.api.data.Story;
 import com.team11.hackernews.api.Utils;
 
 import java.net.MalformedURLException;

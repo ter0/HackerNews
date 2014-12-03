@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.team11.hackernews.api.Comment;
-import com.team11.hackernews.api.Thread;
+import com.team11.hackernews.api.data.Comment;
+import com.team11.hackernews.api.data.Thread;
 import com.team11.hackernews.api.accessors.CommentsAccessor;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         mCommentsAccessor = new CommentsAccessor();
     }
 
-    public void setThread(com.team11.hackernews.api.Thread thread) {
+    public void setThread(Thread thread) {
         mThread = thread;
     }
 

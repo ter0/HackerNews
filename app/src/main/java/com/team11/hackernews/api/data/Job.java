@@ -1,4 +1,4 @@
-package com.team11.hackernews.api;
+package com.team11.hackernews.api.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -25,6 +25,10 @@ public class Job extends Thread {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Job() {
+
     }
 
     public URL getURL() {

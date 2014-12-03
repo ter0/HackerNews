@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.team11.hackernews.api.Thread;
+import com.team11.hackernews.api.data.Thread;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks,
