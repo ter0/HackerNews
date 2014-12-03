@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.team11.hackernews.api.AskHN;
+import com.team11.hackernews.api.Poll;
 import com.team11.hackernews.api.Story;
 import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.accessors.Job;
@@ -65,33 +67,48 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mBy.setText(currentItem.getBy());
         CharSequence timeAgo = getTime(currentItem.getTime());
         viewHolder.mTime.setText(timeAgo);
+        Integer commentCount;
+        String commentString;
         if (currentItem instanceof Story || currentItem instanceof Job) {
             URL URLObject;
 
             if (currentItem instanceof Story) {
                 URLObject = ((Story) currentItem).getURL();
+                // Story will have comments
+                commentCount = currentItem.getKids().size();
+                commentString = commentCount.toString() + " comments";
+                viewHolder.mComments.setText(commentString);
             } else {
                 URLObject = ((Job) currentItem).getURL();
+                // A job posting will not (Replace comments with Job Posting
+                viewHolder.mComments.setText("Job Posting");
             }
 
             String domainName = "";
             if (URLObject != null) {
                 domainName = URLObject.getHost();
-            }
-            if (domainName.startsWith("www.")) {
-                domainName = domainName.substring(4);
-            }
-            if (domainName != "") {
+                if (domainName.startsWith("www.")) {
+                    domainName = domainName.substring(4);
+                }
                 domainName = "(" + domainName + ")";
             }
             viewHolder.mDomain.setText(domainName);
+        }else if(currentItem instanceof Poll){
+            viewHolder.mDomain.setText("User Poll");
+            commentCount = currentItem.getKids().size();
+            commentString = commentCount.toString() + " comments";
+            viewHolder.mComments.setText(commentString);
+            viewHolder.mComments.setText(commentString);
+        }else if(currentItem instanceof AskHN){
+            viewHolder.mDomain.setText("Ask HN");
+            commentCount = currentItem.getKids().size();
+            commentString = commentCount.toString() + " comments";
+            viewHolder.mComments.setText(commentString);
+            viewHolder.mComments.setText(commentString);
         }
 
-        //TODO: set use cases for other thread types a la AskHN and Polls
+        //TODO: Check differences in binding web view to ASKHN and Polls
 
-        Integer commentCount = currentItem.getKids().size();
-        String commentString = commentCount.toString() + " comments";
-        viewHolder.mComments.setText(commentString);
         viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
