@@ -16,12 +16,13 @@ import com.team11.hackernews.api.Utils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class StoryAccessor extends Accessor {
 
-    public void getStory(long id, final GetStoryCallbacks callbacks) {
+    public void getStory(final long id, final GetStoryCallbacks callbacks) {
         Utils.getFirebaseInstance().child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -30,6 +31,13 @@ public class StoryAccessor extends Accessor {
                 }
 
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                Boolean deleted = (Boolean) map.get("deleted");
+
+                if ((deleted != null) && deleted) {
+                    callbacks.onDeleted(id);
+                    return;
+                }
 
                 Thread thread;
 
@@ -113,12 +121,15 @@ public class StoryAccessor extends Accessor {
     }
 
     public void getMultipleStories(final List<Long> ids, final GetMultipleStoriesCallbacks callbacks) {
+
         final List<Thread> threads = new ArrayList<Thread>();
 
         if (ids.size() == 0) {
             callbacks.onSuccess(threads);
             return;
         }
+
+        final HashMap<Long, Boolean> isDeleted = new HashMap<Long, Boolean>();
 
         for (final long id : ids) {
             getStory(id, new GetStoryCallbacks() {
@@ -128,8 +139,23 @@ public class StoryAccessor extends Accessor {
                         return;
                     }
                     threads.add(thread);
+                    isDeleted.put(id, false);
 
-                    if (threads.size() == ids.size()) {
+                    runIfAllReturned();
+                }
+
+                @Override
+                public void onDeleted(long id) {
+                    if (mCancelPendingCallbacks) {
+                        return;
+                    }
+
+                    isDeleted.put(id, true);
+                    runIfAllReturned();
+                }
+
+                public void runIfAllReturned() {
+                    if (isDeleted.size() == ids.size()) {
                         callbacks.onSuccess(threads);
                     }
                 }
@@ -160,6 +186,8 @@ public class StoryAccessor extends Accessor {
 
     public interface GetStoryCallbacks {
         public void onSuccess(Thread thread);
+
+        public void onDeleted(long id);
 
         public void onWrongItemType(Utils.ItemType itemType, long id);
 

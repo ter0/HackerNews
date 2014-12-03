@@ -70,6 +70,11 @@ public class ThreadMonitor {
             }
 
             @Override
+            public void onDeleted(long id) {
+                onError();
+            }
+
+            @Override
             public void onWrongItemType(Utils.ItemType itemType, long id) {
                 if (itemType != Utils.ItemType.Comment) {
                     onError();

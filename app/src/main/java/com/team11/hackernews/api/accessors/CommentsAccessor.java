@@ -40,16 +40,29 @@ public class CommentsAccessor extends Accessor {
         for (long id : ids) {
             getComment(id, parentDepth + 1, new GetCommentCallbacks() {
                 @Override
-                public void onSuccess(Comment comment, boolean deleted) {
+                public void onSuccess(Comment comment) {
                     if (mCancelPendingCallbacks) {
                         return;
                     }
 
-                    if (!deleted) {
-                        comments.add(comment);
-                    }
-                    isDeleted.put(comment.getId(), deleted);
+                    comments.add(comment);
+                    isDeleted.put(comment.getId(), false);
 
+                    runIfAllReturned();
+                }
+
+                @Override
+                public void onDeleted(long id) {
+                    if (mCancelPendingCallbacks) {
+                        return;
+                    }
+
+                    isDeleted.put(id, true);
+
+                    runIfAllReturned();
+                }
+
+                private void runIfAllReturned(){
                     if (isDeleted.size() != noOfKids) {
                         return;
                     }
@@ -74,7 +87,7 @@ public class CommentsAccessor extends Accessor {
         }
     }
 
-    private void getComment(long id, final int depth, final GetCommentCallbacks callbacks) {
+    private void getComment(final long id, final int depth, final GetCommentCallbacks callbacks) {
         Utils.getFirebaseInstance().child(HackerNewsAPI.ITEM + "/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,6 +95,13 @@ public class CommentsAccessor extends Accessor {
                     return;
                 }
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                Boolean deleted = (Boolean) map.get("deleted");
+
+                if ((deleted != null) && deleted) {
+                    callbacks.onDeleted(id);
+                    return;
+                }
 
                 Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
 
@@ -100,11 +120,7 @@ public class CommentsAccessor extends Accessor {
                         .depth(depth)
                         .build();
 
-                boolean deleted = map.get("deleted") != null
-                        ? (Boolean) map.get("deleted")
-                        : false;
-
-                callbacks.onSuccess(comment, deleted);
+                callbacks.onSuccess(comment);
             }
 
             @Override
@@ -125,7 +141,9 @@ public class CommentsAccessor extends Accessor {
     }
 
     private interface GetCommentCallbacks {
-        public void onSuccess(Comment comment, boolean deleted);
+        public void onSuccess(Comment comment);
+
+        public void onDeleted(long id);
 
         public void onWrongItemType(Utils.ItemType itemType);
 
