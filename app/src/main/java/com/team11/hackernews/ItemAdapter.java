@@ -107,18 +107,50 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         //TODO: Check differences in binding web view to ASKHN and Polls
 
-        viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
             }
-        });
+        });*/
         if (currentItem instanceof Story) {
+            //Stories require both a URL on title and link to comments
             viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String url = ((Story) mItemArrayList.get(i)).getURL().toString();
                     mItemInteractionCallbacks.loadWebView(url);
+                }
+
+            });
+            viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
+                }
+            });
+        }else if (currentItem instanceof Job){
+            //Jobs have no comments and a URL link in the title
+            viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = ((Job) mItemArrayList.get(i)).getURL().toString();
+                    mItemInteractionCallbacks.loadWebView(url);
+                }
+            });
+            viewHolder.mComments.setOnClickListener(null);
+        }else if((currentItem instanceof AskHN) || (currentItem instanceof Poll)){
+            //AskHN and Polls both should open comments when either Title or Comments is pressed
+            viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
+                }
+            });
+            viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
                 }
             });
         }
