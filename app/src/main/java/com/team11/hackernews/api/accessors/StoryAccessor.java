@@ -5,6 +5,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.AskHN;
 import com.team11.hackernews.api.HackerNewsAPI;
+import com.team11.hackernews.api.Job;
 import com.team11.hackernews.api.Poll;
 import com.team11.hackernews.api.Thread;
 import com.team11.hackernews.api.Story;
