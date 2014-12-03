@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.team11.hackernews.DummyStoryView">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/story_title"
@@ -12,7 +10,7 @@
         android:text="@string/hello_world" />
 
     <com.team11.hackernews.CommentsView
-        android:id="@+id/dummy_comment_view"
+        android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

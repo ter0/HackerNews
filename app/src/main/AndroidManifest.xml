@@ -29,8 +29,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.team11.hackernews.DummyStoryView"
-            android:label="@string/title_activity_dummy_story_view"
+            android:name=".ThreadActivity"
+            android:label="@string/title_activity_thread"
             android:parentActivityName="com.team11.hackernews.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -130,9 +130,16 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void loadCommentsView(Thread thread) {
-        Intent intent = new Intent(this, DummyStoryView.class);
-        intent.putExtra(Thread.THREAD_PARCEL_KEY, thread);
-        startActivity(intent);
+        if(mTwoPane){
+            ThreadFragment commentsFragment = ThreadFragment.newInstance(thread);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, commentsFragment)
+                    .commit();
+        }else {
+            Intent intent = new Intent(this, ThreadActivity.class);
+            intent.putExtra(Thread.THREAD_PARCEL_KEY, thread);
+            startActivity(intent);
+        }
     }
 
 }

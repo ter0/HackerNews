@@ -9,6 +9,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_web_view">Web view</string>
-    <string name="title_activity_dummy_story_view">DummyStoryView</string>
+    <string name="title_activity_thread">ThreadView</string>
     <string name="hello_world">Hello World</string>
+
 </resources>

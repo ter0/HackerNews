@@ -13,8 +13,8 @@ public class WebViewActivity extends ActionBarActivity implements WebViewFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-        Fragment webFrag = WebViewFragment.newInstance(getIntent().getStringExtra(WebViewFragment.URL_EXTRA));
         if (savedInstanceState == null) {
+            Fragment webFrag = WebViewFragment.newInstance(getIntent().getStringExtra(WebViewFragment.URL_EXTRA));
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, webFrag)
                     .commit();
