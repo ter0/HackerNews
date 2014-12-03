@@ -93,17 +93,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 domainName = "(" + domainName + ")";
             }
             viewHolder.mDomain.setText(domainName);
-        }else if(currentItem instanceof Poll){
+        } else if (currentItem instanceof Poll) {
             viewHolder.mDomain.setText("User Poll");
             commentCount = currentItem.getKids().size();
             commentString = commentCount.toString() + " comments";
             viewHolder.mComments.setText(commentString);
-            viewHolder.mComments.setText(commentString);
-        }else if(currentItem instanceof AskHN){
+        } else if (currentItem instanceof AskHN) {
             viewHolder.mDomain.setText("Ask HN");
             commentCount = currentItem.getKids().size();
             commentString = commentCount.toString() + " comments";
-            viewHolder.mComments.setText(commentString);
             viewHolder.mComments.setText(commentString);
         }
 
