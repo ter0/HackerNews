@@ -11,13 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PollOptionAccessor extends Accessor{
-
-    public interface GetPollOptionsCallbacks {
-        public void onSuccess(List<PollOption> pollOpts);
-
-        public void onError();
-    }
+public class PollOptionAccessor extends Accessor {
 
     public void getPollOptions(final List<Long> ids, final GetPollOptionsCallbacks callbacks) {
         final List<PollOption> pollOpts = new ArrayList<PollOption>();
@@ -50,11 +44,6 @@ public class PollOptionAccessor extends Accessor{
                 }
             });
         }
-    }
-
-    public interface GetPollOptionCallbacks {
-        public void onSuccess(PollOption pollOpt);
-        public void onError();
     }
 
     private void getPollOption(long id, final GetPollOptionCallbacks callbacks) {
@@ -93,6 +82,18 @@ public class PollOptionAccessor extends Accessor{
                 callbacks.onError();
             }
         });
+    }
+
+    public interface GetPollOptionsCallbacks {
+        public void onSuccess(List<PollOption> pollOpts);
+
+        public void onError();
+    }
+
+    public interface GetPollOptionCallbacks {
+        public void onSuccess(PollOption pollOpt);
+
+        public void onError();
     }
 
 

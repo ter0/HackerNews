@@ -34,11 +34,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         mItemInteractionCallbacks = itemInteractionCallbacks;
     }
 
-    public void saveState(Bundle outState){
+    public void saveState(Bundle outState) {
         outState.putParcelableArrayList(THREAD_LIST_KEY, mItemArrayList);
     }
 
-    public void restoreState(Bundle inState){
+    public void restoreState(Bundle inState) {
         mItemArrayList = inState.getParcelableArrayList(THREAD_LIST_KEY);
     }
 
@@ -140,7 +140,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
                 }
             });
-        }else if (currentItem instanceof Job){
+        } else if (currentItem instanceof Job) {
             //Jobs have no comments and a URL link in the title
             viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,7 +150,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 }
             });
             viewHolder.mComments.setOnClickListener(null);
-        }else if((currentItem instanceof AskHN) || (currentItem instanceof Poll)){
+        } else if ((currentItem instanceof AskHN) || (currentItem instanceof Poll)) {
             //AskHN and Polls both should open comments when either Title or Comments is pressed
             viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override

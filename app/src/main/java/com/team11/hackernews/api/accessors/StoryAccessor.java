@@ -44,7 +44,7 @@ public class StoryAccessor extends Accessor {
                 Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
 
                 if (itemType == Utils.ItemType.Story) {
-                    if (map.get("title").toString().startsWith("Ask HN:")){
+                    if (map.get("title").toString().startsWith("Ask HN:")) {
                         // Ask HN thread
                         thread = new AskHN();
 

@@ -32,7 +32,7 @@ public class ThreadMonitor {
         mListeners.clear();
     }
 
-    public void addListener(final ThreadMonitorCallbacks callbacks){
+    public void addListener(final ThreadMonitorCallbacks callbacks) {
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

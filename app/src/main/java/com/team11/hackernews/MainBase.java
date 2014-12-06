@@ -31,12 +31,12 @@ public abstract class MainBase extends ActionBarActivity
     //this is a shoddy way of doing it, done for simplicity's sake at the moment.
     //safer to override onCreate here and have an abstract function called inside it
     //for children to inject there own behavior
-    protected void baseSetUp(){
+    protected void baseSetUp() {
         mTitle = getTitle();
         // Set up the drawer.
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        if(mNavigationDrawerFragment == null){
+        if (mNavigationDrawerFragment == null) {
             throw new IllegalStateException("MainBase activity layouts need a R.id.navigation_drawer element");
         }
         mNavigationDrawerFragment.setUp(

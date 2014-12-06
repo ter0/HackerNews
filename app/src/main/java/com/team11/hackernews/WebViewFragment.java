@@ -47,11 +47,10 @@ public class WebViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_web_view, container, false);
         webView = (WebView) rootView.findViewById(R.id.webView);
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             webView.getSettings().setJavaScriptEnabled(true);
             final Activity activity = this.getActivity();
-            webView.setWebViewClient(new WebViewClient(){
+            webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     //todo handle errors, at the moment webview goes blank with invalid urls
@@ -63,15 +62,14 @@ public class WebViewFragment extends Fragment {
                 }
             });
             webView.loadUrl(mUrl);
-        }else{
+        } else {
             webView.restoreState(savedInstanceState);
         }
         return rootView;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState )
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         webView.saveState(outState);
     }

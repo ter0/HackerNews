@@ -17,7 +17,7 @@ public class MainActivity extends MainBase {
         mMainFragment = (MainFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_main);
         //when the app is loaded externally, MAIN_FRAGMENT_KEY wont be present
-        if(savedInstanceState == null && getIntent().getBundleExtra(MainFragment.MAIN_FRAGMENT_KEY) != null){
+        if (savedInstanceState == null && getIntent().getBundleExtra(MainFragment.MAIN_FRAGMENT_KEY) != null) {
             mMainFragment.restoreState(getIntent().getExtras());
         }
         super.baseSetUp();
@@ -29,7 +29,7 @@ public class MainActivity extends MainBase {
         intent.putExtra(MainDualActivity.WEB_VIEW_URL, url);
         intent.putExtras(mMainFragment.saveState(new Bundle()));
         startActivity(intent);
-        finish ();
+        finish();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class MainActivity extends MainBase {
         intent.putExtra(MainDualActivity.THREAD, thread);
         intent.putExtras(mMainFragment.saveState(new Bundle()));
         startActivity(intent);
-        finish ();
+        finish();
     }
 
 }

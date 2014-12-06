@@ -12,11 +12,11 @@ import java.util.Map;
 
 public class UserAccessor extends Accessor {
 
-    public void getUser(final String username, final GetUserCallbacks callbacks){
+    public void getUser(final String username, final GetUserCallbacks callbacks) {
         Utils.getFirebaseInstance().child(HackerNewsAPI.USER + "/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (mCancelPendingCallbacks){
+                if (mCancelPendingCallbacks) {
                     return;
                 }
 
@@ -38,7 +38,7 @@ public class UserAccessor extends Accessor {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                if (mCancelPendingCallbacks){
+                if (mCancelPendingCallbacks) {
                     return;
                 }
                 callbacks.onError();
@@ -48,6 +48,7 @@ public class UserAccessor extends Accessor {
 
     public interface GetUserCallbacks {
         public void onSuccess(User user);
+
         public void onError();
     }
 }

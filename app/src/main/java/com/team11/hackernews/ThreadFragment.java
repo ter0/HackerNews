@@ -16,16 +16,16 @@ public class ThreadFragment extends Fragment {
     private CommentsView mCommentView;
     private Thread mStory;
 
+    public ThreadFragment() {
+        // Required empty public constructor
+    }
+
     public static ThreadFragment newInstance(Parcelable thread) {
         ThreadFragment fragment = new ThreadFragment();
         Bundle args = new Bundle();
         args.putParcelable(Thread.THREAD_PARCEL_KEY, thread);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public ThreadFragment() {
-        // Required empty public constructor
     }
 
     @Override

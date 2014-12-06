@@ -62,7 +62,7 @@ public class CommentsAccessor extends Accessor {
                     runIfAllReturned();
                 }
 
-                private void runIfAllReturned(){
+                private void runIfAllReturned() {
                     if (isDeleted.size() != noOfKids) {
                         return;
                     }

@@ -21,9 +21,9 @@ public class TopStoriesAccessor extends Accessor {
         mPageLength = pageLength;
     }
 
-    private List<Long> getNextPage(){
+    private List<Long> getNextPage() {
         int endIdx = mNextStoryIdx + mPageLength;
-        if (endIdx > mStoryIds.size()){
+        if (endIdx > mStoryIds.size()) {
             endIdx = mStoryIds.size();
         }
         List<Long> storyIds = mStoryIds.subList(mNextStoryIdx, endIdx);
@@ -82,6 +82,7 @@ public class TopStoriesAccessor extends Accessor {
 
     public interface GetTopStoriesCallbacks {
         public void onSuccess(List<Thread> threads);
+
         public void onError();
     }
 }

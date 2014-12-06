@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import com.team11.hackernews.api.data.Thread;
 
-public class MainDualActivity extends MainBase{
+public class MainDualActivity extends MainBase {
 
     /**
      * Pass either of these to tell this what to put in it's container fragment
@@ -30,22 +30,22 @@ public class MainDualActivity extends MainBase{
         //load website or comments requested
         String webViewUrl = getIntent().getStringExtra(WEB_VIEW_URL);
         Parcelable thread = getIntent().getParcelableExtra(THREAD);
-        if(webViewUrl != null && thread != null){
+        if (webViewUrl != null && thread != null) {
             throw new UnsupportedOperationException("Activity cannot take both WEB_VIEW_URL and THREAD extras");
-        }else if(webViewUrl != null) {
+        } else if (webViewUrl != null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, WebViewFragment.newInstance(webViewUrl))
                     .commit();
-        }else if(thread != null){
+        } else if (thread != null) {
             ThreadFragment commentsFragment = ThreadFragment.newInstance(thread);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, commentsFragment)
                     .commit();
         }
         Bundle inputBundle;
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             inputBundle = getIntent().getExtras();
-        }else{
+        } else {
             inputBundle = savedInstanceState;
         }
         //load menu if horizontal
@@ -54,7 +54,7 @@ public class MainDualActivity extends MainBase{
             mMainFragment = (MainFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_main);
             mMainFragment.restoreState(inputBundle);
-        }else{
+        } else {
             //if we're only showing the webView, we need to store this encase the screen rotates
             mMainFragmentBundle = inputBundle;
         }
@@ -63,10 +63,10 @@ public class MainDualActivity extends MainBase{
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState ){
-        if(mTwoPane){
+    public void onSaveInstanceState(Bundle outState) {
+        if (mTwoPane) {
             mMainFragment.saveState(outState);
-        }else {
+        } else {
             outState.putAll(mMainFragmentBundle);
         }
     }
@@ -74,9 +74,9 @@ public class MainDualActivity extends MainBase{
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        if(mTwoPane){
+        if (mTwoPane) {
             intent.putExtras(mMainFragment.saveState(new Bundle()));
-        }else {
+        } else {
             intent.putExtras(mMainFragmentBundle);
         }
         startActivity(intent);
