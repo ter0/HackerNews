@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.team11.hackernews.api.Utils;
+import com.team11.hackernews.api.accessors.StoryAccessor;
 import com.team11.hackernews.api.data.Thread;
 
 public class MainDualActivity extends MainBase {
@@ -13,14 +15,29 @@ public class MainDualActivity extends MainBase {
      */
     public static final String WEB_VIEW_URL = "WEB_VIEW_URL";
     public static final String THREAD = "THREAD";
+    StoryAccessor.GetStoryCallbacks storyCallbacks = new StoryAccessor.GetStoryCallbacks() {
+        @Override
+        public void onSuccess(Thread thread) {
+            loadThread(thread);
+        }
 
+        @Override
+        public void onDeleted(long id) {
+        }
+
+        @Override
+        public void onWrongItemType(Utils.ItemType itemType, long id) {
+        }
+
+        @Override
+        public void onError() {
+        }
+    };
     /*Fragment Displaying threads*/
     private MainFragment mMainFragment;
-
     //used to store MainFragment details whilst layout is portrait
     //should be null as long as MainFragment is being shown
     private Bundle mMainFragmentBundle;
-
     private boolean mTwoPane;
 
     @Override
@@ -29,18 +46,22 @@ public class MainDualActivity extends MainBase {
         setContentView(R.layout.activity_main_dual);
         //load website or comments requested
         String webViewUrl = getIntent().getStringExtra(WEB_VIEW_URL);
-        Parcelable thread = getIntent().getParcelableExtra(THREAD);
-        if (webViewUrl != null && thread != null) {
+        Parcelable threadParcelable = getIntent().getParcelableExtra(THREAD);
+        if (webViewUrl != null && threadParcelable != null) {
             throw new UnsupportedOperationException("Activity cannot take both WEB_VIEW_URL and THREAD extras");
         } else if (webViewUrl != null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, WebViewFragment.newInstance(webViewUrl))
                     .commit();
-        } else if (thread != null) {
-            ThreadFragment commentsFragment = ThreadFragment.newInstance(thread);
+        } else if (threadParcelable != null) {
+            ThreadFragment commentsFragment = ThreadFragment.newInstance(threadParcelable);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, commentsFragment)
                     .commit();
+        } else if (getIntent().getData().getQueryParameter("id") != null) {
+            int id = Integer.parseInt(getIntent().getData().getQueryParameter("id"));
+            //pending api update this WILL BREAK on non-story items
+            new StoryAccessor().getStory(id, storyCallbacks);
         }
         Bundle inputBundle;
         if (savedInstanceState == null) {
@@ -53,13 +74,23 @@ public class MainDualActivity extends MainBase {
             mTwoPane = true;
             mMainFragment = (MainFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_main);
-            mMainFragment.restoreState(inputBundle);
+            //if started from external url, no bundle will exist
+            if (savedInstanceState != null || getIntent().getBundleExtra(MainFragment.MAIN_FRAGMENT_KEY) != null) {
+                mMainFragment.restoreState(inputBundle);
+            }
         } else {
             //if we're only showing the webView, we need to store this encase the screen rotates
             mMainFragmentBundle = inputBundle;
         }
         baseSetUp();
 
+    }
+
+    public void loadThread(Thread thread) {
+        ThreadFragment commentsFragment = ThreadFragment.newInstance(thread);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, commentsFragment)
+                .commit();
     }
 
     @Override
