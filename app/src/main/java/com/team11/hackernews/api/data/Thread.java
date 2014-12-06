@@ -2,7 +2,9 @@ package com.team11.hackernews.api.data;
 
 import android.os.Parcelable;
 
+import java.net.URL;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public abstract class Thread implements Parcelable {
     public static final String THREAD_PARCEL_KEY = "thread";
@@ -13,6 +15,7 @@ public abstract class Thread implements Parcelable {
     protected List<Long> mKids;
     protected Long mScore;
     protected String mTitle;
+    protected URL mURL;
 
     public Long getId() {
         return mId;
@@ -70,4 +73,13 @@ public abstract class Thread implements Parcelable {
         mTitle = title;
     }
 
+    public abstract boolean hasComments();
+    public abstract boolean hasURL();
+    public URL getURL()throws NoSuchFieldException{
+        if(hasURL()){
+            return mURL;
+        }else{
+            throw new NoSuchFieldException("This thread has no URL");
+        }
+    }
 }

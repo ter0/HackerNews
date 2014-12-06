@@ -43,4 +43,14 @@ public class Poll extends Thread {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(mPollOpts);
     }
+
+    @Override
+    public boolean hasComments(){
+        return true;
+    }
+
+    @Override
+    public boolean hasURL(){
+        return false;
+    }
 }

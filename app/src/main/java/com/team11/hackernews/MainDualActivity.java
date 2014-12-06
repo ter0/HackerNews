@@ -44,6 +44,7 @@ public class MainDualActivity extends MainBase {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dual);
+        baseSetUp();
         //load website or comments requested
         String webViewUrl = getIntent().getStringExtra(WEB_VIEW_URL);
         Parcelable threadParcelable = getIntent().getParcelableExtra(THREAD);
@@ -82,15 +83,23 @@ public class MainDualActivity extends MainBase {
             //if we're only showing the webView, we need to store this encase the screen rotates
             mMainFragmentBundle = inputBundle;
         }
-        baseSetUp();
-
     }
 
     public void loadThread(Thread thread) {
-        ThreadFragment commentsFragment = ThreadFragment.newInstance(thread);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, commentsFragment)
-                .commit();
+        if(thread.hasComments()) {
+            ThreadFragment commentsFragment = ThreadFragment.newInstance(thread);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, commentsFragment)
+                    .commit();
+        }else{
+            try{
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, WebViewFragment.newInstance(String.valueOf(thread.getURL())))
+                        .commit();
+            }catch(NoSuchFieldException e){
+                //just don't load webView
+            }
+        }
     }
 
     @Override

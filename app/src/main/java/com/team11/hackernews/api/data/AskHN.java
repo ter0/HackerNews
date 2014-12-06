@@ -12,4 +12,14 @@ public class AskHN extends Thread {
     public void writeToParcel(Parcel dest, int flags) {
 
     }
+
+    @Override
+    public boolean hasComments(){
+        return true;
+    }
+
+    @Override
+    public boolean hasURL(){
+        return false;
+    }
 }

@@ -17,7 +17,6 @@ public class Job extends Thread {
             return new Job[size];
         }
     };
-    private URL mURL;
 
     public Job(Parcel in) {
         try {
@@ -47,5 +46,15 @@ public class Job extends Thread {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mURL.toString());
+    }
+
+    @Override
+    public boolean hasComments(){
+        return false;
+    }
+
+    @Override
+    public boolean hasURL(){
+        return true;
     }
 }

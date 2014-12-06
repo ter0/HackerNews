@@ -21,8 +21,6 @@ public class Story extends Thread {
         }
     };
 
-    private URL mURL;
-
     public Story() {
     }
 
@@ -64,5 +62,15 @@ public class Story extends Thread {
         dest.writeString(mURL.toString());
         dest.writeLong(mScore);
         dest.writeString(mTitle);
+    }
+
+    @Override
+    public boolean hasComments(){
+        return true;
+    }
+
+    @Override
+    public boolean hasURL(){
+        return true;
     }
 }
