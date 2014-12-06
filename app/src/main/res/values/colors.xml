@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name='statusBar' type='color'>#EF6C00</item>
+    <item name='actionBar' type='color'>#F57C00</item>
+</resources>
