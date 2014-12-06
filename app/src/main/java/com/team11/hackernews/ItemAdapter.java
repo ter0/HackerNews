@@ -1,5 +1,6 @@
 package com.team11.hackernews;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -9,15 +10,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.team11.hackernews.api.data.AskHN;
+import com.team11.hackernews.api.data.Job;
 import com.team11.hackernews.api.data.Poll;
 import com.team11.hackernews.api.data.Story;
 import com.team11.hackernews.api.data.Thread;
-import com.team11.hackernews.api.data.Job;
 
 import java.net.URL;
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+
+    public static final String THREAD_LIST_KEY = "THREAD_LIST";
 
     Callbacks mCallbacks;
     ItemInteractionCallbacks mItemInteractionCallbacks;
@@ -29,6 +32,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         mMaxBinded = 0;
         mCallbacks = callbacks;
         mItemInteractionCallbacks = itemInteractionCallbacks;
+    }
+
+    public void saveState(Bundle outState){
+        outState.putParcelableArrayList(THREAD_LIST_KEY, mItemArrayList);
+    }
+
+    public void restoreState(Bundle inState){
+        mItemArrayList = inState.getParcelableArrayList(THREAD_LIST_KEY);
     }
 
     public void add(Thread item) {

@@ -11,12 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.team11.hackernews.api.data.Thread;
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
+import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
 
 public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
+
+    public static final String MAIN_FRAGMENT_KEY = "MAIN_FRAGMENT";
+
     ItemAdapter.ItemInteractionCallbacks mItemInteractionCallbacks;
     Callbacks mCallbacks;
     private RecyclerView mRecyclerView;
@@ -44,7 +47,27 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         mFinishedLoadingRefresh = true;
         mFinishedLoadingBottom = true;
         mItemAdapter = new ItemAdapter(this, mItemInteractionCallbacks);
+        if (savedInstanceState != null) {
+            restoreState(savedInstanceState);
+        }
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveState(outState);
+    }
+
+    public Bundle saveState(Bundle bundle) {
+        Bundle mainBundle = new Bundle();
+        mItemAdapter.saveState(mainBundle);
+        bundle.putBundle(MAIN_FRAGMENT_KEY, mainBundle);
+        return bundle;
+    }
+
+    public void restoreState(Bundle savedInstanceState) {
+        mItemAdapter.restoreState(savedInstanceState.getBundle(MAIN_FRAGMENT_KEY));
     }
 
     @Override
@@ -59,9 +82,11 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        refresh();
+        if (savedInstanceState == null) {
+            refresh();
+        }
     }
 
     @Override
@@ -72,9 +97,9 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement MainFragment.Callbacks.");
         }
-        try{
+        try {
             mItemInteractionCallbacks = (ItemAdapter.ItemInteractionCallbacks) activity;
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ItemAdapter.ItemInteractionCallbacks.");
         }
     }
@@ -167,6 +192,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     interface Callbacks {
         public void showToast(String text);
+
         public void supportInvalidateOptionsMenu();
     }
 }
