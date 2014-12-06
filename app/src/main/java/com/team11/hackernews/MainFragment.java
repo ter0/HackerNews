@@ -19,6 +19,7 @@ import java.util.List;
 public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public static final String MAIN_FRAGMENT_KEY = "MAIN_FRAGMENT";
+    public static final String FIRST_ITEM_KEY = "FIRST_ITEM";
 
     ItemAdapter.ItemInteractionCallbacks mItemInteractionCallbacks;
     Callbacks mCallbacks;
@@ -62,12 +63,16 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     public Bundle saveState(Bundle bundle) {
         Bundle mainBundle = new Bundle();
         mItemAdapter.saveState(mainBundle);
+        int firstItem = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        mainBundle.putInt(FIRST_ITEM_KEY, firstItem);
         bundle.putBundle(MAIN_FRAGMENT_KEY, mainBundle);
         return bundle;
     }
 
     public void restoreState(Bundle savedInstanceState) {
+        Bundle mainBundle = savedInstanceState.getBundle(MAIN_FRAGMENT_KEY);
         mItemAdapter.restoreState(savedInstanceState.getBundle(MAIN_FRAGMENT_KEY));
+        mRecyclerView.scrollToPosition(mainBundle.getInt(FIRST_ITEM_KEY));
     }
 
     @Override
