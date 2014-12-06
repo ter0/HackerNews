@@ -20,6 +20,8 @@ public class WebViewFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private WebView webView;
+
     public WebViewFragment() {
         // Required empty public constructor
     }
@@ -44,22 +46,34 @@ public class WebViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_web_view, container, false);
-        WebView webView = (WebView) rootView.findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-        final Activity activity = this.getActivity();
-        webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                //todo handle errors, at the moment webview goes blank with invalid urls
-                //I expected this to be were loading errors are handled but
-                //this didnt get called with a 404 (http://google.com/gregerg)
-                //or with a missing or invalid protocal (htztp://www.google.com)
-                Toast.makeText(activity, "eee", Toast.LENGTH_LONG);
-                super.onReceivedError(view, errorCode, description, failingUrl);
-            }
-        });
-        webView.loadUrl(mUrl);
+        webView = (WebView) rootView.findViewById(R.id.webView);
+        if (savedInstanceState == null)
+        {
+            webView.getSettings().setJavaScriptEnabled(true);
+            final Activity activity = this.getActivity();
+            webView.setWebViewClient(new WebViewClient(){
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    //todo handle errors, at the moment webview goes blank with invalid urls
+                    //I expected this to be were loading errors are handled but
+                    //this didnt get called with a 404 (http://google.com/gregerg)
+                    //or with a missing or invalid protocal (htztp://www.google.com)
+                    Toast.makeText(activity, "eee", Toast.LENGTH_LONG);
+                    super.onReceivedError(view, errorCode, description, failingUrl);
+                }
+            });
+            webView.loadUrl(mUrl);
+        }else{
+            webView.restoreState(savedInstanceState);
+        }
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState )
+    {
+        super.onSaveInstanceState(outState);
+        webView.saveState(outState);
     }
 
     @Override
