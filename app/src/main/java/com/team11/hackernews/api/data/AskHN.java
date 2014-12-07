@@ -1,8 +1,30 @@
 package com.team11.hackernews.api.data;
 
 import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class AskHN extends Thread {
+
+    public static final Parcelable.Creator<AskHN> CREATOR = new Parcelable.Creator<AskHN>() {
+        public AskHN createFromParcel(Parcel in) {
+            return new AskHN(in);
+        }
+
+        public AskHN[] newArray(int size) {
+            return new AskHN[size];
+        }
+    };
+
+    private AskHN(Parcel in) {
+    }
+
+    public AskHN() {
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
