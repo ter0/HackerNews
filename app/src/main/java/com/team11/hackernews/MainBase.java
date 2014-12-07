@@ -1,6 +1,7 @@
 package com.team11.hackernews;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -104,5 +105,11 @@ public abstract class MainBase extends ActionBarActivity
     @Override
     public void showToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void openExternalApps(Uri uri) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(webIntent);
     }
 }

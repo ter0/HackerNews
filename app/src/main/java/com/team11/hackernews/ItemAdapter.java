@@ -1,5 +1,7 @@
 package com.team11.hackernews;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -138,6 +140,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 }
 
             });
+            viewHolder.mTitle.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String url = ((Story) mItemArrayList.get(i)).getURL().toString();
+                    mItemInteractionCallbacks.openExternalApps(Uri.parse(url));
+                    return true;
+                }
+
+            });
             viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -190,6 +201,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public void loadWebView(String url);
 
         public void loadCommentsView(Thread thread);
+
+        public void openExternalApps(Uri uri);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

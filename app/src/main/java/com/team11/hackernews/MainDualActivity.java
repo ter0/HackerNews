@@ -68,7 +68,6 @@ public class MainDualActivity extends MainBase {
                     .commit();
         } else if (getIntent().getData().getQueryParameter("id") != null) {
             int id = Integer.parseInt(getIntent().getData().getQueryParameter("id"));
-            //pending api update this WILL BREAK on non-story items
             new ThreadAccessor().getStory(id, storyCallbacks);
         }
         Bundle inputBundle;

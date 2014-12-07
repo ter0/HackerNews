@@ -69,6 +69,8 @@ public class ThreadAccessor extends Accessor {
                     try {
                         url = new URL((String) map.get("url"));
                     } catch (MalformedURLException ignored) {
+                        callbacks.onError();
+                        return;
                     }
 
                     ((Job) thread).setURL(url);
@@ -82,6 +84,7 @@ public class ThreadAccessor extends Accessor {
                     if (pollOpts == null) {
                         // TODO: this is when the poll has no options, possibly set the onError() to take an Error object
                         callbacks.onError();
+                        return;
                     }
 
                 } else {
