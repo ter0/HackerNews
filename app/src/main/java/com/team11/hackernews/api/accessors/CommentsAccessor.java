@@ -71,7 +71,7 @@ public class CommentsAccessor extends Accessor {
                 }
 
                 @Override
-                public void onWrongItemType(Utils.ItemType itemType) {
+                public void onWrongItemType(Utils.ItemType itemType, long id) {
                     callbacks.onError();
                 }
 
@@ -85,6 +85,10 @@ public class CommentsAccessor extends Accessor {
                 }
             });
         }
+    }
+
+    public void getComment(final long id, final GetCommentCallbacks callbacks) {
+        getComment(id, -1, callbacks);
     }
 
     private void getComment(final long id, final int depth, final GetCommentCallbacks callbacks) {
@@ -106,7 +110,7 @@ public class CommentsAccessor extends Accessor {
                 Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
 
                 if (itemType != Utils.ItemType.Comment) {
-                    callbacks.onWrongItemType(itemType);
+                    callbacks.onWrongItemType(itemType, (Long) map.get("id"));
                     return;
                 }
 
@@ -140,12 +144,12 @@ public class CommentsAccessor extends Accessor {
         public void onError();
     }
 
-    private interface GetCommentCallbacks {
+    public interface GetCommentCallbacks {
         public void onSuccess(Comment comment);
 
         public void onDeleted(long id);
 
-        public void onWrongItemType(Utils.ItemType itemType);
+        public void onWrongItemType(Utils.ItemType itemType, long id);
 
         public void onError();
     }
