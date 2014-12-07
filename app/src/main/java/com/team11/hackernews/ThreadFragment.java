@@ -20,6 +20,10 @@ public class ThreadFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public Thread getThread(){
+        return mStory;
+    }
+
     public static ThreadFragment newInstance(Parcelable thread) {
         ThreadFragment fragment = new ThreadFragment();
         Bundle args = new Bundle();

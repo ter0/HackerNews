@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public static final String THREAD_LIST_KEY = "THREAD_LIST";
+    public static final String ITEM_ADAPTER_KEY = "ITEM_ADAPTER";
 
     Callbacks mCallbacks;
     ItemInteractionCallbacks mItemInteractionCallbacks;
@@ -35,11 +36,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     public void saveState(Bundle outState) {
-        outState.putParcelableArrayList(THREAD_LIST_KEY, mItemArrayList);
+        Bundle itemAdapterBundle = new Bundle();
+        itemAdapterBundle.putParcelableArrayList(THREAD_LIST_KEY, mItemArrayList);
+        outState.putBundle(ITEM_ADAPTER_KEY, itemAdapterBundle);
     }
 
     public void restoreState(Bundle inState) {
-        mItemArrayList = inState.getParcelableArrayList(THREAD_LIST_KEY);
+        Bundle itemAdapterBundle = inState.getBundle(ITEM_ADAPTER_KEY);
+        mItemArrayList = itemAdapterBundle.getParcelableArrayList(THREAD_LIST_KEY);
     }
 
     public void add(Thread item) {

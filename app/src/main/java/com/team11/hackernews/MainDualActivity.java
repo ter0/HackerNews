@@ -46,8 +46,15 @@ public class MainDualActivity extends MainBase {
         setContentView(R.layout.activity_main_dual);
         baseSetUp();
         //load website or comments requested
-        String webViewUrl = getIntent().getStringExtra(WEB_VIEW_URL);
-        Parcelable threadParcelable = getIntent().getParcelableExtra(THREAD);
+        String webViewUrl;
+        Parcelable threadParcelable;
+        if(savedInstanceState == null){
+            webViewUrl = getIntent().getStringExtra(WEB_VIEW_URL);
+            threadParcelable = getIntent().getParcelableExtra(THREAD);
+        }else{
+            webViewUrl = savedInstanceState.getString(WEB_VIEW_URL);
+            threadParcelable = savedInstanceState.getParcelable(THREAD);
+        }
         if (webViewUrl != null && threadParcelable != null) {
             throw new UnsupportedOperationException("Activity cannot take both WEB_VIEW_URL and THREAD extras");
         } else if (webViewUrl != null) {
@@ -76,7 +83,7 @@ public class MainDualActivity extends MainBase {
             mMainFragment = (MainFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_main);
             //if started from external url, no bundle will exist
-            if (savedInstanceState != null || getIntent().getBundleExtra(MainFragment.MAIN_FRAGMENT_KEY) != null) {
+            if (inputBundle.getBundle(MainFragment.MAIN_FRAGMENT_KEY) != null) {
                 mMainFragment.restoreState(inputBundle);
             }
         } else {
@@ -108,6 +115,14 @@ public class MainDualActivity extends MainBase {
             mMainFragment.saveState(outState);
         } else {
             outState.putAll(mMainFragmentBundle);
+        }
+        //these should really be made their fragment responsibility, then i.e. webViewFrag.save(bundle) is called
+        if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof WebViewFragment){
+            String url = ((WebViewFragment)getSupportFragmentManager().findFragmentById(R.id.container)).getURL();
+            outState.putString(WEB_VIEW_URL, url);
+        }else if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof ThreadFragment){
+            Thread thread = ((ThreadFragment)getSupportFragmentManager().findFragmentById(R.id.container)).getThread();
+            outState.putParcelable(THREAD, thread);
         }
     }
 

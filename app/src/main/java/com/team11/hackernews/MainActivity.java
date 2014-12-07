@@ -17,10 +17,16 @@ public class MainActivity extends MainBase {
         super.baseSetUp();
         mMainFragment = (MainFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_main);
-        //when the app is loaded externally, MAIN_FRAGMENT_KEY wont be present
         if (savedInstanceState == null && getIntent().getBundleExtra(MainFragment.MAIN_FRAGMENT_KEY) != null) {
             mMainFragment.restoreState(getIntent().getExtras());
+        }else if(savedInstanceState != null){
+            mMainFragment.restoreState(savedInstanceState);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mMainFragment.saveState(outState);
     }
 
     @Override

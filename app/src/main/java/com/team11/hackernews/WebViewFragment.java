@@ -26,6 +26,10 @@ public class WebViewFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public String getURL(){
+        return mUrl;
+    }
+
     public static WebViewFragment newInstance(String url) {
         WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();

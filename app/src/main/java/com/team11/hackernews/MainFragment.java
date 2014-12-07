@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
+import com.team11.hackernews.api.data.Job;
 import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public void restoreState(Bundle savedInstanceState) {
         Bundle mainBundle = savedInstanceState.getBundle(MAIN_FRAGMENT_KEY);
-        mItemAdapter.restoreState(savedInstanceState.getBundle(MAIN_FRAGMENT_KEY));
+        mItemAdapter.restoreState(mainBundle);
         mRecyclerView.scrollToPosition(mainBundle.getInt(FIRST_ITEM_KEY));
     }
 
@@ -173,17 +174,23 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
             mTopStoriesAccessor.getNextStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
                 public void onSuccess(List<Thread> threads) {
                     if (threads.size() == 0) {
-                        mCallbacks.showToast("No More Articles");
+                        if (isAdded()) {
+                            mCallbacks.showToast("No More Articles");
+                        }
                     } else {
                         for (Thread thread : threads) {
                             mItemAdapter.add(thread);
                         }
                         mItemAdapter.notifyDataSetChanged();
-                        mCallbacks.showToast("Loaded");
+                        if (isAdded()) {
+                            mCallbacks.showToast("Loaded");
+                        }
                     }
 
                     mFinishedLoadingBottom = true;
-                    mCallbacks.supportInvalidateOptionsMenu();
+                    if (isAdded()) {
+                        mCallbacks.supportInvalidateOptionsMenu();
+                    }
 
                 }
 
