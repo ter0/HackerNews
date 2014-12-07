@@ -1,10 +1,17 @@
 package com.team11.hackernews;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,6 +22,7 @@ public class ThreadFragment extends Fragment {
 
     private CommentsView mCommentView;
     private Thread mStory;
+    private ShareActionProvider mShareActionProvider;
 
     public ThreadFragment() {
         // Required empty public constructor
@@ -38,6 +46,7 @@ public class ThreadFragment extends Fragment {
         if (getArguments() != null) {
             mStory = getArguments().getParcelable(Thread.THREAD_PARCEL_KEY);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -48,6 +57,24 @@ public class ThreadFragment extends Fragment {
         mCommentView = (CommentsView) rootView.findViewById(R.id.comment_view);
         mCommentView.setThread(mStory);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.menu_thread, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.menu_thread_item_share);
+        if(menuItem != null) {
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            Intent shareIntent = ShareCompat.IntentBuilder.from(this.getActivity())
+                    .setType("text/plain")
+                    .setText(mStory.getThreadLink()).getIntent();
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override

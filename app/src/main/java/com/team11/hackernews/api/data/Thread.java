@@ -82,4 +82,8 @@ public abstract class Thread implements Parcelable {
             throw new NoSuchFieldException("This thread has no URL");
         }
     }
+
+    public String getThreadLink(){
+        return "https://news.ycombinator.com/item?id="+mId;
+    }
 }

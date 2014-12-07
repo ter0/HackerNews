@@ -1,13 +1,20 @@
 package com.team11.hackernews;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.Toast;
 
 public class WebViewFragment extends Fragment {
@@ -21,6 +28,8 @@ public class WebViewFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private WebView webView;
+
+    private ShareActionProvider mShareActionProvider;
 
     public WebViewFragment() {
         // Required empty public constructor
@@ -44,6 +53,7 @@ public class WebViewFragment extends Fragment {
         if (getArguments() != null) {
             mUrl = getArguments().getString(ARG_URL);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -76,6 +86,24 @@ public class WebViewFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         webView.saveState(outState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.menu_web_view, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.menu_web_item_share);
+        if(menuItem != null) {
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            Intent shareIntent = ShareCompat.IntentBuilder.from(this.getActivity())
+                    .setType("text/plain")
+                    .setText(mUrl).getIntent();
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
