@@ -2,7 +2,7 @@ package com.team11.hackernews.api.monitors;
 
 import com.team11.hackernews.api.Utils;
 import com.team11.hackernews.api.accessors.CommentsAccessor;
-import com.team11.hackernews.api.accessors.StoryAccessor;
+import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Comment;
 import com.team11.hackernews.api.data.Thread;
 
@@ -44,7 +44,7 @@ public class ThreadMonitor extends Monitor{
 
                     @Override
                     public void onWrongItemType(Utils.ItemType itemType, long id) {
-                        new StoryAccessor().getStory(id, new StoryAccessor.GetStoryCallbacks() {
+                        new ThreadAccessor().getStory(id, new ThreadAccessor.GetStoryCallbacks() {
                             @Override
                             public void onSuccess(Thread thread) {
                                 callbacks.onThreadUpdate(thread);

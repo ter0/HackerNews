@@ -6,7 +6,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Utils;
-import com.team11.hackernews.api.accessors.StoryAccessor;
+import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Thread;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public abstract class Monitor {
     }
 
     protected void getRootParent(long id, final GetRootParentCallbacks callbacks) {
-        new StoryAccessor().getStory(id, new StoryAccessor.GetStoryCallbacks() {
+        new ThreadAccessor().getStory(id, new ThreadAccessor.GetStoryCallbacks() {
             @Override
             public void onSuccess(com.team11.hackernews.api.data.Thread thread) {
                 callbacks.onFound(thread);

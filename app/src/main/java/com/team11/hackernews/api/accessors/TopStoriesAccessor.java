@@ -43,7 +43,7 @@ public class TopStoriesAccessor extends Accessor {
                 // Get all top stories in case they change order while trying to load the next page
                 mStoryIds = (List<Long>) dataSnapshot.getValue();
 
-                new StoryAccessor().getMultipleStories(getNextPage(), new StoryAccessor.GetMultipleStoriesCallbacks() {
+                new ThreadAccessor().getMultipleStories(getNextPage(), new ThreadAccessor.GetMultipleStoriesCallbacks() {
                     @Override
                     public void onSuccess(List<Thread> threads) {
                         callbacks.onSuccess(threads);
@@ -67,7 +67,7 @@ public class TopStoriesAccessor extends Accessor {
     }
 
     public void getNextStories(final GetTopStoriesCallbacks callbacks) {
-        new StoryAccessor().getMultipleStories(getNextPage(), new StoryAccessor.GetMultipleStoriesCallbacks() {
+        new ThreadAccessor().getMultipleStories(getNextPage(), new ThreadAccessor.GetMultipleStoriesCallbacks() {
             @Override
             public void onSuccess(List<Thread> stories) {
                 callbacks.onSuccess(stories);

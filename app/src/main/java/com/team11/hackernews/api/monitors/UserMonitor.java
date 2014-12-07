@@ -2,7 +2,7 @@ package com.team11.hackernews.api.monitors;
 
 import com.team11.hackernews.api.Utils;
 import com.team11.hackernews.api.accessors.CommentsAccessor;
-import com.team11.hackernews.api.accessors.StoryAccessor;
+import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Comment;
 import com.team11.hackernews.api.data.Thread;
 import com.team11.hackernews.api.data.User;
@@ -22,8 +22,7 @@ public class UserMonitor extends Monitor{
 
             @Override
             public void onNewItem(Long id) {
-                StoryAccessor storyAccessor = new StoryAccessor();
-                storyAccessor.getStory(id, new StoryAccessor.GetStoryCallbacks() {
+                new ThreadAccessor().getStory(id, new ThreadAccessor.GetStoryCallbacks() {
                     @Override
                     public void onSuccess(Thread thread) {
                         if (thread.getBy() == mUser.getId()) {

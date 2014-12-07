@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.team11.hackernews.api.Utils;
-import com.team11.hackernews.api.accessors.StoryAccessor;
+import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Thread;
 
 public class MainDualActivity extends MainBase {
@@ -15,7 +15,7 @@ public class MainDualActivity extends MainBase {
      */
     public static final String WEB_VIEW_URL = "WEB_VIEW_URL";
     public static final String THREAD = "THREAD";
-    StoryAccessor.GetStoryCallbacks storyCallbacks = new StoryAccessor.GetStoryCallbacks() {
+    ThreadAccessor.GetStoryCallbacks storyCallbacks = new ThreadAccessor.GetStoryCallbacks() {
         @Override
         public void onSuccess(Thread thread) {
             loadThread(thread);
@@ -69,7 +69,7 @@ public class MainDualActivity extends MainBase {
         } else if (getIntent().getData().getQueryParameter("id") != null) {
             int id = Integer.parseInt(getIntent().getData().getQueryParameter("id"));
             //pending api update this WILL BREAK on non-story items
-            new StoryAccessor().getStory(id, storyCallbacks);
+            new ThreadAccessor().getStory(id, storyCallbacks);
         }
         Bundle inputBundle;
         if (savedInstanceState == null) {
