@@ -15,11 +15,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW"></action>
-
-                <category android:name="android.intent.category.DEFAULT"></category>
                 <category android:name="android.intent.category.BROWSABLE"></category>
-
+                <category android:name="android.intent.category.DEFAULT"></category>
                 <data
                     android:host="news.ycombinator.com"
                     android:scheme="https"></data>
@@ -34,10 +35,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW"></action>
-
-                <category android:name="android.intent.category.DEFAULT"></category>
                 <category android:name="android.intent.category.BROWSABLE"></category>
-
+                <category android:name="android.intent.category.DEFAULT"></category>
                 <data
                     android:host="news.ycombinator.com"
                     android:pathPrefix="/item"
