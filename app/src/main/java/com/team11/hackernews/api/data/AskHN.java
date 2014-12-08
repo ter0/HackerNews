@@ -3,9 +3,6 @@ package com.team11.hackernews.api.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class AskHN extends Thread {
 
     public static final Parcelable.Creator<AskHN> CREATOR = new Parcelable.Creator<AskHN>() {
@@ -36,12 +33,12 @@ public class AskHN extends Thread {
     }
 
     @Override
-    public boolean hasComments(){
+    public boolean hasComments() {
         return true;
     }
 
     @Override
-    public boolean hasURL(){
+    public boolean hasURL() {
         return false;
     }
 }

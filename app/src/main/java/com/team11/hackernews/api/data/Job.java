@@ -49,12 +49,12 @@ public class Job extends Thread {
     }
 
     @Override
-    public boolean hasComments(){
+    public boolean hasComments() {
         return false;
     }
 
     @Override
-    public boolean hasURL(){
+    public boolean hasURL() {
         return true;
     }
 }

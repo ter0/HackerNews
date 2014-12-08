@@ -45,12 +45,12 @@ public class Poll extends Thread {
     }
 
     @Override
-    public boolean hasComments(){
+    public boolean hasComments() {
         return true;
     }
 
     @Override
-    public boolean hasURL(){
+    public boolean hasURL() {
         return false;
     }
 }

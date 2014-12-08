@@ -2,7 +2,6 @@ package com.team11.hackernews;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -11,8 +10,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.team11.hackernews.api.data.*;
-import com.team11.hackernews.api.data.Thread;
 
 public abstract class MainBase extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks,

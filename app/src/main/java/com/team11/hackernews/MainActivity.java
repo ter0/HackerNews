@@ -19,9 +19,11 @@ public class MainActivity extends MainBase {
                 getSupportFragmentManager().findFragmentById(R.id.fragment_main);
         if (savedInstanceState == null && getIntent().getBundleExtra(MainFragment.MAIN_FRAGMENT_KEY) != null) {
             mMainFragment.restoreState(getIntent().getExtras());
-        }else if(savedInstanceState != null){
+        } else if (savedInstanceState != null) {
             mMainFragment.restoreState(savedInstanceState);
         }
+        Intent intent = new Intent(this, WatcherService.class);
+        this.startService(intent);
     }
 
     @Override

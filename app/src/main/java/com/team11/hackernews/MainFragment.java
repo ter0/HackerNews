@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
-import com.team11.hackernews.api.data.Job;
 import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         super.onCreate(savedInstanceState);
         mFinishedLoadingRefresh = true;
         mFinishedLoadingBottom = true;
-        mItemAdapter = new ItemAdapter(this, mItemInteractionCallbacks);
+        mItemAdapter = new ItemAdapter(this.getActivity(), this, mItemInteractionCallbacks);
         if (savedInstanceState != null) {
             restoreState(savedInstanceState);
         }
@@ -64,7 +63,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     public Bundle saveState(Bundle bundle) {
         Bundle mainBundle = new Bundle();
         mItemAdapter.saveState(mainBundle);
-        int firstItem = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        int firstItem = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         mainBundle.putInt(FIRST_ITEM_KEY, firstItem);
         bundle.putBundle(MAIN_FRAGMENT_KEY, mainBundle);
         return bundle;

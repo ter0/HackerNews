@@ -4,8 +4,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
-import com.team11.hackernews.api.data.User;
 import com.team11.hackernews.api.Utils;
+import com.team11.hackernews.api.data.User;
 
 import java.util.List;
 import java.util.Map;

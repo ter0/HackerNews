@@ -28,7 +28,7 @@ public class ThreadFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public Thread getThread(){
+    public Thread getThread() {
         return mStory;
     }
 
@@ -60,7 +60,7 @@ public class ThreadFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_thread, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -68,7 +68,7 @@ public class ThreadFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.menu_thread_item_share);
-        if(menuItem != null) {
+        if (menuItem != null) {
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
             Intent shareIntent = ShareCompat.IntentBuilder.from(this.getActivity())
                     .setType("text/plain")

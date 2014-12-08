@@ -30,6 +30,9 @@ public class ThreadAccessor extends Accessor {
 
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
+                if (map == null)
+                    return;
+
                 Boolean deleted = (Boolean) map.get("deleted");
 
                 if ((deleted != null) && deleted) {

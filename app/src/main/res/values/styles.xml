@@ -1,5 +1,7 @@
 <resources>
-    <style name="MaterialTheme" parent="MaterialTheme.Base"/>
+
+    <style name="MaterialTheme" parent="MaterialTheme.Base" />
+
     <style name="MaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/actionBar</item>
         <item name="colorPrimaryDark">@color/statusBar</item>

@@ -6,13 +6,13 @@ import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Comment;
 import com.team11.hackernews.api.data.Thread;
 
-public class ThreadMonitor extends Monitor{
+public class ThreadMonitor extends Monitor {
 
-    private Thread mThread;
+    private long mId;
 
-    public ThreadMonitor(Thread thread) {
+    public ThreadMonitor(long id) {
         super();
-        mThread = thread;
+        mId = id;
     }
 
     public void addListener(final ThreadMonitorCallbacks callbacks) {
@@ -29,7 +29,7 @@ public class ThreadMonitor extends Monitor{
 
                             @Override
                             public void onFound(Thread thread) {
-                                if (thread.getId() == mThread.getId()) {
+                                if (thread.getId() == mId) {
                                     callbacks.onCommentUpdate(comment, thread);
                                 }
                             }
@@ -47,7 +47,9 @@ public class ThreadMonitor extends Monitor{
                         new ThreadAccessor().getStory(id, new ThreadAccessor.GetStoryCallbacks() {
                             @Override
                             public void onSuccess(Thread thread) {
-                                callbacks.onThreadUpdate(thread);
+                                if (thread.getId() == mId) {
+                                    callbacks.onThreadUpdate(thread);
+                                }
                             }
 
                             @Override
@@ -74,13 +76,13 @@ public class ThreadMonitor extends Monitor{
                 });
 
 
-
             }
         });
     }
 
     public interface ThreadMonitorCallbacks {
         public void onThreadUpdate(Thread thread);
+
         public void onCommentUpdate(Comment comment, Thread parentThread);
     }
 }

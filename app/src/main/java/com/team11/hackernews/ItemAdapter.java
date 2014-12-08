@@ -1,6 +1,7 @@
 package com.team11.hackernews;
 
-import android.content.Intent;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.team11.hackernews.api.data.AskHN;
 import com.team11.hackernews.api.data.Job;
@@ -29,12 +31,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ItemInteractionCallbacks mItemInteractionCallbacks;
     private ArrayList<Thread> mItemArrayList;
     private int mMaxBinded;
+    private Context mContext;
 
-    public ItemAdapter(Callbacks callbacks, ItemInteractionCallbacks itemInteractionCallbacks) {
+    public ItemAdapter(Context context, Callbacks callbacks, ItemInteractionCallbacks itemInteractionCallbacks) {
         mItemArrayList = new ArrayList<Thread>();
         mMaxBinded = 0;
         mCallbacks = callbacks;
         mItemInteractionCallbacks = itemInteractionCallbacks;
+        mContext = context;
     }
 
     public void saveState(Bundle outState) {
@@ -180,6 +184,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 }
             });
         }
+        viewHolder.mScore.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(ItemAdapter.this.mContext, "Post saved in favourites", Toast.LENGTH_LONG).show();
+                WatchedThreadsOpenHelper m = new WatchedThreadsOpenHelper(ItemAdapter.this.mContext);
+                SQLiteDatabase db = m.getWritableDatabase();
+                db.execSQL("INSERT INTO " + WatchedThreadsOpenHelper.WATCHED_THREADS_TABLE_NAME +
+                        " ( " + WatchedThreadsOpenHelper.KEY_THREAD_ID + " ) " + " VALUES "
+                        + "(" + mItemArrayList.get(i).getId() + ")");
+                return true;
+            }
+        });
     }
 
     private CharSequence getTime(long timeStamp) {

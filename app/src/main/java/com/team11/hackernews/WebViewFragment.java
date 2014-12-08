@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.support.v7.widget.ShareActionProvider;
 import android.widget.Toast;
 
 public class WebViewFragment extends Fragment {
@@ -35,7 +35,7 @@ public class WebViewFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public String getURL(){
+    public String getURL() {
         return mUrl;
     }
 
@@ -89,7 +89,7 @@ public class WebViewFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_web_view, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -97,7 +97,7 @@ public class WebViewFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.menu_web_item_share);
-        if(menuItem != null) {
+        if (menuItem != null) {
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
             Intent shareIntent = ShareCompat.IntentBuilder.from(this.getActivity())
                     .setType("text/plain")

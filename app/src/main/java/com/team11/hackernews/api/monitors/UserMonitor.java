@@ -8,7 +8,7 @@ import com.team11.hackernews.api.data.Thread;
 import com.team11.hackernews.api.data.User;
 
 
-public class UserMonitor extends Monitor{
+public class UserMonitor extends Monitor {
 
     private User mUser;
 
@@ -80,6 +80,7 @@ public class UserMonitor extends Monitor{
 
     public interface UserMonitorCallbacks {
         public void onThreadUpdate(Thread thread);
+
         public void onCommentUpdate(Comment comment, Thread parentThread);
     }
 }

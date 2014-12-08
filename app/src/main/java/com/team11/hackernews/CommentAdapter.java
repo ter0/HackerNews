@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.team11.hackernews.api.accessors.CommentsAccessor;
 import com.team11.hackernews.api.data.Comment;
 import com.team11.hackernews.api.data.Thread;
-import com.team11.hackernews.api.accessors.CommentsAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
