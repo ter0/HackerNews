@@ -5,6 +5,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.team11.hackernews.api.HackerNewsAPI;
 import com.team11.hackernews.api.Utils;
+import com.team11.hackernews.api.data.Poll;
 import com.team11.hackernews.api.data.PollOption;
 
 import java.util.ArrayList;
@@ -13,7 +14,10 @@ import java.util.Map;
 
 public class PollOptionAccessor extends Accessor {
 
-    public void getPollOptions(final List<Long> ids, final GetPollOptionsCallbacks callbacks) {
+    public void getPollOptions(Poll poll, final GetPollOptionsCallbacks callbacks) {
+
+        final List<Long> ids = poll.getKids();
+        
         final List<PollOption> pollOpts = new ArrayList<PollOption>();
 
         if (ids.size() == 0) {
