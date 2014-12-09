@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="@string/monitored_user"
+        android:title="@string/monitored_user"
+        android:summary="@string/monitored_user_summ"/>
+</PreferenceScreen>

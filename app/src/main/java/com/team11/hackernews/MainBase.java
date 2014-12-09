@@ -10,10 +10,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.team11.hackernews.settings.SettingsActivity;
 
 public abstract class MainBase extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks,
-        WebViewFragment.OnFragmentInteractionListener, ItemAdapter.ItemInteractionCallbacks {
+        ItemAdapter.ItemInteractionCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -93,6 +94,8 @@ public abstract class MainBase extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
