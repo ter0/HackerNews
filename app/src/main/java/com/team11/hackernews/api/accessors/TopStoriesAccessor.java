@@ -32,6 +32,10 @@ public class TopStoriesAccessor extends Accessor {
 
     }
 
+    public void changePageLength(int pageLength) {
+        mPageLength = pageLength;
+    }
+
     public void getInitialStories(final GetTopStoriesCallbacks callbacks) {
         Utils.getFirebaseInstance().child(HackerNewsAPI.TOP_STORIES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
