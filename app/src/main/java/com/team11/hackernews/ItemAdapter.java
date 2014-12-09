@@ -1,7 +1,7 @@
 package com.team11.hackernews;
 
+import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -188,11 +188,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(ItemAdapter.this.mContext, "Post saved in favourites", Toast.LENGTH_LONG).show();
-                WatchedThreadsOpenHelper m = new WatchedThreadsOpenHelper(ItemAdapter.this.mContext);
-                SQLiteDatabase db = m.getWritableDatabase();
-                db.execSQL("INSERT INTO " + WatchedThreadsOpenHelper.WATCHED_THREADS_TABLE_NAME +
-                        " ( " + WatchedThreadsOpenHelper.KEY_THREAD_ID + " ) " + " VALUES "
-                        + "(" + mItemArrayList.get(i).getId() + ")");
+                ContentValues cv = new ContentValues();
+                cv.put("id", mItemArrayList.get(i).getId().toString());
+                mContext.getContentResolver().insert(WatchedThreadsContentProvider.CONTENT_URI, cv);
                 return true;
             }
         });

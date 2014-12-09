@@ -8,7 +8,7 @@ import com.team11.hackernews.api.Utils;
 import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Thread;
 
-public class MainDualActivity extends MainBase implements WebViewFragment.OnFragmentInteractionListener{
+public class MainDualActivity extends MainBase implements WebViewFragment.OnFragmentInteractionListener {
 
     /**
      * Pass either of these to tell this what to put in it's container fragment

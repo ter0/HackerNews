@@ -3,22 +3,25 @@ package com.team11.hackernews;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.firebase.client.Firebase;
 import com.team11.hackernews.api.data.Comment;
 import com.team11.hackernews.api.data.Thread;
 import com.team11.hackernews.api.monitors.ThreadMonitor;
 
 import java.util.ArrayList;
 
-public class WatcherService extends Service {
+public class WatcherService extends Service implements Loader.OnLoadCompleteListener<Cursor> {
     private WatchedThreadsOpenHelper mWatchedThreadsOpenHelper;
     private ArrayList<ThreadMonitor> mThreadMonitorList;
+    private CursorLoader mCursorLoader;
 
     public WatcherService() {
         super();
@@ -27,17 +30,26 @@ public class WatcherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Firebase.setAndroidContext(this);
         Log.d("WatcherService", "WatcherService started");
         mWatchedThreadsOpenHelper = new WatchedThreadsOpenHelper(this);
         mThreadMonitorList = new ArrayList<ThreadMonitor>();
-        SQLiteDatabase db = mWatchedThreadsOpenHelper.getReadableDatabase();
-        Cursor cursor = db.query(WatchedThreadsOpenHelper.WATCHED_THREADS_TABLE_NAME,
-                new String[]{WatchedThreadsOpenHelper.KEY_THREAD_ID},
-                null,
-                null,
-                null,
-                null,
-                null);
+        mCursorLoader = new CursorLoader(getApplicationContext(), WatchedThreadsContentProvider.CONTENT_URI, null, null, null, null);
+        mCursorLoader.registerListener(0, this);
+        mCursorLoader.startLoading();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public void onLoadComplete(Loader<Cursor> loader, Cursor cursor) {
+        // we have the new data
+        Log.d("WatcherService", "loader returned fresh data");
+        mThreadMonitorList.clear();
         int threadIdIndex = cursor.getColumnIndex(WatchedThreadsOpenHelper.KEY_THREAD_ID);
         while (cursor.moveToNext()) {
             int id = cursor.getInt(threadIdIndex);
@@ -66,8 +78,13 @@ public class WatcherService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void onDestroy() {
+        super.onDestroy();
+        // Stop the cursor loader
+        if (mCursorLoader != null) {
+            mCursorLoader.unregisterListener(this);
+            mCursorLoader.cancelLoad();
+            mCursorLoader.stopLoading();
+        }
     }
 }
