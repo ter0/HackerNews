@@ -88,43 +88,39 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mBy.setText(currentItem.getBy());
         CharSequence timeAgo = getTime(currentItem.getTime());
         viewHolder.mTime.setText(timeAgo);
-        Integer commentCount;
-        String commentString;
+        String domainString;
+        String commentsString;
+
+        // Domain
         if (currentItem instanceof Story || currentItem instanceof Job) {
-            URL URLObject;
+            URL UrlObject;
 
             if (currentItem instanceof Story) {
-                URLObject = ((Story) currentItem).getURL();
-                // Story will have comments
-                commentCount = currentItem.getKids().size();
-                commentString = commentCount.toString() + " comments";
-                viewHolder.mComments.setText(commentString);
+                UrlObject = ((Story) currentItem).getURL();
             } else {
-                URLObject = ((Job) currentItem).getURL();
-                // A job posting will not (Replace comments with Job Posting
-                viewHolder.mComments.setText("Job Posting");
+                UrlObject = ((Job) currentItem).getURL();
             }
 
-            String domainName = "";
-            if (URLObject != null) {
-                domainName = URLObject.getHost();
-                if (domainName.startsWith("www.")) {
-                    domainName = domainName.substring(4);
-                }
-                domainName = "(" + domainName + ")";
-            }
-            viewHolder.mDomain.setText(domainName);
+            String host = UrlObject.getHost();
+            domainString = host.startsWith("www.") ? host.substring(4) : host;
+            domainString = "(" + domainString + ")";
         } else if (currentItem instanceof Poll) {
-            viewHolder.mDomain.setText("User Poll");
-            commentCount = currentItem.getKids().size();
-            commentString = commentCount.toString() + " comments";
-            viewHolder.mComments.setText(commentString);
+            domainString = "User Poll";
         } else if (currentItem instanceof AskHN) {
-            viewHolder.mDomain.setText("Ask HN");
-            commentCount = currentItem.getKids().size();
-            commentString = commentCount.toString() + " comments";
-            viewHolder.mComments.setText(commentString);
+            domainString = "Ask HN";
+        } else {
+            domainString = "";
         }
+
+        // Comments
+        if (currentItem instanceof Job) {
+            commentsString = "Job Posting";
+        } else {
+            commentsString = currentItem.getKids().size() + " comments";
+        }
+
+        viewHolder.mDomain.setText(domainString);
+        viewHolder.mComments.setText(commentsString);
 
         //TODO: Check differences in binding web view to ASKHN and Polls
 
