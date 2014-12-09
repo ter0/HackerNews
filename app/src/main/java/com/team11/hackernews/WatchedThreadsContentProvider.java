@@ -50,7 +50,6 @@ public class WatchedThreadsContentProvider extends ContentProvider {
 
         // Set the table
         queryBuilder.setTables(WatchedThreadsOpenHelper.WATCHED_THREADS_TABLE_NAME);
-        //queryBuilder.appendWhere(WatchedThreadsOpenHelper.KEY_THREAD_ID + "=" + uri.getLastPathSegment());
 
         SQLiteDatabase db = mWatchedThreadsOpenHelper.getWritableDatabase();
         Cursor cursor = queryBuilder.query(db, projection, selection,
