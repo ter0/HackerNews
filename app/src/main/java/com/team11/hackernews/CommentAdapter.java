@@ -52,12 +52,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Comment comment = mCommentArrayList.get(position);
         holder.itemView.setTag(R.id.comment_tag, comment.getDepth());
         holder.mAuthorTextView.setText(comment.getBy());
         holder.mTimeTextView.setText(getTime(comment.getTime()));
         holder.mCommentTextView.setText(Html.fromHtml(comment.getText()));
+        holder.mShowMoreButton.setVisibility(View.GONE);
+
         if (comment.getKids() != null && comment.getKids().size() > 0) {
             holder.mShowMoreButton.setVisibility(View.VISIBLE);
             holder.mShowMoreButton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +70,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         @Override
                         public void onSuccess(List<Comment> comments) {
                             //insert directly underneath their parents entry
+                            holder.mShowMoreButton.setVisibility(View.GONE);
                             int newPosition = position;
                             for (Comment childComment : comments) {
                                 addAfter(childComment, ++newPosition);
@@ -82,8 +85,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     });
                 }
             });
-        } else {
-            holder.mShowMoreButton.setVisibility(View.GONE);
         }
     }
 
