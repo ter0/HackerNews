@@ -16,8 +16,12 @@ public class WatchedThreadsContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.w(TAG, "Not yet implemented");
-        return 0;
+        //correct this to use selection arg
+        SQLiteDatabase db = mWatchedThreadsOpenHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM " + WatchedThreadsOpenHelper.WATCHED_THREADS_TABLE_NAME +
+                 " WHERE "+ WatchedThreadsOpenHelper.KEY_THREAD_ID+"="+selectionArgs[0]);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return 1;
     }
 
     @Override

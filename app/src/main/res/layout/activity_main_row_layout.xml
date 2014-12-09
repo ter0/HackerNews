@@ -10,30 +10,32 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="5dp"
-        android:weightSum="1">
+        android:weightSum="7">
 
         <TextView
             android:id="@+id/mScore"
-            android:layout_width="50dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Score"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_weight="5.5">
 
             <TextView
                 android:id="@+id/mTitle"
@@ -89,7 +91,16 @@
                     android:paddingLeft="5dp" />
 
             </LinearLayout>
+
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/mFavorite"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_weight="0.5"/>
+
     </LinearLayout>
 
     <View

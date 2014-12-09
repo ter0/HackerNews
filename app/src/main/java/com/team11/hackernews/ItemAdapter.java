@@ -2,13 +2,16 @@ package com.team11.hackernews;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,13 +76,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
+        Log.d("itemCount-1 = ", String.valueOf(getItemCount() - 1));
+        Log.d("mMaxBinded", String.valueOf(mMaxBinded));
+        Log.d("max item's id", String.valueOf(mItemArrayList.get(getItemCount() - 1).getId()));
         if (mMaxBinded < i) {
             mMaxBinded = i;
             if (mMaxBinded == this.getItemCount() - 1) {
+                Log.d("ItemAdapter", "Reached bottom");
                 mCallbacks.onReachedBottom();
             }
         }
-        //TextView itemTitle = (TextView)viewHolder.findViewById(R.id.mTitle);
 
         Thread currentItem = mItemArrayList.get(i);
 
@@ -140,6 +146,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 }
 
             });
+            viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
+                }
+            });
             viewHolder.mTitle.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -148,12 +160,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     return true;
                 }
 
-            });
-            viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
-                }
             });
         } else if (currentItem instanceof Job) {
             //Jobs have no comments and a URL link in the title
@@ -180,16 +186,43 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 }
             });
         }
-        viewHolder.mScore.setOnLongClickListener(new View.OnLongClickListener() {
+
+        if (isThreadFavorite(currentItem.getId())) {
+            viewHolder.mFavorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_important));
+        } else {
+            viewHolder.mFavorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_not_important));
+        }
+        viewHolder.mFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(ItemAdapter.this.mContext, "Post saved in favourites", Toast.LENGTH_LONG).show();
-                ContentValues cv = new ContentValues();
-                cv.put("id", mItemArrayList.get(i).getId().toString());
-                mContext.getContentResolver().insert(WatchedThreadsContentProvider.CONTENT_URI, cv);
-                return true;
+            public void onClick(View v) {
+                Long id = mItemArrayList.get(i).getId();
+                if (isThreadFavorite(id)) {
+                    Toast.makeText(ItemAdapter.this.mContext, "Post removed from favourites", Toast.LENGTH_LONG).show();
+                    ((ImageView) v).setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_not_important));
+                    String where = "";
+                    String[] whereArgs = {String.valueOf(id)};
+                    mContext.getContentResolver().delete(WatchedThreadsContentProvider.CONTENT_URI, where, whereArgs);
+                } else {
+                    Toast.makeText(ItemAdapter.this.mContext, "Post saved in favourites", Toast.LENGTH_LONG).show();
+                    ((ImageView) v).setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_important));
+                    ContentValues cv = new ContentValues();
+                    cv.put("id", mItemArrayList.get(i).getId().toString());
+                    mContext.getContentResolver().insert(WatchedThreadsContentProvider.CONTENT_URI, cv);
+                }
             }
         });
+    }
+
+    //move to content resolver?
+    private boolean isThreadFavorite(Long id){
+        String[] projection = {WatchedThreadsOpenHelper.KEY_THREAD_ID};
+        String selection = WatchedThreadsOpenHelper.KEY_THREAD_ID+"=?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor cursor = mContext.getContentResolver().query(WatchedThreadsContentProvider.CONTENT_URI, projection,
+                selection, selectionArgs, null);
+        boolean isFavorite = cursor.getCount() == 1;
+        cursor.close();
+        return isFavorite;
     }
 
     private CharSequence getTime(long timeStamp) {
@@ -223,6 +256,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public TextView mTime;
         public TextView mDomain;
         public TextView mComments;
+        public ImageView mFavorite;
 
         public ViewHolder(LinearLayout v) {
             // each data item is just a string in this case
@@ -234,6 +268,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             mTime = (TextView) v.findViewById(R.id.mTime);
             mDomain = (TextView) v.findViewById(R.id.mDomain);
             mComments = (TextView) v.findViewById(R.id.mComments);
+            mFavorite = (ImageView) v.findViewById(R.id.mFavorite);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.team11.hackernews;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -11,7 +12,7 @@ public class WatchedThreadsOpenHelper extends SQLiteOpenHelper {
     private static final String WATCHED_THREADS_TABLE_CREATE =
             "CREATE TABLE " + WATCHED_THREADS_TABLE_NAME + " (" +
                     KEY_THREAD_ID + " INTEGER);";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     WatchedThreadsOpenHelper(Context context) {
         super(context, WATCHED_THREADS_TABLE_NAME, null, DATABASE_VERSION);
