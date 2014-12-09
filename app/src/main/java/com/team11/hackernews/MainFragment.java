@@ -141,8 +141,8 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         //avoids fetching items twice before refresh is complete
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
         mFinishedLoadingBottom = false;
-        mTopStoriesAccessor = new TopStoriesAccessor(10);
-        mTopStoriesAccessor.getInitialStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
+        mTopStoriesAccessor = new TopStoriesAccessor();
+        mTopStoriesAccessor.getNextThreads(10, new TopStoriesAccessor.GetNextThreadsCallbacks() {
             @Override
             public void onSuccess(List<Thread> threads) {
                 mItemAdapter.clear();
@@ -170,7 +170,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     public void onReachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStoriesAccessor.getNextStories(new TopStoriesAccessor.GetTopStoriesCallbacks() {
+            mTopStoriesAccessor.getNextThreads(10, new TopStoriesAccessor.GetNextThreadsCallbacks() {
                 public void onSuccess(List<Thread> threads) {
                     if (threads.size() == 0) {
                         if (isAdded()) {
