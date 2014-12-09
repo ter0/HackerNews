@@ -22,8 +22,6 @@ public class MainActivity extends MainBase {
         } else if (savedInstanceState != null) {
             mMainFragment.restoreState(savedInstanceState);
         }
-        Intent intent = new Intent(this, WatcherService.class);
-        this.startService(intent);
     }
 
     @Override

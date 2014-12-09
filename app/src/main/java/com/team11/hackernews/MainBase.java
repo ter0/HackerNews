@@ -43,6 +43,10 @@ public abstract class MainBase extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         //FIRE BASE
         Firebase.setAndroidContext(this.getApplicationContext());
+
+        //Start service to watch users/threads
+        Intent intent = new Intent(this, WatcherService.class);
+        this.startService(intent);
     }
 
     @Override
