@@ -1,6 +1,7 @@
 package com.team11.hackernews;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.team11.hackernews.settings.SettingsActivity;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -94,6 +97,14 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
+                //(id == R.id.action_settings)
+                //find id declaration
+                if (position == 3) {
+                    Intent intent;
+                    intent = new Intent(NavigationDrawerFragment.this.getActivity(), SettingsActivity.class);
+                    startActivity(intent);
+                    selectItem(0);
+                }
             }
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
@@ -246,7 +257,6 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
