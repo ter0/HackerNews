@@ -41,8 +41,8 @@ public class WatcherService extends Service implements Loader.OnLoadCompleteList
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        // We perform no IPC so this is not required
+        throw new UnsupportedOperationException("This service provides no IPC");
     }
 
     @Override
