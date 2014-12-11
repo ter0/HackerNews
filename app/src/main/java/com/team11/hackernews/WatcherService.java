@@ -1,12 +1,13 @@
 package com.team11.hackernews;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -59,13 +60,21 @@ public class WatcherService extends Service implements Loader.OnLoadCompleteList
             monitor.addListener(new ThreadMonitor.ThreadMonitorCallbacks() {
                 @Override
                 public void onThreadUpdate(com.team11.hackernews.api.data.Thread thread) {
-                    NotificationCompat.Builder mBuilder =
+                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    NotificationCompat.Builder notificationBuilder =
                             new NotificationCompat.Builder(WatcherService.this)
                                     .setSmallIcon(R.drawable.logo)
                                     .setContentTitle("Hacker News")
                                     .setContentText(thread.getTitle() + " updated");
-                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(0, mBuilder.build());
+                    // pending intent is redirection using the deep-link
+                    Intent resultIntent = new Intent(Intent.ACTION_VIEW);
+                    resultIntent.setData(Uri.parse("http://news.ycombinator.com/item?id=" + thread.getId()));
+
+                    PendingIntent pending = PendingIntent.getActivity(WatcherService.this, 0, resultIntent, 0);
+                    notificationBuilder.setContentIntent(pending);
+
+                    // using the same tag and Id causes the new notification to replace an existing one
+                    mNotificationManager.notify(String.valueOf(System.currentTimeMillis()), 0, notificationBuilder.build());
                 }
 
                 @Override
