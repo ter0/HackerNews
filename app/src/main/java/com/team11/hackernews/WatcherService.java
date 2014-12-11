@@ -66,14 +66,12 @@ public class WatcherService extends Service implements Loader.OnLoadCompleteList
                                     .setSmallIcon(R.drawable.logo)
                                     .setContentTitle("Hacker News")
                                     .setContentText(thread.getTitle() + " updated");
-                    // pending intent is redirection using the deep-link
                     Intent resultIntent = new Intent(Intent.ACTION_VIEW);
                     resultIntent.setData(Uri.parse("http://news.ycombinator.com/item?id=" + thread.getId()));
 
                     PendingIntent pending = PendingIntent.getActivity(WatcherService.this, 0, resultIntent, 0);
                     notificationBuilder.setContentIntent(pending);
 
-                    // using the same tag and Id causes the new notification to replace an existing one
                     mNotificationManager.notify(String.valueOf(thread.getId()), 0, notificationBuilder.build());
                 }
 
