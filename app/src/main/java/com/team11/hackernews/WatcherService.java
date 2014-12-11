@@ -74,7 +74,7 @@ public class WatcherService extends Service implements Loader.OnLoadCompleteList
                     notificationBuilder.setContentIntent(pending);
 
                     // using the same tag and Id causes the new notification to replace an existing one
-                    mNotificationManager.notify(String.valueOf(System.currentTimeMillis()), 0, notificationBuilder.build());
+                    mNotificationManager.notify(String.valueOf(thread.getId()), 0, notificationBuilder.build());
                 }
 
                 @Override
