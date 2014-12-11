@@ -1,7 +1,9 @@
 package com.team11.hackernews;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -143,7 +145,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
         mFinishedLoadingBottom = false;
         mTopStoriesAccessor = new TopStoriesAccessor();
-        mTopStoriesAccessor.getNextThreads(10, new TopStoriesAccessor.GetNextThreadsCallbacks() {
+        mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
             @Override
             public void onSuccess(List<Thread> threads) {
                 mItemAdapter.clear();
@@ -167,11 +169,19 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         });
     }
 
+    private int getStoriesToFetchCount() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int storiesToFetch = prefs.getInt(getString(R.string.stories_to_load), 10);
+        storiesToFetch = storiesToFetch < 1 ? 10 : storiesToFetch;
+        Log.d("", "fetch: " + storiesToFetch);
+        return storiesToFetch;
+    }
+
     @Override
     public void onReachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStoriesAccessor.getNextThreads(10, new TopStoriesAccessor.GetNextThreadsCallbacks() {
+            mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
                 public void onSuccess(List<Thread> threads) {
                     if (threads.size() == 0) {
                         if (isAdded()) {

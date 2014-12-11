@@ -18,5 +18,8 @@
     <!--settings-->
     <string name="monitored_user">Monitored user</string>
     <string name="monitored_user_summ">Who you will follow</string>
+    <string name="stories_to_load">Number of stories to load</string>
+    <string name="stories_to_load_summ">The number of stories to load at a time</string>
+
 </resources>
 

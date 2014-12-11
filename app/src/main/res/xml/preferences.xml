@@ -2,6 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
         android:key="@string/monitored_user"
-        android:title="@string/monitored_user"
-        android:summary="@string/monitored_user_summ"/>
+        android:summary="@string/monitored_user_summ"
+        android:title="@string/monitored_user" />
+
+    <com.team11.hackernews.NumberPickerPreference
+        android:defaultValue="10"
+        android:key="@string/stories_to_load"
+        android:persistent="true"
+        android:summary="@string/stories_to_load_summ"
+        android:title="@string/stories_to_load" />
+
 </PreferenceScreen>
