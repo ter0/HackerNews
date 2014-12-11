@@ -31,6 +31,8 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     private TopStoriesAccessor mTopStoriesAccessor;
     private boolean mFinishedLoadingRefresh;
     private boolean mFinishedLoadingBottom;
+    private int mRememberedPosition;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -48,12 +50,6 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFinishedLoadingRefresh = true;
-        mFinishedLoadingBottom = true;
-        mItemAdapter = new ItemAdapter(this.getActivity(), this, mItemInteractionCallbacks);
-        if (savedInstanceState != null) {
-            restoreState(savedInstanceState);
-        }
         setHasOptionsMenu(true);
     }
 
@@ -75,7 +71,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     public void restoreState(Bundle savedInstanceState) {
         Bundle mainBundle = savedInstanceState.getBundle(MAIN_FRAGMENT_KEY);
         mItemAdapter.restoreState(mainBundle);
-        mRecyclerView.scrollToPosition(mainBundle.getInt(FIRST_ITEM_KEY));
+        mRememberedPosition = mainBundle.getInt(FIRST_ITEM_KEY);
     }
 
     @Override
@@ -85,7 +81,9 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mItemAdapter);
-
+        if((Integer)mRememberedPosition != null) {
+            mRecyclerView.scrollToPosition(mRememberedPosition);
+        }
         return rootView;
     }
 
@@ -110,6 +108,9 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ItemAdapter.ItemInteractionCallbacks.");
         }
+        mItemAdapter = new ItemAdapter(this.getActivity(), this, mItemInteractionCallbacks);
+        mFinishedLoadingRefresh = true;
+        mFinishedLoadingBottom = true;
     }
 
     @Override

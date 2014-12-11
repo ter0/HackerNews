@@ -13,3 +13,4 @@
         android:title="@string/action_open_browser"
         app:showAsAction="never"/>
 </menu>
+

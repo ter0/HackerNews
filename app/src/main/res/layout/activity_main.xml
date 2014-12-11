@@ -6,11 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.team11.hackernews.MainActivity">
 
-    <!-- As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
-    <fragment
-        android:id="@+id/fragment_main"
-        android:name="com.team11.hackernews.MainFragment"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
@@ -29,3 +26,4 @@
         tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
+

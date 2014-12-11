@@ -1,5 +1,7 @@
 package com.team11.hackernews.api.accessors;
 
+import android.util.Log;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -45,6 +47,8 @@ public class ThreadAccessor extends Accessor {
                 Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
 
                 if (itemType == Utils.ItemType.Story) {
+                    Log.d("Ask hn", "story id "+map.get("id"));
+                    Log.d("Ask hn", String.valueOf(map.get("title")));
                     if (map.get("title").toString().startsWith("Ask HN:")) {
                         // Ask HN thread
                         thread = new AskHN();
