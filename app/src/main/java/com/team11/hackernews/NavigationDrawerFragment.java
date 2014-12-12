@@ -101,6 +101,10 @@ public class NavigationDrawerFragment extends Fragment {
                     mCallbacks.setState(MainFragment.State.TOP_STORIES);
                     mDrawerLayout.closeDrawers();
                 }
+                if (position == 1) {
+                    mCallbacks.setState(MainFragment.State.WATCHED_USER);
+                    mDrawerLayout.closeDrawers();
+                }
                 if (position == 2) {
                     mCallbacks.setState(MainFragment.State.WATCHED_THREADS);
                     mDrawerLayout.closeDrawers();

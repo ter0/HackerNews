@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
 import com.team11.hackernews.api.accessors.WatchedThreadsTopStoriesAccessor;
+import com.team11.hackernews.api.accessors.WatchedUserAccessor;
 import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
@@ -168,6 +169,8 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
             mTopStoriesAccessor = new TopStoriesAccessor();
         } else if (mState == State.WATCHED_THREADS) {
             mTopStoriesAccessor = new WatchedThreadsTopStoriesAccessor(getActivity());
+        } else if (mState == State.WATCHED_USER) {
+            mTopStoriesAccessor = new WatchedUserAccessor(getActivity());
         }
 
         mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
@@ -244,7 +247,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public enum State {
         TOP_STORIES,
-        WATCHED_THREADS
+        WATCHED_USER, WATCHED_THREADS
     }
 
     interface Callbacks {

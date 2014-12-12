@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
         android:key="@string/monitored_user"
+        android:persistent="true"
         android:summary="@string/monitored_user_summ"
         android:title="@string/monitored_user" />
 
