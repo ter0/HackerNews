@@ -1,6 +1,5 @@
 package com.team11.hackernews.api;
 
-
 import com.firebase.client.Firebase;
 
 public class Utils {
