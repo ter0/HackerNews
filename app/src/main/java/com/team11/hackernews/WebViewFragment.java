@@ -2,6 +2,7 @@ package com.team11.hackernews;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import com.team11.hackernews.api.data.Story;
 
 public class WebViewFragment extends Fragment {
 
@@ -96,15 +99,26 @@ public class WebViewFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem menuItem = menu.findItem(R.id.menu_web_item_share);
-        if (menuItem != null) {
-            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        MenuItem shareMenuItem = menu.findItem(R.id.menu_web_item_share);
+        if (shareMenuItem != null) {
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
             Intent shareIntent = ShareCompat.IntentBuilder.from(this.getActivity())
                     .setType("text/plain")
                     .setText(mUrl).getIntent();
             mShareActionProvider.setShareIntent(shareIntent);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_open_browser) {
+            mListener.openExternalApps(Uri.parse(mUrl));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -124,6 +138,7 @@ public class WebViewFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
+        public void openExternalApps(Uri uri);
     }
 
 }

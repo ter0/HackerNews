@@ -4,13 +4,8 @@
     tools:context=".MainActivity">
     <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="100"
-        android:title="@string/action_refresh"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_open_browser"
-        android:orderInCategory="100"
-        android:title="@string/action_open_browser"
-        app:showAsAction="never"/>
+        android:title="Refresh"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_refresh" />
 </menu>
 

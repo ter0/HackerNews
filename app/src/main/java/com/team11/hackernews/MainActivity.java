@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
     ViewPager mViewPager;
     boolean mTwoPane;
+
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     private MainFragment mMainFragment;
 
@@ -65,11 +68,23 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
         mSavedInstanceState = savedInstanceState;
         if (getIntent().getData() != null && getIntent().getData().getQueryParameter("id") != null) {
-            Log.d("dddd", "getting id");
-            Log.d("dddd", String.valueOf(getIntent().getData().getQueryParameter("id")));
             int id = Integer.parseInt(getIntent().getData().getQueryParameter("id"));
             new ThreadAccessor().getStory(id, storyCallbacks);
         }
+
+        //setup drawer
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                               getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+                if (mNavigationDrawerFragment == null) {
+                       throw new IllegalStateException("MainBase activity layouts need a R.id.navigation_drawer element");
+                   }
+              mNavigationDrawerFragment.setUp(
+                               R.id.navigation_drawer,
+                               (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        //Start service to watch users/threads
+        Intent intent = new Intent(this, WatcherService.class);
+        this.startService(intent);
     }
 
     public void loadThread(Thread thread) {

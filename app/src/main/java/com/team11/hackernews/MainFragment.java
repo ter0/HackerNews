@@ -1,15 +1,20 @@
 package com.team11.hackernews;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +68,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         Bundle mainBundle = new Bundle();
         mItemAdapter.saveState(mainBundle);
         int firstItem = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        Log.d("rem pos pre", String.valueOf(firstItem));
         mainBundle.putInt(FIRST_ITEM_KEY, firstItem);
         bundle.putBundle(MAIN_FRAGMENT_KEY, mainBundle);
         return bundle;
@@ -72,6 +78,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         Bundle mainBundle = savedInstanceState.getBundle(MAIN_FRAGMENT_KEY);
         mItemAdapter.restoreState(mainBundle);
         mRememberedPosition = mainBundle.getInt(FIRST_ITEM_KEY);
+        Log.d("restorre", String.valueOf(mRememberedPosition));
     }
 
     @Override
@@ -81,7 +88,9 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mItemAdapter);
+        Log.d("(Integer)mRememberedPosition != null", String.valueOf((Integer)mRememberedPosition != null));
         if((Integer)mRememberedPosition != null) {
+            Log.d("rem pos", String.valueOf(mRememberedPosition));
             mRecyclerView.scrollToPosition(mRememberedPosition);
         }
         return rootView;
@@ -112,6 +121,13 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         mFinishedLoadingRefresh = true;
         mFinishedLoadingBottom = true;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -180,10 +196,13 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     @Override
     public void onReachedBottom() {
+        mCallbacks.showToast("begin loading");
         if (mFinishedLoadingBottom) {
+            mCallbacks.showToast("begin loading actualy");
             mFinishedLoadingBottom = false;
             mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
                 public void onSuccess(List<Thread> threads) {
+                    mCallbacks.showToast("onsucess");
                     if (threads.size() == 0) {
                         if (isAdded()) {
                             mCallbacks.showToast("No More Articles");
@@ -207,6 +226,8 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
                 @Override
                 public void onError() {
+                    onReachedBottom();
+                    mCallbacks.showToast("error getting stories");
                     Log.d("MainFragment", "Error getting next stories");
                 }
             });

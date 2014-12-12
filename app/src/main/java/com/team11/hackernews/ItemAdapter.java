@@ -152,15 +152,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
                 }
             });
-            viewHolder.mTitle.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    String url = ((Story) mItemArrayList.get(i)).getURL().toString();
-                    mItemInteractionCallbacks.openExternalApps(Uri.parse(url));
-                    return true;
-                }
-
-            });
         } else if (currentItem instanceof Job) {
             //Jobs have no comments and a URL link in the title
             viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {
@@ -242,10 +233,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public interface ItemInteractionCallbacks {
         public void loadWebView(String url);
-
         public void loadCommentsView(Thread thread);
-
-        public void openExternalApps(Uri uri);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
