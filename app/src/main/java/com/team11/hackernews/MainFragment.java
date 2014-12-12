@@ -51,6 +51,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public void setState(State state) {
         mState = state;
+        refresh();
     }
 
     @Override

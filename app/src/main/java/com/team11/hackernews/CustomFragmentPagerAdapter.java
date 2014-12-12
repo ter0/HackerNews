@@ -4,25 +4,25 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
-import com.team11.hackernews.api.data.*;
 import com.team11.hackernews.api.data.Thread;
 
 public class CustomFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
+    public SecondPage mCurrentSecondPage;
     private WebViewFragment mWebViewFragment;
     private ThreadFragment mThreadFragment;
     private MainFragment mMainFragment;
-
     private int mItemCount;
-
-    public SecondPage mCurrentSecondPage;
 
     public CustomFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
         mItemCount = 1;
         mMainFragment = MainFragment.newInstance();
+    }
+
+    public MainFragment getMainFragment() {
+        return mMainFragment;
     }
 
     @Override
@@ -31,27 +31,28 @@ public class CustomFragmentPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment;
         if (i == 0) {
             fragment = mMainFragment;
-        } else if(i == 1 && mCurrentSecondPage == SecondPage.WEBVIEW){
+        } else if (i == 1 && mCurrentSecondPage == SecondPage.WEBVIEW) {
             fragment = mWebViewFragment;
-        }else if(i == 1 && mCurrentSecondPage == SecondPage.COMMENTS) {
+        } else if (i == 1 && mCurrentSecondPage == SecondPage.COMMENTS) {
             fragment = mThreadFragment;
-        }else{
-            throw new IllegalArgumentException("no fragment for "+String.valueOf(i));
+        } else {
+            throw new IllegalArgumentException("no fragment for " + String.valueOf(i));
         }
         return fragment;
     }
-    public void saveMainFragment(Bundle bundle){
+
+    public void saveMainFragment(Bundle bundle) {
         mMainFragment.saveState(bundle);
     }
 
-    public void setWebViewFragment(String url){
+    public void setWebViewFragment(String url) {
         mItemCount = 2;
         mWebViewFragment = WebViewFragment.newInstance(url);
         mCurrentSecondPage = SecondPage.WEBVIEW;
         notifyDataSetChanged();
     }
 
-    public void setThreadFragment(Thread thread){
+    public void setThreadFragment(Thread thread) {
         mItemCount = 2;
         mThreadFragment = ThreadFragment.newInstance(thread);
         mCurrentSecondPage = SecondPage.COMMENTS;
@@ -60,22 +61,22 @@ public class CustomFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object item) {
-        if(item instanceof MainFragment){
+        if (item instanceof MainFragment) {
             return POSITION_UNCHANGED;
         } else if (mCurrentSecondPage == SecondPage.WEBVIEW && item == mWebViewFragment) {
             return POSITION_UNCHANGED;
         } else if (mCurrentSecondPage == SecondPage.COMMENTS && item == mThreadFragment) {
             return POSITION_UNCHANGED;
-        }else{
+        } else {
             return POSITION_NONE;
         }
     }
 
-    public Thread getThread(){
+    public Thread getThread() {
         return mThreadFragment.getThread();
     }
 
-    public String getWebUrl(){
+    public String getWebUrl() {
         return mWebViewFragment.getURL();
     }
 

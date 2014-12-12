@@ -97,8 +97,14 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
-                //(id == R.id.action_settings)
-                //find id declaration
+                if (position == 0) {
+                    mCallbacks.setState(MainFragment.State.TOP_STORIES);
+                    mDrawerLayout.closeDrawers();
+                }
+                if (position == 2) {
+                    mCallbacks.setState(MainFragment.State.WATCHED_THREADS);
+                    mDrawerLayout.closeDrawers();
+                }
                 if (position == 3) {
                     Intent intent;
                     intent = new Intent(NavigationDrawerFragment.this.getActivity(), SettingsActivity.class);
@@ -283,5 +289,7 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+
+        void setState(MainFragment.State state);
     }
 }

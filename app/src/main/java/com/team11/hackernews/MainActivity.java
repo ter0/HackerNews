@@ -2,11 +2,11 @@ package com.team11.hackernews;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,13 +24,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
     ViewPager mViewPager;
     boolean mTwoPane;
-
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    private MainFragment mMainFragment;
-
-    private Bundle mSavedInstanceState;
-
     ThreadAccessor.GetStoryCallbacks storyCallbacks = new ThreadAccessor.GetStoryCallbacks() {
         @Override
         public void onSuccess(Thread thread) {
@@ -49,6 +42,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         public void onError(long id, Error error) {
         }
     };
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private MainFragment mMainFragment;
+    private Bundle mSavedInstanceState;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +61,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                             getSupportFragmentManager());
             mViewPager = (ViewPager) findViewById(R.id.pager);
             mViewPager.setAdapter(mCustomFragmentPagerAdapter);
+            mMainFragment = mCustomFragmentPagerAdapter.getMainFragment();
         }
         mSavedInstanceState = savedInstanceState;
         if (getIntent().getData() != null && getIntent().getData().getQueryParameter("id") != null) {
@@ -74,13 +71,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         //setup drawer
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                               getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-                if (mNavigationDrawerFragment == null) {
-                       throw new IllegalStateException("MainBase activity layouts need a R.id.navigation_drawer element");
-                   }
-              mNavigationDrawerFragment.setUp(
-                               R.id.navigation_drawer,
-                               (DrawerLayout) findViewById(R.id.drawer_layout));
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        if (mNavigationDrawerFragment == null) {
+            throw new IllegalStateException("MainBase activity layouts need a R.id.navigation_drawer element");
+        }
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
 
         //Start service to watch users/threads
         Intent intent = new Intent(this, WatcherService.class);
@@ -108,7 +105,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    private void saveTwoPane(Bundle outState){
+    private void saveTwoPane(Bundle outState) {
         mMainFragment.saveState(outState);
         //these should really be made their fragment responsibility, then i.e. webViewFrag.save(bundle) is called
         if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof WebViewFragment) {
@@ -120,7 +117,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    private void saveSinglePane(Bundle outState){
+    private void saveSinglePane(Bundle outState) {
         outState.putInt(SCROLL_POSITION, mViewPager.getCurrentItem());
         mCustomFragmentPagerAdapter.saveMainFragment(outState);
         if (mCustomFragmentPagerAdapter.getCount() == 2) {
@@ -134,15 +131,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    public void onAttachFragment(Fragment fragment){
-        if(fragment instanceof MainFragment && mSavedInstanceState != null){
-            MainFragment mainFragment = (MainFragment)fragment;
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof MainFragment && mSavedInstanceState != null) {
+            MainFragment mainFragment = (MainFragment) fragment;
             mainFragment.restoreState(mSavedInstanceState);
         }
     }
 
     @Override
-    public void onRestoreInstanceState (Bundle savedInstanceState){
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
         if (mTwoPane) {
             restoreTwoPane(savedInstanceState);
         } else {
@@ -150,7 +147,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    private void restoreTwoPane(Bundle bundle){
+    private void restoreTwoPane(Bundle bundle) {
         String webViewUrl = bundle.getString(WEB_VIEW_URL);
         Thread threadParcelable = bundle.getParcelable(THREAD);
         if (webViewUrl != null && threadParcelable != null) {
@@ -167,12 +164,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    private void restoreSinglePane(Bundle bundle){
+    private void restoreSinglePane(Bundle bundle) {
         String webViewUrl = bundle.getString(WEB_VIEW_URL);
         Thread threadParcelable = bundle.getParcelable(THREAD);
-        if(webViewUrl != null) {
+        if (webViewUrl != null) {
             mCustomFragmentPagerAdapter.setWebViewFragment(webViewUrl);
-        }else if(threadParcelable != null){
+        } else if (threadParcelable != null) {
             mCustomFragmentPagerAdapter.setThreadFragment(threadParcelable);
         }
         mViewPager.setCurrentItem(bundle.getInt(SCROLL_POSITION));
@@ -192,6 +189,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         //todo: make a call to the MainFragment to change the thread type it's displaying
+    }
+
+    @Override
+    public void setState(MainFragment.State state) {
+        mMainFragment.setState(state);
     }
 
     @Override
