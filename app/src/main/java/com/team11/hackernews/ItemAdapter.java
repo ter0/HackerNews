@@ -98,18 +98,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         String commentsString;
 
         // Domain
-        if (currentItem instanceof Story || currentItem instanceof Job) {
-            URL UrlObject;
-
-            if (currentItem instanceof Story) {
-                UrlObject = ((Story) currentItem).getURL();
-            } else {
-                UrlObject = ((Job) currentItem).getURL();
-            }
+        if (currentItem instanceof Story) {
+            URL UrlObject = ((Story) currentItem).getURL();
 
             String host = UrlObject.getHost();
             domainString = host.startsWith("www.") ? host.substring(4) : host;
             domainString = "(" + domainString + ")";
+        } else if (currentItem instanceof Job) {
+            try {
+                URL UrlObject = ((Job) currentItem).getURL();
+                String host = UrlObject.getHost();
+                domainString = host.startsWith("www.") ? host.substring(4) : host;
+                domainString = "(" + domainString + ")";
+            } catch (Exception e) {
+                // Some job postings do not link to external site
+                domainString = "";
+            }
         } else if (currentItem instanceof Poll) {
             domainString = "User Poll";
         } else if (currentItem instanceof AskHN) {

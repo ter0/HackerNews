@@ -76,8 +76,8 @@ public class ThreadAccessor extends Accessor {
                     try {
                         url = new URL((String) map.get("url"));
                     } catch (MalformedURLException ignored) {
-                        callbacks.onError(id, new Error("Malformed URL: " + map.get("url")));
-                        return;
+                        // This means that the job posting does not link to an external site
+                        // so just keep the URL as null
                     }
 
                     ((Job) thread).setURL(url);
