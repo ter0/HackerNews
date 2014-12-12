@@ -23,11 +23,15 @@ public class UserAccessor extends Accessor {
                 // create the user object
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
+                if (map == null) {
+                    callbacks.onUserNotFound();
+                }
+
                 User user = new User.Builder()
                         .id(username)
-                        .delay((Integer) map.get("delay"))
+                        .delay((Long) map.get("delay"))
                         .created((Long) map.get("created"))
-                        .karma((Integer) map.get("karma"))
+                        .karma((Long) map.get("karma"))
                         .about((String) map.get("about"))
                         .submitted((List<Long>) map.get("submitted"))
                         .build();
@@ -50,5 +54,7 @@ public class UserAccessor extends Accessor {
         public void onSuccess(User user);
 
         public void onError();
+
+        public void onUserNotFound();
     }
 }

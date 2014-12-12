@@ -8,9 +8,9 @@ import java.util.List;
  */
 public class User {
     private String mId;
-    private int mDelay;
+    private long mDelay;
     private long mCreated;
-    private int mKarma;
+    private long mKarma;
     private String mAbout;
     private List<Long> mSubmitted;
 
@@ -27,7 +27,7 @@ public class User {
         return mId;
     }
 
-    public int getDelay() {
+    public long getDelay() {
         return mDelay;
     }
 
@@ -35,7 +35,7 @@ public class User {
         return mCreated;
     }
 
-    public int getKarma() {
+    public long getKarma() {
         return mKarma;
     }
 
@@ -49,9 +49,9 @@ public class User {
 
     public static final class Builder {
         private String mId;
-        private int mDelay;
+        private long mDelay;
         private long mCreated;
-        private int mKarma;
+        private long mKarma;
         private String mAbout;
         private List<Long> mSubmitted;
 
@@ -63,7 +63,7 @@ public class User {
             return this;
         }
 
-        public Builder delay(int delay) {
+        public Builder delay(long delay) {
             this.mDelay = delay;
             return this;
         }
@@ -73,7 +73,7 @@ public class User {
             return this;
         }
 
-        public Builder karma(int karma) {
+        public Builder karma(long karma) {
             this.mKarma = karma;
             return this;
         }
