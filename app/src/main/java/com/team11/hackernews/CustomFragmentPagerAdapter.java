@@ -72,7 +72,16 @@ public class CustomFragmentPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-    public Thread getThread() {
+    public void refresh(){
+        mMainFragment.refresh();
+     if (mCurrentSecondPage == SecondPage.WEBVIEW){
+         setWebViewFragment(mWebViewFragment.getURL());
+     }else if(mCurrentSecondPage == SecondPage.COMMENTS){
+         setThreadFragment(mThreadFragment.getThread());
+     }
+    }
+
+    public Thread getThread(){
         return mThreadFragment.getThread();
     }
 

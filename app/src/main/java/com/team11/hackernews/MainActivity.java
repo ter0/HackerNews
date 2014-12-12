@@ -8,6 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -48,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSavedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this.getApplicationContext());
         if (findViewById(R.id.fragment_main) != null) {
@@ -63,7 +67,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             mViewPager.setAdapter(mCustomFragmentPagerAdapter);
             mMainFragment = mCustomFragmentPagerAdapter.getMainFragment();
         }
-        mSavedInstanceState = savedInstanceState;
         if (getIntent().getData() != null && getIntent().getData().getQueryParameter("id") != null) {
             int id = Integer.parseInt(getIntent().getData().getQueryParameter("id"));
             new ThreadAccessor().getStory(id, storyCallbacks);
@@ -77,11 +80,48 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout), savedInstanceState != null);
 
         //Start service to watch users/threads
         Intent intent = new Intent(this, WatcherService.class);
         this.startService(intent);
+    }
+
+    @Override // without super
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem refresh = menu.findItem(R.id.action_refresh);
+        if (refresh != null) {
+            refresh.setVisible(mMainFragment.getFinishedLoadingRefresh());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            if(mTwoPane){
+                mMainFragment.refresh();
+                Fragment container = getSupportFragmentManager().findFragmentById(R.id.container);
+                if(container instanceof WebViewFragment){
+                    loadWebView(((WebViewFragment)container).getURL());
+                }else if(container instanceof ThreadFragment){
+                    loadCommentsView(((ThreadFragment)container).getThread());
+                }
+            }else{
+                mCustomFragmentPagerAdapter.refresh();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void loadThread(Thread thread) {

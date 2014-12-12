@@ -70,11 +70,7 @@ public class WebViewFragment extends Fragment {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    //todo handle errors, at the moment webview goes blank with invalid urls
-                    //I expected this to be were loading errors are handled but
-                    //this didnt get called with a 404 (http://google.com/gregerg)
-                    //or with a missing or invalid protocal (htztp://www.google.com)
-                    Toast.makeText(activity, "eee", Toast.LENGTH_LONG);
+                    Toast.makeText(activity, "Webpage failed", Toast.LENGTH_LONG);
                     super.onReceivedError(view, errorCode, description, failingUrl);
                 }
             });

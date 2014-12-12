@@ -132,29 +132,14 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_refresh) {
-            refresh();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem refresh = menu.findItem(R.id.action_refresh);
-        if (refresh != null) {
-            refresh.setVisible(mFinishedLoadingRefresh);
-        }
+    public boolean getFinishedLoadingRefresh(){
+        return mFinishedLoadingRefresh;
     }
 
     public void refresh() {
@@ -165,14 +150,18 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         //avoids fetching items twice before refresh is complete
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
         mFinishedLoadingBottom = false;
+        Log.d("state", String.valueOf(mState));
         if (mState == State.TOP_STORIES) {
+            Log.d("new accsor", "top stories");
             mTopStoriesAccessor = new TopStoriesAccessor();
         } else if (mState == State.WATCHED_THREADS) {
+            Log.d("new accsor", "watched");
             mTopStoriesAccessor = new WatchedThreadsTopStoriesAccessor(getActivity());
         } else if (mState == State.WATCHED_USER) {
             mTopStoriesAccessor = new WatchedUserAccessor(getActivity());
         }
-
+        mItemAdapter.clear();
+        mItemAdapter.notifyDataSetChanged();
         mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
             @Override
             public void onSuccess(List<Thread> threads) {
