@@ -76,7 +76,7 @@ public class ThreadAccessor extends Accessor {
                     try {
                         url = new URL((String) map.get("url"));
                     } catch (MalformedURLException ignored) {
-                        callbacks.onError();
+                        callbacks.onError(id, new Error("Malformed URL: " + map.get("url")));
                         return;
                     }
 
@@ -90,7 +90,7 @@ public class ThreadAccessor extends Accessor {
                     List<Long> pollOpts = (List<Long>) map.get("pollopts");
                     if (pollOpts == null) {
                         // TODO: this is when the poll has no options, possibly set the onError() to take an Error object
-                        callbacks.onError();
+                        callbacks.onError(id, new Error("No Poll Options"));
                         return;
                     }
 
@@ -123,7 +123,7 @@ public class ThreadAccessor extends Accessor {
                 if (mCancelPendingCallbacks) {
                     return;
                 }
-                callbacks.onError();
+                callbacks.onError(id, new Error("Firebase error: " + firebaseError.getMessage()));
             }
         });
     }
@@ -173,15 +173,17 @@ public class ThreadAccessor extends Accessor {
                     if (mCancelPendingCallbacks) {
                         return;
                     }
-                    callbacks.onError();
+                    isDeleted.put(id, false);
+                    runIfAllReturned();
                 }
 
                 @Override
-                public void onError() {
+                public void onError(long id, Error error) {
                     if (mCancelPendingCallbacks) {
                         return;
                     }
-                    callbacks.onError();
+                    isDeleted.put(id, false);
+                    runIfAllReturned();
                 }
             });
         }
@@ -199,7 +201,7 @@ public class ThreadAccessor extends Accessor {
 
         public void onWrongItemType(Utils.ItemType itemType, long id);
 
-        public void onError();
+        public void onError(long id, Error error);
     }
 
     public interface GetMultipleStoriesCallbacks {
