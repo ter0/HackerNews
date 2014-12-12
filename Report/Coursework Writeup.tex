@@ -163,14 +163,9 @@ Our test plans have been designed on a per-view basis. From each view there are 
     \hline
 	On tap of \# Comments & A comments view is opened for the story selected & As expected \\
 	\hline
-	
 	On tap of ‘Star' of a Story & Star turns opaque & As expected \\ & User subscribes to this Story. & \\ & User receives push notifications on any new comments for the subscribed thread & \\
 	\hline
-	On tap of ‘Three Dot' icon in action bar & Refresh option displayed & As expected \\ & Open in Browser option displayed & \\
-	\hline
-	Press of Refresh option in action menu & Force refreshes the stories displayed on the main view & As expected \\
-	\hline
-	Press of Open in Browser & ENTER HERE & As expected \\
+	On tap of Refresh icon in action bar & Stories are Refreshed & As expected \\
 	\hline
 	On tap of ‘Burger Menu' & Side Menu is displayed & As expected \\
 	\hline
@@ -188,11 +183,11 @@ Our test plans have been designed on a per-view basis. From each view there are 
 	\hline
 	Scrolling on web view & Full page is displayed & As expected \\
 	\hline
-	Press of ‘Back' button in action bar & App returns to the main View & As expected \\
+	Swipe left on View & App returns to the main View & As expected \\
 	\hline
-	Tap of ‘Three Dots' & Open in Browser option shown & As expected \\ & Refresh option shown & \\
+	Tap of ‘Three Dots' & Open in Browser option shown & As expected \\
 	\hline
-	Tap of Open in Browser option & Current displayed web view is opened in the devices' default browser & As expected \\
+	Long press of Thread title & Current displayed web view is opened in the devices' default browser & As expected \\
 	\hline
 	Tap of Share button & Dialog shown for User to decide Share app & As expected \\
 	\hline
@@ -200,7 +195,7 @@ Tap of a Share app & URL for the current selected story is passed to the app sel
 	\hline
 Tap of Default Share app (Displayed once a share app is chosen) & URL for current story is passed to the Default app & As expected \\
 	\hline
-Tap of ‘Back' button in Action Bar & App returns to Story View with location saved & As expected \\
+Swipe left on Webview & App returns to Story View with location saved & As expected \\
 	\hline
 
 \end{tabular}
@@ -217,21 +212,17 @@ Tap of ‘Back' button in Action Bar & App returns to Story View with location s
 	\hline
 	On load of Comments View & All first-level comments for the chosen story are displayed & As expected \\
 	\hline
-	Tap of ‘Show More' button & The next level of comments (replies) are displayed for the comment in question & As expected \\
+	Tap of 'Show More' button & The next level of comments (replies) are displayed for the comment in question & As expected \\
 	\hline
-	Press of ‘Back' button in action bar & App returns to the main View & As expected \\
+	Swipe left on Comments View & App returns to the main View with location on Stories saved & As expected \\
 	\hline
-	Tap of ‘Three Dots' & Open in Browser option shown & As expected \\ & Refresh option shown & \\
-	\hline
-	Tap of Open in Browser option & Current displayed web view is opened in the devices' default browser & As expected \\
+	Tap of Refresh button & Comments are force refreshed & As expected \\
 	\hline
 	Tap of Share button & Dialog shown for User to decide Share app & As expected \\
 	\hline
 	Tap of a Share app & URL for the current selected story is passed to the app selected. Test case: Hangouts & As expected \\
 	\hline
 	Tap of Default Share app (Displayed once a share app is chosen) & URL for current story is passed to the Default app & As expected \\
-	\hline
-	Tap of ‘Back' button in Action Bar & App returns to Story View with location saved & As expected \\
 	\hline
 \end{tabular}
 \end{center}
@@ -264,6 +255,10 @@ Tap of ‘Back' button in Action Bar & App returns to Story View with location s
 	On tap of ‘Users' section & Dialog opened for App user to follow Hacker News Users & As expected \\
 	\hline
 	On adding a User to follow & Adding a User will add them to ‘Added Users' list & As expected \\ & Notifications will be generated for any submissions by this User & \\
+	\hline
+	On tap of 'Number of stories to load' & Dialog shown to allow user to select stories to load & As expected \\
+	\hline
+	On choosing the number of stories to display & Option saved and remembered. Number of stories chosen are fetched in one load & As expected \\
 	\hline
 \end{tabular}
 \end{center}
