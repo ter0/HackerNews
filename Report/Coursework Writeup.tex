@@ -14,16 +14,16 @@
 \maketitle
 
 \section*{Project Overview}
-For this Group Coursework Team 11 have created an application to allow access from Android to the popular community-based news website Hacker News. Hacker News is a content website which is gaining popularity in the technical community, it is an aggregation of tech news, articles, discussions and job listings which is controlled by ‘Karma’, a score which is decided by the users on the website.  When deciding on our initial designs we found that other community websites had a strong presence on the Google Play Store and as such other applications such as Reddit Sync or Reddit is Fun have a strong user base. However, in comparison we could only find one other Hacker News application which had been created as a side project, and as such did not have full developer support. Our choice of Hacker News stemmed from this gap in the market.
+For this Group Coursework Team 11 have created an application to allow access from Android to the popular community-based news website Hacker News. Hacker News is a content website which is gaining popularity in the technical community, it is an aggregation of tech news, articles, discussions and job listings which is controlled by 'Karma', a score which is decided by the users on the website.  When deciding on our initial designs we found that other community websites had a strong presence on the Google Play Store and as such other applications such as Reddit Sync or Reddit is Fun have a strong user base. However, in comparison we could only find one other Hacker News application which had been created as a side project, and as such did not have full developer support. Our choice of Hacker News stemmed from this gap in the market.
 \\
 \\
-The visual feel of this application has taken shape from the recent release of Google’s Android 5.0 Lollipop and it’s adoption of Material Design. Our initial concept drawings we created with these design guidelines in mind and the final build of our application has been checked against these in order to de clare our application as “Fully Material”. The adoption of Material Design is a current trend in the Play Store and there is a trend of users favouring applications for their adoption of the latest standards. This added two new designs for the application, one for pre-API 21 devices and one for API 21+ devices with Material support. The addition of Material Designs libraries gives the application an added polish on later devices whilst still maintaining a full user experience on 
+The visual feel of this application has taken shape from the recent release of Google's Android 5.0 Lollipop and it's adoption of Material Design. Our initial concept drawings we created with these design guidelines in mind and the final build of our application has been checked against these in order to de clare our application as “Fully Material”. The adoption of Material Design is a current trend in the Play Store and there is a trend of users favouring applications for their adoption of the latest standards. This added two new designs for the application, one for pre-API 21 devices and one for API 21+ devices with Material support. The addition of Material Designs libraries gives the application an added polish on later devices whilst still maintaining a full user experience on 
 \\
 \\
-The main activity of our application is the ‘Top 100’ page. This page can include Stories, Polls, AskHN and Jobs ordered by their popularity on the website. With the recent release of the Lollipop API Google have also added the Recycler View and recommend it’s use for display of large amounts of data in a list format we opted to use this in order to ensure that application is up to date with current standards. Our main page contains one fragment in the form of a Recycler View, a newer implementation of Android’s Listview which is more efficient and less taxing on the device CPU as it requires  fewer ID lookups by storing references to UI elements in a ViewHolder, this means that objects need to only be inflated once when the ViewHolder is created. By default our application displays the first ten stories in the Top 100. Scrolling down from these will trigger a load of a further ten, this will continue until the Top 100 is displayed in it’s entirety. Each item within the view displays information pertinent to the story it relates to. From this the User can launch the webview or comments relating to this story.
+The main activity of our application is the ‘Top 100' page. This page can include Stories, Polls, AskHN and Jobs ordered by their popularity on the website. With the recent release of the Lollipop API Google have also added the Recycler View and recommend it's use for display of large amounts of data in a list format we opted to use this in order to ensure that application is up to date with current standards. Our main page contains one fragment in the form of a Recycler View, a newer implementation of Android's Listview which is more efficient and less taxing on the device CPU as it requires  fewer ID lookups by storing references to UI elements in a ViewHolder, this means that objects need to only be inflated once when the ViewHolder is created. By default our application displays the first ten stories in the Top 100. Scrolling down from these will trigger a load of a further ten, this will continue until the Top 100 is displayed in it's entirety. Each item within the view displays information pertinent to the story it relates to. From this the User can launch the webview or comments relating to this story.
 \\
 \\
-Connectivity to Hacker News is provided by Hacker News’ own API implemented in Firebase. Firebase is an API provider which has been created with platform compatibility in mind, providing an easy-to-use API for smaller companies that cannot implement their own data solutions for real-time requests of data. Connecting to this API is done through the use of the Firebase API to make requests to Hacker News’ API implemented in Firebase. Firebase then returns a JSON data object. Our back-end code uses this JSON object to examine the returned Threads and convert them into either a Story, Poll, AskHN or Job object. This is also the case for Items, working out whether the returned item is a Comment or a Poll Option.
+Connectivity to Hacker News is provided by Hacker News' own API implemented in Firebase. Firebase is an API provider which has been created with platform compatibility in mind, providing an easy-to-use API for smaller companies that cannot implement their own data solutions for real-time requests of data. Connecting to this API is done through the use of the Firebase API to make requests to Hacker News' API implemented in Firebase. Firebase then returns a JSON data object. Our back-end code uses this JSON object to examine the returned Threads and convert them into either a Story, Poll, AskHN or Job object. This is also the case for Items, working out whether the returned item is a Comment or a Poll Option.
 
 \section*{Application Functionality}
 
@@ -32,10 +32,10 @@ Connectivity to Hacker News is provided by Hacker News’ own API implemented in
 \includegraphics[width=0.3\textwidth]{threadView.png}
 \end{center}
 
-The Top 100 Stories are the displayed when the application is first opened. This view is a mirror of what is displayed on Hacker News at the current time. By default the first ten stories are displayed and further stories are fetched as the user scrolls down the view. This view displays each Thread along with it’s relevant Title, Score, Domain, Submitter, Number of Comments and the Time since it was posted. The user can access a Story by tapping the Title, this will open a webview and load the relevant URL for the chosen story. Alternatively the user can tap the number of comments, this will open the comment view.
+The Top 100 Stories are the displayed when the application is first opened. This view is a mirror of what is displayed on Hacker News at the current time. By default the first ten stories are displayed and further stories are fetched as the user scrolls down the view. This view displays each Thread along with it's relevant Title, Score, Domain, Submitter, Number of Comments and the Time since it was posted. The user can access a Story by tapping the Title, this will open a webview and load the relevant URL for the chosen story. Alternatively the user can tap the number of comments, this will open the comment view.
 \\
 \\
-The top left ‘Burger’ menu can be expanded to allow the user to choose between Threads and Users. The top right dots can be tapped to access the settings for the application. Hitting the Refresh button will initiate a new request to the Hacker News API and update the stories shown on the page.
+The top left ‘Burger' menu can be expanded to allow the user to choose between Threads and Users. The top right dots can be tapped to access the settings for the application. Hitting the Refresh button will initiate a new request to the Hacker News API and update the stories shown on the page.
 \\
 \\
 Users can also use this screen to follow a particular thread. When pressing on the star icon on an item they will add this story to their Subscribed Stories. By doing this the application will store the id of a story to the devices local storage. The application will routinely check these stories for any new comments and will send the user updates via push notifications.
@@ -50,7 +50,7 @@ In addition to the above features the user can also tap and hold on an item, doi
 \includegraphics[width=0.3\textwidth]{commentsExpanded.png}
 \end{center}
 
-When a user taps the Comments on a given Thread the application will open the Comments View. Comments on Hacker News are given a tree structure where top-level comments can have children, these children can span multiple levels in the tree. On first load of this view only top-level comments are display, this was decided and agree on both a technical and UX standpoint as first because top-level comments are more relevant to a user at a quick glance, ensuring that they do not need to scroll in order to see all comments. Secondly because of each comment is defined as an Item within the API. In order to fetch second-layer comments for a post an API call is required based on it’s parents id. If this needed to be done the load added to both the CPU and Network requests would increase significantly. To avoid this we have added a “Show More” button at the base of each comment. If a user intends to see the next level of comments they can press this to display them. Comments are indented according to their layer in the hierarchy. This is shown above.
+When a user taps the Comments on a given Thread the application will open the Comments View. Comments on Hacker News are given a tree structure where top-level comments can have children, these children can span multiple levels in the tree. On first load of this view only top-level comments are display, this was decided and agree on both a technical and UX standpoint as first because top-level comments are more relevant to a user at a quick glance, ensuring that they do not need to scroll in order to see all comments. Secondly because of each comment is defined as an Item within the API. In order to fetch second-layer comments for a post an API call is required based on it's parents id. If this needed to be done the load added to both the CPU and Network requests would increase significantly. To avoid this we have added a “Show More” button at the base of each comment. If a user intends to see the next level of comments they can press this to display them. Comments are indented according to their layer in the hierarchy. This is shown above.
 \\
 \\
 In addition to the comment functionality, a user can also share their current location in the app using other applications on their device. For example the Share functionality in the screenshots above are set to share to Hangouts should the user press on that icon, if another application is desired pressing the share icon will display a list of relevant applications defined by Android. 
@@ -78,7 +78,7 @@ The Settings view allows a user to change features on the application to suit th
 	\begin{itemize}
 		\item{The application consists of four distinct screens. These are:}
 		\begin{itemize}
-			\item{Main View - ‘Top 100 Stories’}
+			\item{Main View - ‘Top 100 Stories'}
 			\item{Comments View for a given story}
 			\item{Web View}
 			\item{Settings View}
@@ -97,7 +97,7 @@ The Settings view allows a user to change features on the application to suit th
 	\begin{itemize}
 		\item{Our application makes use of network permissions in order to make API requests to Hacker News. We have designed our app with network use in mind in order to minimise the amount of API calls made and the network traffic generated.}
 		\item{We have also used local storage permissions in order to save the threads that the user is following along with any external users that they may want to follow.}
-		\item{An additional permission we have also added the ‘Receive Boot Completed’ permission in order to implement our service. Once our app has been notified that the device has booted it will then start the backend service to manage notifications for updates to followed Users and Threads.}
+		\item{An additional permission we have also added the ‘Receive Boot Completed' permission in order to implement our service. Once our app has been notified that the device has booted it will then start the backend service to manage notifications for updates to followed Users and Threads.}
 	\end{itemize}
 	\item{Use Intents to move inside your app and to an outside app}
 	\begin{itemize}
@@ -133,7 +133,7 @@ The Settings view allows a user to change features on the application to suit th
 	\end{itemize}
 	\item{Use Services}
 	\begin{itemize}
-		\item{The application has it’s own implementation of a service which connects to Firebase and listens to the Hacker News service. Firebase then informs the service of new content added to watched Threads/Users and generates a notification on the device.}
+		\item{The application has it's own implementation of a service which connects to Firebase and listens to the Hacker News service. Firebase then informs the service of new content added to watched Threads/Users and generates a notification on the device.}
 	\end{itemize}
 	\item{Use Notifications}
 	\begin{itemize}
@@ -164,15 +164,15 @@ Our test plans have been designed on a per-view basis. From each view there are 
 	On tap of \# Comments & A comments view is opened for the story selected & As expected \\
 	\hline
 	
-	On tap of ‘Star’ of a Story & Star turns opaque & As expected \\ & User subscribes to this Story. & \\ & User receives push notifications on any new comments for the subscribed thread & \\
+	On tap of ‘Star' of a Story & Star turns opaque & As expected \\ & User subscribes to this Story. & \\ & User receives push notifications on any new comments for the subscribed thread & \\
 	\hline
-	On tap of ‘Three Dot’ icon in action bar & Refresh option displayed & As expected \\ & Open in Browser option displayed & \\
+	On tap of ‘Three Dot' icon in action bar & Refresh option displayed & As expected \\ & Open in Browser option displayed & \\
 	\hline
 	Press of Refresh option in action menu & Force refreshes the stories displayed on the main view & As expected \\
 	\hline
 	Press of Open in Browser & ENTER HERE & As expected \\
 	\hline
-	On tap of ‘Burger Menu’ & Side Menu is displayed & As expected \\
+	On tap of ‘Burger Menu' & Side Menu is displayed & As expected \\
 	\hline
     \end{tabular}
 \end{center}
@@ -188,11 +188,11 @@ Our test plans have been designed on a per-view basis. From each view there are 
 	\hline
 	Scrolling on web view & Full page is displayed & As expected \\
 	\hline
-	Press of ‘Back’ button in action bar & App returns to the main View & As expected \\
+	Press of ‘Back' button in action bar & App returns to the main View & As expected \\
 	\hline
-	Tap of ‘Three Dots’ & Open in Browser option shown & As expected \\ & Refresh option shown & \\
+	Tap of ‘Three Dots' & Open in Browser option shown & As expected \\ & Refresh option shown & \\
 	\hline
-	Tap of Open in Browser option & Current displayed web view is opened in the devices’ default browser & As expected \\
+	Tap of Open in Browser option & Current displayed web view is opened in the devices' default browser & As expected \\
 	\hline
 	Tap of Share button & Dialog shown for User to decide Share app & As expected \\
 	\hline
@@ -200,7 +200,7 @@ Tap of a Share app & URL for the current selected story is passed to the app sel
 	\hline
 Tap of Default Share app (Displayed once a share app is chosen) & URL for current story is passed to the Default app & As expected \\
 	\hline
-Tap of ‘Back’ button in Action Bar & App returns to Story View with location saved & As expected \\
+Tap of ‘Back' button in Action Bar & App returns to Story View with location saved & As expected \\
 	\hline
 
 \end{tabular}
@@ -217,13 +217,13 @@ Tap of ‘Back’ button in Action Bar & App returns to Story View with location
 	\hline
 	On load of Comments View & All first-level comments for the chosen story are displayed & As expected \\
 	\hline
-	Tap of ‘Show More’ button & The next level of comments (replies) are displayed for the comment in question & As expected \\
+	Tap of ‘Show More' button & The next level of comments (replies) are displayed for the comment in question & As expected \\
 	\hline
-	Press of ‘Back’ button in action bar & App returns to the main View & As expected \\
+	Press of ‘Back' button in action bar & App returns to the main View & As expected \\
 	\hline
-	Tap of ‘Three Dots’ & Open in Browser option shown & As expected \\ & Refresh option shown & \\
+	Tap of ‘Three Dots' & Open in Browser option shown & As expected \\ & Refresh option shown & \\
 	\hline
-	Tap of Open in Browser option & Current displayed web view is opened in the devices’ default browser & As expected \\
+	Tap of Open in Browser option & Current displayed web view is opened in the devices' default browser & As expected \\
 	\hline
 	Tap of Share button & Dialog shown for User to decide Share app & As expected \\
 	\hline
@@ -231,7 +231,7 @@ Tap of ‘Back’ button in Action Bar & App returns to Story View with location
 	\hline
 	Tap of Default Share app (Displayed once a share app is chosen) & URL for current story is passed to the Default app & As expected \\
 	\hline
-	Tap of ‘Back’ button in Action Bar & App returns to Story View with location saved & As expected \\
+	Tap of ‘Back' button in Action Bar & App returns to Story View with location saved & As expected \\
 	\hline
 \end{tabular}
 \end{center}
@@ -242,7 +242,7 @@ Tap of ‘Back’ button in Action Bar & App returns to Story View with location
 	\hline
 	\textbf{Action} & \textbf{Expected Behaviour} & \textbf{Actual Behaviour} \\
 	\hline
-	Tap of ‘Burger’ menu & Sidebar is expanded & As expected \\
+	Tap of ‘Burger' menu & Sidebar is expanded & As expected \\
 	\hline
 	Tap of Top Stories option & Top Stories fragment is loaded & As expected \\
 	\hline
@@ -261,9 +261,9 @@ Tap of ‘Back’ button in Action Bar & App returns to Story View with location
 	\hline
 	\textbf{Action} & \textbf{Expected Behaviour} & \textbf{Actual Behaviour} \\
 	\hline	
-	On tap of ‘Users’ section & Dialog opened for App user to follow Hacker News Users & As expected \\
+	On tap of ‘Users' section & Dialog opened for App user to follow Hacker News Users & As expected \\
 	\hline
-	On adding a User to follow & Adding a User will add them to ‘Added Users’ list & As expected \\ & Notifications will be generated for any submissions by this User & \\
+	On adding a User to follow & Adding a User will add them to ‘Added Users' list & As expected \\ & Notifications will be generated for any submissions by this User & \\
 	\hline
 \end{tabular}
 \end{center}
@@ -284,7 +284,7 @@ However, this design caused an issue when rotating the link screen on a wide dev
 In addition to fixing the behaviour detailed above, this also had the benefit of making it easier handle opening of the app externally. Opening the link https://news.ycombinator.com/ now allows you to open a URL in our application, showing the user the list of stories activity, where as appending /item?id=XXXX takes you to the webview/comments activity. 
 \\
 \\
-The largest potential drawback to this approach was duplication of effort for the list of links fragment’s activity callbacks. To avoid this, we changed both activities to inherit from a base class implementing shared callbacks. In the end though this probably introduced unwanted complexity as most non-trivial callbacks were different for both activities.
+The largest potential drawback to this approach was duplication of effort for the list of links fragment's activity callbacks. To avoid this, we changed both activities to inherit from a base class implementing shared callbacks. In the end though this probably introduced unwanted complexity as most non-trivial callbacks were different for both activities.
 
 \subsection*{Back-end}
 
@@ -294,15 +294,15 @@ Our connection to Hacker News is dependent on their API which is provided throug
 One of the first issues we encountered was the layout of the data returned in an API call. We found that all returned information was of type Item. Many of these Items shared the same parameters but did not enforce the use of every field in the object. This created issues on our back-end when trying to pass values throughout the system as null values or parameters that are non-existent would appear on the front-end - this created crashes in the application. We also found these issues would appear infrequently due to the fact that different Threads could appear at different times due to the current state of the Top 100. On particular time we found that the Top 100 would not load a Job post as the object returned was missing a comments field entirely. This was not documented in the API and meant we then needed to provide a check on the application side to create a new class for Job posts and handle the lack of comment value.
 \\
 \\
-A second issue on the API was the Top 100 request itself. We found that the default API request returned a list of 100 Ids for the Threads required. Because of this we needed to redesign the Threads View to not show the top 100 by default, but to instead display the full amount required in an interval defined by the application. We found that increments of 10 would fill around a two full screens worth of threads and allow a user to scroll whilst a call was made for the next increment of 10. This would continue until 100 Threads were displayed in the view. We decided to implement this behaviour due to the amount of API calls required it the fetch of on Thread. First the application makes an API call for the Top 100 stories, this returns the list of IDs for these stories, we then stored these ready for use in any further API calls. To request the first 10 Threads we then use the list we stored to find the ID of each Thread, at this point we make an API request to get the details of each Thread by searching for it’s ID, the returned information is then put into a class and passed to the front-end for display. We found that this implementation considerably brought down the resources required by the application but still enabled the next 10 Threads to be fetched and displayed without too much delay to the User.
+A second issue on the API was the Top 100 request itself. We found that the default API request returned a list of 100 Ids for the Threads required. Because of this we needed to redesign the Threads View to not show the top 100 by default, but to instead display the full amount required in an interval defined by the application. We found that increments of 10 would fill around a two full screens worth of threads and allow a user to scroll whilst a call was made for the next increment of 10. This would continue until 100 Threads were displayed in the view. We decided to implement this behaviour due to the amount of API calls required it the fetch of on Thread. First the application makes an API call for the Top 100 stories, this returns the list of IDs for these stories, we then stored these ready for use in any further API calls. To request the first 10 Threads we then use the list we stored to find the ID of each Thread, at this point we make an API request to get the details of each Thread by searching for it's ID, the returned information is then put into a class and passed to the front-end for display. We found that this implementation considerably brought down the resources required by the application but still enabled the next 10 Threads to be fetched and displayed without too much delay to the User.
 \\
 \\
-One piece of functionality we were also intending to add was the ability to filter the displayed Threads by their type. Our first design included using a call to the API to request new content, however this was not implemented in the way it was expected. An API request could be made request the MaxID on Hacker News - thus giving us the ID of the newest item on Hacker News itself. From this point, the only way to find the items required would be to decrement the ID value and request the second newest item, continuing until we have the number of items we are looking for. Each item would require it’s own API call to check whether it was a Story, Job, AskHN, Poll or Comment. This would required potentially thousands of API requests until a usable number of items were found for the User to view. Again, when considering the load this would add to the device this would not be desirable.
+One piece of functionality we were also intending to add was the ability to filter the displayed Threads by their type. Our first design included using a call to the API to request new content, however this was not implemented in the way it was expected. An API request could be made request the MaxID on Hacker News - thus giving us the ID of the newest item on Hacker News itself. From this point, the only way to find the items required would be to decrement the ID value and request the second newest item, continuing until we have the number of items we are looking for. Each item would require it's own API call to check whether it was a Story, Job, AskHN, Poll or Comment. This would required potentially thousands of API requests until a usable number of items were found for the User to view. Again, when considering the load this would add to the device this would not be desirable.
 \\
 \\
 A second method of implementing filtering would be to use the Top 100 for this, first requesting all 100 items and checking each individual item in order to find whether it is of the desired type and discarding any items that do not match. We found that while this method of implementation would require less load, the result it would yield would make it impractical. This is due to the fact that at any given point 95\% of the items on the Top 100 were Stories. Filtering on anything other than this would usually display a single item of the desired type, this was not a very useful feature to implement.
 \\
 \\
-In addition to adding filtering the above issues also prevented us from being able to show the newest stories. This is due to the fact that when we receive the current highest ID this includes every item id in the Hacker News website. In particular we found that these IDs were tended to below to comments on a thread, however without requesting the object by it’s ID we were not able to be sure what the object was. To be able to find the one hundred newest Threads we would be required to make around five hundred requests to the API, check each individual object returned to see if it was of type Thread (no Comment or Poll Option) and then discard any stories not required. This implementation would have added considerable strain to a device both in terms of network usage and also the time required to process the information.
+In addition to adding filtering the above issues also prevented us from being able to show the newest stories. This is due to the fact that when we receive the current highest ID this includes every item id in the Hacker News website. In particular we found that these IDs were tended to below to comments on a thread, however without requesting the object by it's ID we were not able to be sure what the object was. To be able to find the one hundred newest Threads we would be required to make around five hundred requests to the API, check each individual object returned to see if it was of type Thread (no Comment or Poll Option) and then discard any stories not required. This implementation would have added considerable strain to a device both in terms of network usage and also the time required to process the information.
 
 \end{document}
