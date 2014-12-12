@@ -87,6 +87,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         this.startService(intent);
     }
 
+    @Override
+    public void onBackPressed(){
+        if(mViewPager.getCurrentItem() == 0){
+            super.onBackPressed();
+        }else{
+            mViewPager.setCurrentItem(0);
+        }
+    }
+
     @Override // without super
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);

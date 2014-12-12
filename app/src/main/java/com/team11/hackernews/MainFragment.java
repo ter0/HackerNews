@@ -223,7 +223,6 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
                 @Override
                 public void onError() {
-                    onReachedBottom();
                     Log.d("MainFragment", "Error getting next stories");
                 }
             });
