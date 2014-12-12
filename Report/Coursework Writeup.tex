@@ -17,13 +17,13 @@
 For this Group Coursework Team 11 have created an application to allow access from Android to the popular community-based news website Hacker News. Hacker News is a content website which is gaining popularity in the technical community, it is an aggregation of tech news, articles, discussions and job listings which is controlled by 'Karma', a score which is decided by the users on the website.  When deciding on our initial designs we found that other community websites had a strong presence on the Google Play Store and as such other applications such as Reddit Sync or Reddit is Fun have a strong user base. However, in comparison we could only find one other Hacker News application which had been created as a side project, and as such did not have full developer support. Our choice of Hacker News stemmed from this gap in the market.
 \\
 \\
-The visual feel of this application has taken shape from the recent release of Google's Android 5.0 Lollipop and it's adoption of Material Design. Our initial concept drawings we created with these design guidelines in mind and the final build of our application has been checked against these in order to de clare our application as “Fully Material”. The adoption of Material Design is a current trend in the Play Store and there is a trend of users favouring applications for their adoption of the latest standards. This added two new designs for the application, one for pre-API 21 devices and one for API 21+ devices with Material support. The addition of Material Designs libraries gives the application an added polish on later devices whilst still maintaining a full user experience on 
+The visual feel of this application has taken shape from the recent release of Google's Android 5.0 Lollipop and it's adoption of Material Design. Our initial concept drawings we created with these design guidelines in mind and the final build of our application has been checked against these in order to de clare our application as “Fully Material”. The adoption of Material Design is a current trend in the Play Store and there is a trend of users favouring applications for their adoption of the latest standards. This added two new designs for the application, one for pre-API 21 devices and one for API 21+ devices with Material support. The addition of Material Designs libraries gives the application an added polish on later devices whilst still maintaining a full user experience on devices after API 15.
 \\
 \\
-The main activity of our application is the ‘Top 100' page. This page can include Stories, Polls, AskHN and Jobs ordered by their popularity on the website. With the recent release of the Lollipop API Google have also added the Recycler View and recommend it's use for display of large amounts of data in a list format we opted to use this in order to ensure that application is up to date with current standards. Our main page contains one fragment in the form of a Recycler View, a newer implementation of Android's Listview which is more efficient and less taxing on the device CPU as it requires  fewer ID lookups by storing references to UI elements in a ViewHolder, this means that objects need to only be inflated once when the ViewHolder is created. By default our application displays the first ten stories in the Top 100. Scrolling down from these will trigger a load of a further ten, this will continue until the Top 100 is displayed in it's entirety. Each item within the view displays information pertinent to the story it relates to. From this the User can launch the webview or comments relating to this story.
+The main activity of our application is the 'Top 100' page. This page can include Stories, Polls, AskHN and Jobs ordered by their popularity on the website. With the recent release of the Lollipop API Google have also added the Recycler View and recommend it's use for display of large amounts of data in a list format. We have ‘opted to use this in order to ensure that application is up to date with current standards. Our main page contains one fragment in the form of a Recycler View, a newer implementation of Android's Listview which is more efficient and less taxing on the device CPU as it requires  fewer ID lookups by storing references to UI elements in a ViewHolder, this means that objects need to only be inflated once when the ViewHolder is created. By default our application displays the first ten stories in the Top 100. Scrolling down from these will trigger a load of a further ten, this will continue until the Top 100 is displayed in it's entirety. Each item within the view displays information pertinent to the story it relates to. From this the User can launch the webview or comments relating to this story.
 \\
 \\
-Connectivity to Hacker News is provided by Hacker News' own API implemented in Firebase. Firebase is an API provider which has been created with platform compatibility in mind, providing an easy-to-use API for smaller companies that cannot implement their own data solutions for real-time requests of data. Connecting to this API is done through the use of the Firebase API to make requests to Hacker News' API implemented in Firebase. Firebase then returns a JSON data object. Our back-end code uses this JSON object to examine the returned Threads and convert them into either a Story, Poll, AskHN or Job object. This is also the case for Items, working out whether the returned item is a Comment or a Poll Option.
+Connectivity to Hacker News is provided by Hacker News' own API implemented in Firebase. Firebase is an API provider which has been created with platform compatibility in mind, providing an easy-to-use interface for smaller companies that cannot implement their own data solutions for real-time requests of data. Connecting to this API is done through the use of the Firebase API to make requests to Hacker News' API implemented. Firebase then returns a JSON data object. Our back-end code uses this JSON object to examine the returned Threads and convert them into either a Story, Poll, AskHN or Job object. This is also the case for Items, working out whether the returned item is a Comment or a Poll Option.
 
 \section*{Application Functionality}
 
@@ -35,13 +35,11 @@ Connectivity to Hacker News is provided by Hacker News' own API implemented in F
 The Top 100 Stories are the displayed when the application is first opened. This view is a mirror of what is displayed on Hacker News at the current time. By default the first ten stories are displayed and further stories are fetched as the user scrolls down the view. This view displays each Thread along with it's relevant Title, Score, Domain, Submitter, Number of Comments and the Time since it was posted. The user can access a Story by tapping the Title, this will open a webview and load the relevant URL for the chosen story. Alternatively the user can tap the number of comments, this will open the comment view.
 \\
 \\
-The top left ‘Burger' menu can be expanded to allow the user to choose between Threads and Users. The top right dots can be tapped to access the settings for the application. Hitting the Refresh button will initiate a new request to the Hacker News API and update the stories shown on the page.
+The top left 'Burger' menu can be expanded to allow the user to choose between Threads and Users. Hitting the Refresh button will initiate a new request to the Hacker News API and update the stories shown on the page.
 \\
 \\
 Users can also use this screen to follow a particular thread. When pressing on the star icon on an item they will add this story to their Subscribed Stories. By doing this the application will store the id of a story to the devices local storage. The application will routinely check these stories for any new comments and will send the user updates via push notifications.
 \\
-\\
-In addition to the above features the user can also tap and hold on an item, doing this will open any stories will open the relevant webpage in their applications web browser.
 
 \subsection*{Comments View}
 
@@ -61,7 +59,7 @@ In addition to the comment functionality, a user can also share their current lo
 \includegraphics[width=0.3\textwidth]{webView.png}
 \end{center}
 
-The web view gives allows the user to view a story external to Hacker News within our application. When a user taps on a story they will be provided this view in order to read the article they have selected. In addition to the standard web view within Android this webview also gives functionality for a user to share their story through another application (Hangouts, Gmail etc.) In addition to this the user can also opt to open the story in their default web browser if they require more functionality.
+The web view gives allows the user to view a story external to Hacker News within our application. When a user taps on a story they will be provided this view in order to read the article they have selected. In addition to the standard web view within Android this webview also gives functionality for a user to share their story through another application (Hangouts, Gmail etc.) In addition to this the user can also opt to open the story in their default web browser if they require more functionality by tapping the 'three dots' icon.
 
 \subsection*{Settings View}
 
@@ -69,7 +67,7 @@ The web view gives allows the user to view a story external to Hacker News withi
 \includegraphics[width=0.3\textwidth]{settings.png}
 \end{center}
 
-The Settings view allows a user to change features on the application to suit their needs. For example a user may wish to change the number of stories that are fetched at once...
+The Settings view allows a user to change features on the application to suit their needs. For example the user may want to monitor their threads by adding themselves to the Monitored User list. Another option is to change the number of threads loaded in a single API call.
 
 \section*{Technical Requirements}
 
@@ -78,7 +76,7 @@ The Settings view allows a user to change features on the application to suit th
 	\begin{itemize}
 		\item{The application consists of four distinct screens. These are:}
 		\begin{itemize}
-			\item{Main View - ‘Top 100 Stories'}
+			\item{Main View - 'Top 100 Stories'}
 			\item{Comments View for a given story}
 			\item{Web View}
 			\item{Settings View}
@@ -97,7 +95,7 @@ The Settings view allows a user to change features on the application to suit th
 	\begin{itemize}
 		\item{Our application makes use of network permissions in order to make API requests to Hacker News. We have designed our app with network use in mind in order to minimise the amount of API calls made and the network traffic generated.}
 		\item{We have also used local storage permissions in order to save the threads that the user is following along with any external users that they may want to follow.}
-		\item{An additional permission we have also added the ‘Receive Boot Completed' permission in order to implement our service. Once our app has been notified that the device has booted it will then start the backend service to manage notifications for updates to followed Users and Threads.}
+		\item{An additional permission we have also added the 'Receive Boot Completed' permission in order to implement our service. Once our app has been notified that the device has booted it will then start the backend service to manage notifications for updates to followed Users and Threads.}
 	\end{itemize}
 	\item{Use Intents to move inside your app and to an outside app}
 	\begin{itemize}
@@ -109,7 +107,9 @@ The Settings view allows a user to change features on the application to suit th
 		\item{The application has the ability to load Hacker News URLs within the application. When opened on a device with our application installed the User can decide to go directly either the comments or web view depending on the type of link accessed. In addition to this, going to the basic URL for Hacker News will open the application with the Top 100 shown.}
 	\end{itemize}
 	\item{Create and use your own custom Loader}
-	\item{The application uses a loader to monitor the database of watched items from the service. This means that when the user favourites an item from the app, and it is added to the database, the service can instantly start monitoring the API endpoint for changes. Because the LoaderManager is usually closely tied to the activity lifecycle that it occupies, our loader is also started and destroyed manually inside the service.}
+	\begin{itemize}
+			\item{The application uses a loader to monitor the database of watched items from the service. This means that when the user favourites an item from the app, and it is added to the database, the service can instantly start monitoring the API endpoint for changes. Because the LoaderManager is usually closely tied to the activity lifecycle that it occupies, our loader is also started and destroyed manually inside the service.}	
+	\end{itemize}		
 	\item{Make use of local storage}
 	\begin{itemize}
 		\item{The application uses local storage to keep a record of Threads and Users that the user has subscribed to.}
@@ -163,11 +163,11 @@ Our test plans have been designed on a per-view basis. From each view there are 
     \hline
 	On tap of \# Comments & A comments view is opened for the story selected & As expected \\
 	\hline
-	On tap of ‘Star' of a Story & Star turns opaque & As expected \\ & User subscribes to this Story. & \\ & User receives push notifications on any new comments for the subscribed thread & \\
+	On tap of 'Star' of a Story & Star turns opaque & As expected \\ & User subscribes to this Story. & \\ & User receives push notifications on any new comments for the subscribed thread & \\
 	\hline
 	On tap of Refresh icon in action bar & Stories are Refreshed & As expected \\
 	\hline
-	On tap of ‘Burger Menu' & Side Menu is displayed & As expected \\
+	On tap of 'Burger Menu' & Side Menu is displayed & As expected \\
 	\hline
     \end{tabular}
 \end{center}
@@ -185,7 +185,7 @@ Our test plans have been designed on a per-view basis. From each view there are 
 	\hline
 	Swipe left on View & App returns to the main View & As expected \\
 	\hline
-	Tap of ‘Three Dots' & Open in Browser option shown & As expected \\
+	Tap of 'Three Dots' & Open in Browser option shown & As expected \\
 	\hline
 	Long press of Thread title & Current displayed web view is opened in the devices' default browser & As expected \\
 	\hline
@@ -233,7 +233,7 @@ Swipe left on Webview & App returns to Story View with location saved & As expec
 	\hline
 	\textbf{Action} & \textbf{Expected Behaviour} & \textbf{Actual Behaviour} \\
 	\hline
-	Tap of ‘Burger' menu & Sidebar is expanded & As expected \\
+	Tap of 'Burger' menu & Sidebar is expanded & As expected \\
 	\hline
 	Tap of Top Stories option & Top Stories fragment is loaded & As expected \\
 	\hline
@@ -252,9 +252,9 @@ Swipe left on Webview & App returns to Story View with location saved & As expec
 	\hline
 	\textbf{Action} & \textbf{Expected Behaviour} & \textbf{Actual Behaviour} \\
 	\hline	
-	On tap of ‘Users' section & Dialog opened for App user to follow Hacker News Users & As expected \\
+	On tap of 'Users' section & Dialog opened for App user to follow Hacker News Users & As expected \\
 	\hline
-	On adding a User to follow & Adding a User will add them to ‘Added Users' list & As expected \\ & Notifications will be generated for any submissions by this User & \\
+	On adding a User to follow & Adding a User will add them to 'Added Users' list & As expected \\ & Notifications will be generated for any submissions by this User & \\
 	\hline
 	On tap of 'Number of stories to load' & Dialog shown to allow user to select stories to load & As expected \\
 	\hline
@@ -264,22 +264,6 @@ Swipe left on Webview & App returns to Story View with location saved & As expec
 \end{center}
 
 \section*{Issues and Difficulties Encountered}
-
-\subsection*{Front-end}
-
-From the initial designs of our application we always intended to have two different main screens, a list of links and a webview/comments screen. Where the screen had a larger enough width, i.e a tablet, both of these screens would be displayed next to each other simultaneously.
-\\
-\\
-When it came to implementing this, for simplicity xml layout files were preferred over programmatic ones. The initial idea was to have one activity per screen, but use two layouts to change the list of links screen based on device width. The wider screen layout would display the content of the second webview/comment screen on the right hand side.
-\\
-\\
-However, this design caused an issue when rotating the link screen on a wide device. In landscape the user may be in the middle of viewing a page/comments alongside the story list but on switching to portrait mode, the page/comments would be hidden and only a list of stories displayed. A more correct behaviour would be to show only the webpage/comments in portrait mode if the user was viewing the a particular story. To solve this problem the behaviour of split-screen activities had to be rethought. Rather than having the stories page change its layout on rotation, now the webview or comments page change instead.
-\\
-\\
-In addition to fixing the behaviour detailed above, this also had the benefit of making it easier handle opening of the app externally. Opening the link https://news.ycombinator.com/ now allows you to open a URL in our application, showing the user the list of stories activity, where as appending /item?id=XXXX takes you to the webview/comments activity. 
-\\
-\\
-The largest potential drawback to this approach was duplication of effort for the list of links fragment's activity callbacks. To avoid this, we changed both activities to inherit from a base class implementing shared callbacks. In the end though this probably introduced unwanted complexity as most non-trivial callbacks were different for both activities.
 
 \subsection*{Back-end}
 
