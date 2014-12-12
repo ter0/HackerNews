@@ -19,7 +19,7 @@ import com.team11.hackernews.api.accessors.ThreadAccessor;
 import com.team11.hackernews.api.data.Thread;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks,
-        ItemAdapter.ItemInteractionCallbacks, WebViewFragment.OnFragmentInteractionListener {
+        ItemAdapter.ItemInteractionCallbacks, WebViewFragment.Callbacks {
 
     public static final String WEB_VIEW_URL = "WEB_VIEW_URL";
     public static final String THREAD = "THREAD";
@@ -233,11 +233,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     public void openExternalApps(Uri uri) {
         Intent webIntent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(webIntent);
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        //todo: make a call to the MainFragment to change the thread type it's displaying
     }
 
     @Override

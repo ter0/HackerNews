@@ -18,17 +18,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.team11.hackernews.api.data.Story;
-
 public class WebViewFragment extends Fragment {
-
-    public static final String URL_EXTRA = "URL_EXTRA";
 
     private static final String ARG_URL = "ARG_URL";
 
     private String mUrl;
 
-    private OnFragmentInteractionListener mListener;
+    private Callbacks mListener;
 
     private WebView webView;
 
@@ -120,7 +116,7 @@ public class WebViewFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (Callbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -133,7 +129,7 @@ public class WebViewFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
+    public interface Callbacks {
         public void openExternalApps(Uri uri);
     }
 

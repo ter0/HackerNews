@@ -137,14 +137,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.mDomain.setText(domainString);
         viewHolder.mComments.setText(commentsString);
 
-        //TODO: Check differences in binding web view to ASKHN and Polls
-
-        /*viewHolder.mComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mItemInteractionCallbacks.loadCommentsView(mItemArrayList.get(i));
-            }
-        });*/
         if (currentItem instanceof Story) {
             //Stories require both a URL on title and link to comments
             viewHolder.mTitle.setOnClickListener(new View.OnClickListener() {

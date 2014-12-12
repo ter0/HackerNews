@@ -11,7 +11,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_web_view">Web view</string>
     <string name="title_activity_thread">ThreadView</string>
-    <string name="hello_world">Hello World</string>
     <string name="action_refresh"> Refresh</string>
     <string name="action_open_browser">Open in Browser</string>
 

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,12 +25,13 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public static final String MAIN_FRAGMENT_KEY = "MAIN_FRAGMENT";
     public static final String FIRST_ITEM_KEY = "FIRST_ITEM";
+    public static final String STATE_KEY = "STATE_KEY";
     private static State mState;
     ItemAdapter.ItemInteractionCallbacks mItemInteractionCallbacks;
     Callbacks mCallbacks;
     private RecyclerView mRecyclerView;
     private ItemAdapter mItemAdapter;
-    private TopStoriesAccessor mTopStoriesAccessor;
+    private TopStoriesAccessor mAccessor;
     private boolean mFinishedLoadingRefresh;
     private boolean mFinishedLoadingBottom;
     private int mRememberedPosition;
@@ -73,6 +73,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         int firstItem = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         Log.d("rem pos pre", String.valueOf(firstItem));
         mainBundle.putInt(FIRST_ITEM_KEY, firstItem);
+        mainBundle.putString(STATE_KEY, mState.toString());
         bundle.putBundle(MAIN_FRAGMENT_KEY, mainBundle);
         return bundle;
     }
@@ -81,6 +82,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         Bundle mainBundle = savedInstanceState.getBundle(MAIN_FRAGMENT_KEY);
         mItemAdapter.restoreState(mainBundle);
         mRememberedPosition = mainBundle.getInt(FIRST_ITEM_KEY);
+        mState = State.valueOf(mainBundle.getString(STATE_KEY));//Enum.valueOf(State.class.getClass()., mainBundle.getInt(STATE_KEY));
         Log.d("restorre", String.valueOf(mRememberedPosition));
     }
 
@@ -144,8 +146,8 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public void refresh() {
         mCallbacks.supportInvalidateOptionsMenu();
-        if (mTopStoriesAccessor != null) {
-            mTopStoriesAccessor.cancelPendingCallbacks();
+        if (mAccessor != null) {
+            mAccessor.cancelPendingCallbacks();
         }
         //avoids fetching items twice before refresh is complete
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
@@ -153,16 +155,16 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         Log.d("state", String.valueOf(mState));
         if (mState == State.TOP_STORIES) {
             Log.d("new accsor", "top stories");
-            mTopStoriesAccessor = new TopStoriesAccessor();
+            mAccessor = new TopStoriesAccessor();
         } else if (mState == State.WATCHED_THREADS) {
             Log.d("new accsor", "watched");
-            mTopStoriesAccessor = new WatchedThreadsTopStoriesAccessor(getActivity());
+            mAccessor = new WatchedThreadsTopStoriesAccessor(getActivity());
         } else if (mState == State.WATCHED_USER) {
-            mTopStoriesAccessor = new WatchedUserAccessor(getActivity());
+            mAccessor = new WatchedUserAccessor(getActivity());
         }
         mItemAdapter.clear();
         mItemAdapter.notifyDataSetChanged();
-        mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
+        mAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
             @Override
             public void onSuccess(List<Thread> threads) {
                 mItemAdapter.clear();
@@ -198,7 +200,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     public void onReachedBottom() {
         if (mFinishedLoadingBottom) {
             mFinishedLoadingBottom = false;
-            mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
+            mAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
                 public void onSuccess(List<Thread> threads) {
                     if (threads.size() == 0) {
                         if (isAdded()) {

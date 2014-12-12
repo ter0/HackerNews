@@ -11,10 +11,6 @@ import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
 
-
-/**
- * TODO: document your custom view class.
- */
 public class CommentsView extends FrameLayout {
     private RecyclerView mCommentsRecyclerView;
     private CommentAdapter mCommentAdapter;
