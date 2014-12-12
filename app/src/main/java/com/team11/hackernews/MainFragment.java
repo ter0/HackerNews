@@ -207,13 +207,10 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     @Override
     public void onReachedBottom() {
-        mCallbacks.showToast("begin loading");
         if (mFinishedLoadingBottom) {
-            mCallbacks.showToast("begin loading actualy");
             mFinishedLoadingBottom = false;
             mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
                 public void onSuccess(List<Thread> threads) {
-                    mCallbacks.showToast("onsucess");
                     if (threads.size() == 0) {
                         if (isAdded()) {
                             mCallbacks.showToast("No More Articles");
@@ -238,7 +235,6 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
                 @Override
                 public void onError() {
                     onReachedBottom();
-                    mCallbacks.showToast("error getting stories");
                     Log.d("MainFragment", "Error getting next stories");
                 }
             });
