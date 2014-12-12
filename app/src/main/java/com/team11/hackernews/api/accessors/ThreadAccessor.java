@@ -47,9 +47,10 @@ public class ThreadAccessor extends Accessor {
                 Utils.ItemType itemType = Utils.getItemTypeFromString(map.get("type").toString());
 
                 if (itemType == Utils.ItemType.Story) {
-                    Log.d("Ask hn", "story id "+map.get("id"));
+                    Log.d("Ask hn", "story id " + map.get("id"));
                     Log.d("Ask hn", String.valueOf(map.get("title")));
-                    if (map.get("title").toString().startsWith("Ask HN:")) {
+                    String title = map.get("title").toString();
+                    if (title.startsWith("Ask HN:") || title.startsWith("Show HN:")) {
                         // Ask HN thread
                         thread = new AskHN();
 
