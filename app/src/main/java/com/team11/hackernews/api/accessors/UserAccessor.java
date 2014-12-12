@@ -25,6 +25,7 @@ public class UserAccessor extends Accessor {
 
                 if (map == null) {
                     callbacks.onUserNotFound();
+                    return;
                 }
 
                 User user = new User.Builder()
