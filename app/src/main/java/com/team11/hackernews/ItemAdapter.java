@@ -117,7 +117,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         } else if (currentItem instanceof Poll) {
             domainString = "User Poll";
         } else if (currentItem instanceof AskHN) {
-            domainString = "Ask HN";
+            String title = currentItem.getTitle();
+            if (title.startsWith("Ask HN:")) {
+                domainString = "Ask HN";
+            } else {
+                domainString = "Show HN";
+            }
         } else {
             domainString = "";
         }
