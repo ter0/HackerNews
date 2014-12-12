@@ -69,7 +69,7 @@ public class UserMonitor extends Monitor {
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(long id, Error error) {
 
                     }
                 });

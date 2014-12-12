@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
 
         @Override
-        public void onError() {
+        public void onError(long id, Error error) {
         }
     };
 

@@ -61,20 +61,20 @@ public abstract class Monitor {
 
             @Override
             public void onDeleted(long id) {
-                onError();
+                onError(id, new Error("Item deleted"));
             }
 
             @Override
             public void onWrongItemType(Utils.ItemType itemType, long id) {
                 if (itemType != Utils.ItemType.Comment) {
-                    onError();
+                    onError(id, new Error("Wrong item"));
                     return;
                 }
                 getRootParent(id, callbacks);
             }
 
             @Override
-            public void onError() {
+            public void onError(long id, Error error) {
             }
         });
     }

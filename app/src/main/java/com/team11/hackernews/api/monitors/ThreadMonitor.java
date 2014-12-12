@@ -63,7 +63,7 @@ public class ThreadMonitor extends Monitor {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(long id, Error error) {
 
                             }
                         });
