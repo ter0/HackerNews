@@ -1,16 +1,12 @@
 package com.team11.hackernews;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.team11.hackernews.api.accessors.TopStoriesAccessor;
+import com.team11.hackernews.api.accessors.WatchedThreadsTopStoriesAccessor;
 import com.team11.hackernews.api.data.Thread;
 
 import java.util.List;
@@ -28,7 +25,7 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
 
     public static final String MAIN_FRAGMENT_KEY = "MAIN_FRAGMENT";
     public static final String FIRST_ITEM_KEY = "FIRST_ITEM";
-
+    private static State mState;
     ItemAdapter.ItemInteractionCallbacks mItemInteractionCallbacks;
     Callbacks mCallbacks;
     private RecyclerView mRecyclerView;
@@ -38,9 +35,9 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     private boolean mFinishedLoadingBottom;
     private int mRememberedPosition;
 
-
     public MainFragment() {
         // Required empty public constructor
+        mState = State.TOP_STORIES;
     }
 
     /**
@@ -50,6 +47,10 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         return fragment;
+    }
+
+    public void setState(State state) {
+        mState = state;
     }
 
     @Override
@@ -88,8 +89,9 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_main);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mItemAdapter);
-        Log.d("(Integer)mRememberedPosition != null", String.valueOf((Integer)mRememberedPosition != null));
-        if((Integer)mRememberedPosition != null) {
+
+        Log.d("(Integer)mRememberedPosition != null", String.valueOf((Integer) mRememberedPosition != null));
+        if ((Integer) mRememberedPosition != null) {
             Log.d("rem pos", String.valueOf(mRememberedPosition));
             mRecyclerView.scrollToPosition(mRememberedPosition);
         }
@@ -161,7 +163,12 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
         //avoids fetching items twice before refresh is complete
         //i.e. when all items fit on 1 screen, that would trigger a bottom-load otherwise
         mFinishedLoadingBottom = false;
-        mTopStoriesAccessor = new TopStoriesAccessor();
+        if (mState == State.TOP_STORIES) {
+            mTopStoriesAccessor = new TopStoriesAccessor();
+        } else if (mState == State.WATCHED_THREADS) {
+            mTopStoriesAccessor = new WatchedThreadsTopStoriesAccessor(getActivity());
+        }
+
         mTopStoriesAccessor.getNextThreads(getStoriesToFetchCount(), new TopStoriesAccessor.GetNextThreadsCallbacks() {
             @Override
             public void onSuccess(List<Thread> threads) {
@@ -232,6 +239,11 @@ public class MainFragment extends Fragment implements ItemAdapter.Callbacks {
                 }
             });
         }
+    }
+
+    public enum State {
+        TOP_STORIES,
+        WATCHED_THREADS
     }
 
     interface Callbacks {

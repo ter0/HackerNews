@@ -12,7 +12,7 @@ import java.util.List;
 // This is actually top threads but HN calls them stories
 public class TopStoriesAccessor extends Accessor {
 
-    private List<Long> mStoryIds;
+    protected List<Long> mStoryIds;
     private int mNextStoryIdx;
 
     public TopStoriesAccessor() {
@@ -20,7 +20,7 @@ public class TopStoriesAccessor extends Accessor {
         mNextStoryIdx = 0;
     }
 
-    private List<Long> getNextPage(int noOfThreads) {
+    protected List<Long> getNextPage(int noOfThreads) {
         int endIdx = mNextStoryIdx + noOfThreads;
         if (endIdx > mStoryIds.size()) {
             endIdx = mStoryIds.size();
